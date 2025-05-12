@@ -1,33 +1,33 @@
 /* eslint-disable react/no-unescaped-entities */
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import HeroBanner from "@/components/home/HeroBanner"
-import CategorySection from "@/components/home/CategorySection"
-import FeaturedProducts from "@/components/home/FeaturedProducts"
-import PopularProducts from "@/components/home/PopularProducts"
-import NutritionCharts from "@/components/home/NutritionCharts"
+// import Link from "next/link"
+// import { ArrowRight } from "lucide-react"
+// import { Button } from "@/components/ui/button"
+import HeroBanner from "@/components/home/HeroBanner";
+// import CategorySection from "@/components/home/CategorySection";
+// import FeaturedProducts from "@/components/home/FeaturedProducts"
+// import PopularProducts from "@/components/home/PopularProducts"
+// import NutritionCharts from "@/components/home/NutritionCharts"
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Banner */}
       <HeroBanner />
-      
+
       {/* Categories Section */}
-      <CategorySection />
-      
+      {/* <CategorySection /> */}
+
       {/* Featured Products */}
-      <FeaturedProducts />
-      
+      {/* <FeaturedProducts /> */}
+
       {/* Popular Products */}
-      <PopularProducts />
-      
+      {/* <PopularProducts /> */}
+
       {/* Nutrition Charts */}
-      <NutritionCharts />
-      
+      {/* <NutritionCharts /> */}
+
       {/* CTA Section */}
-      <section className="py-20 bg-primary/10">
+      {/* <section className="py-20 bg-primary/10">
         <div className="container-custom text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Taste the Freshness?</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
@@ -40,7 +40,7 @@ export default function Home() {
             </Button>
           </Link>
         </div>
-      </section>
+      </section> */}
     </div>
-  )
+  );
 }

@@ -4,15 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  ShoppingCart,
-  Search,
-  Menu,
-  X,
-  User,
-  Apple,
-  LogIn,
-} from "lucide-react";
+import { ShoppingCart, Search, Menu, X, User, LogIn } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,6 +20,7 @@ import { RootState } from "@/redux/store";
 import { useGetmeQuery } from "@/redux/api/userApi";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import userImage from "@/assets/logo/man.png";
+import tajafol from "@/assets/logo/tajafol-logo1.png";
 import { logout } from "@/redux/slices/authSlice";
 
 const Navbar = () => {
@@ -36,7 +29,7 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const cartItemCount = cartItems.length;
-  const { user } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state: RootState) => state.auth);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { data: userData } = useGetmeQuery("");
@@ -114,18 +107,19 @@ const Navbar = () => {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-white shadow-md py-3" : "bg-transparent py-5"
+        isScrolled ? "bg-white shadow-md py-3" : "bg-transparent py-2"
       )}
     >
-      <div className="container mx-auto px-4 flex items-center justify-between">
+      <div className="container mx-auto lg:px-4 px-2 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <Apple size={32} className="text-primary" />
-          <span className="text-xl font-bold">TajaFol</span>
-        </Link>
+        <div className="lg:block hidden">
+          <Link href="/" className="flex items-center ">
+            <Image src={tajafol} alt="Logo" width={100} height={60} />
+          </Link>
+        </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden lg:flex items-center space-x-6">
           {navLinks.map((link) => (
             <Link
               key={link.name}
@@ -138,7 +132,7 @@ const Navbar = () => {
         </nav>
 
         {/* Desktop Right Actions */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-4">
           {/* Search form */}
           <form onSubmit={handleSearch} className="relative">
             <Input
@@ -210,9 +204,9 @@ const Navbar = () => {
 
         {/* Mobile menu button */}
         <Button
-          variant="ghost"
+          // variant="ghost"
           size="icon"
-          className="md:hidden"
+          className="lg:hidden"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? (
@@ -222,8 +216,15 @@ const Navbar = () => {
           )}
         </Button>
 
+        {/* Logo */}
+        <div className="lg:hidden block">
+          <Link href="/" className="flex items-center ">
+            <Image src={tajafol} alt="Logo" width={100} height={60} />
+          </Link>
+        </div>
+
         {/* Mobile cart */}
-        <Link href="/cart" className="relative md:hidden">
+        <Link href="/cart" className="relative lg:hidden">
           <Button variant="ghost" size="icon">
             <ShoppingCart className="h-5 w-5" />
             {cartItemCount > 0 && (
@@ -242,7 +243,7 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t"
+            className="lg:hidden bg-white border-t"
           >
             <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
               <form onSubmit={handleSearch} className="relative">
