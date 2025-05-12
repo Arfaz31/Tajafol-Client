@@ -189,27 +189,60 @@ const HeroBanner = () => {
           </AnimatePresence>
         </div>
 
-        {/* Process Steps */}
-        <div className="mt-8 pt-6 border-t border-green-200">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {processSteps.map((step, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-4 p-4 rounded-lg shadow-sm"
-              >
-                <div className={`${step.bgColor} p-3 rounded-lg`}>
-                  {step.icon}
-                </div>
-                <span className="font-medium text-gray-800">{step.title}</span>
+        {/* Process Steps - Redesigned */}
+        <div className="mt-12 md:mt-16 pt-8 border-t border-green-200/50">
+          <h3 className="text-center text-lg md:text-xl font-semibold text-green-600 mb-6">
+            How It Works
+          </h3>
+          <div className="relative">
+            {/* Progress line */}
+            <div className="hidden md:block absolute top-6 left-0 right-0 h-1 bg-green-100 mx-16"></div>
 
-                {/* Dotted line connector (not showing for last item) */}
-                {index < processSteps.length - 1 && (
-                  <div className="hidden md:block absolute ml-64">
-                    <div className="border-t-2 border-dashed border-gray-300 w-16"></div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+              {processSteps.map((step, index) => (
+                <motion.div
+                  key={index}
+                  whileHover={{ y: -5 }}
+                  className="flex flex-col items-center text-center p-4 md:py-6 md:px-4 rounded-xl bg-white shadow-sm hover:shadow-md transition-all duration-300 border border-green-50"
+                >
+                  {/* Step number */}
+                  <div className="relative mb-4">
+                    <div
+                      className={`absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white ${
+                        index % 2 === 0 ? "bg-orange-500" : "bg-green-500"
+                      }`}
+                    >
+                      {index + 1}
+                    </div>
+                    <div className={`${step.bgColor} p-3 rounded-full`}>
+                      {step.icon}
+                    </div>
                   </div>
-                )}
-              </div>
-            ))}
+
+                  <span className="font-medium text-gray-800 text-sm md:text-base">
+                    {step.title}
+                  </span>
+
+                  {/* Mobile arrow (only show between steps on mobile) */}
+                  {index < processSteps.length - 1 && (
+                    <div className="md:hidden flex justify-center mt-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-green-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
 
