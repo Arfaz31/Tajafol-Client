@@ -10,18 +10,22 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Loader2, Eye, EyeOff } from "lucide-react";
-import { useRegisterMutation } from "@/redux/api/authApi";
+import { useLoginMutation, useRegisterMutation } from "@/redux/api/authApi";
 import Container from "@/components/Shared/Container";
 import { Button } from "@/components/ui/button";
+import { setUser } from "@/redux/slices/authSlice";
+import { useAppDispatch } from "@/redux/hook";
+import { verifyToken } from "@/Utils/verifyToken";
 
 // Schema definition
 const registerSchema = z
   .object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
+    fullName: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Invalid email address"),
     contact: z.string().min(1, "Contact is required"),
+    emergencyContact: z.string().min(1, "Emergency Contact is required"),
     password: z.string().min(6, "Password must be at least 6 characters"),
-    confirmPassword: z.string(),
+    confirmPassword: z.string().min(1, "Confirm Password is required"),
     address: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -33,8 +37,10 @@ type RegisterFormInputs = z.infer<typeof registerSchema>;
 
 const RegisterPage = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [isVisible, setIsVisible] = useState(false);
   const [signup, { isLoading: isPending }] = useRegisterMutation();
+  const [loginUser] = useLoginMutation();
 
   const {
     register,
@@ -45,12 +51,31 @@ const RegisterPage = () => {
   });
 
   const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
-    try {
-      const res = await signup(data).unwrap();
+    const registerData = {
+      password: data.password,
+      customers: {
+        fullName: data.fullName,
+        email: data.email,
+        contact: data.contact,
+        emergencyContact: data.emergencyContact,
+        address: data.address,
+      },
+    };
 
-      if (res?.data?.email) {
-        toast.success("Registration successful! Please login.");
-        router.push("/login");
+    try {
+      const res = await signup(registerData).unwrap();
+
+      if (res?.data?.accessToken) {
+        toast.success("Registration successful!");
+        //Login after registration
+        const result = await loginUser({
+          contact: data.contact,
+          password: data.password,
+        }).unwrap();
+
+        const user: any = verifyToken(result?.data?.accessToken);
+        dispatch(setUser({ user, token: result?.data?.accessToken }));
+        router.push("/");
       }
     } catch (error: any) {
       toast.error(
@@ -60,9 +85,8 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="bg-gray-50 relative overflow-hidden h-[700px] rounded-xl flex items-center justify-center">
+    <div className="bg-gray-50 relative overflow-hidden md:h-[700px] h-full md:py-0 py-4 rounded-xl flex items-center justify-center">
       {/* Background effects - Tropical Mango Theme */}
-     
 
       {/* Main content */}
       <Container className="relative z-10">
@@ -91,14 +115,14 @@ const RegisterPage = () => {
                     Full Name
                   </label>
                   <input
-                    {...register("name")}
+                    {...register("fullName")}
                     type="text"
-                    className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-600"
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500"
                     placeholder="John Doe"
                   />
-                  {errors.name && (
+                  {errors.fullName && (
                     <p className="mt-1.5 text-sm text-red-500">
-                      {errors.name.message}
+                      {errors.fullName.message}
                     </p>
                   )}
                 </div>
@@ -110,7 +134,7 @@ const RegisterPage = () => {
                   <input
                     {...register("email")}
                     type="email"
-                    className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-600"
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500"
                     placeholder="your@email.com"
                   />
                   {errors.email && (
@@ -127,8 +151,8 @@ const RegisterPage = () => {
                   <input
                     {...register("contact")}
                     type="tel"
-                    className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-600"
-                    placeholder="+8801XXXXXXXXX"
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500"
+                    placeholder="01XXXXXXXXX"
                   />
                   {errors.contact && (
                     <p className="mt-1.5 text-sm text-red-500">
@@ -139,13 +163,31 @@ const RegisterPage = () => {
 
                 <div className="col-span-1">
                   <label className="block text-gray-700 mb-2 text-sm font-medium">
+                    Emergency Contact No.
+                  </label>
+                  <input
+                    {...register("emergencyContact")}
+                    type="tel"
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500"
+                    placeholder="01XXXXXXXXX"
+                  />
+                  {errors.emergencyContact && (
+                    <p className="mt-1.5 text-sm text-red-500">
+                      {errors.emergencyContact.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* Password Field */}
+                <div className="col-span-1">
+                  <label className="block text-gray-700 mb-2 text-sm font-medium">
                     Password
                   </label>
                   <div className="relative">
                     <input
                       {...register("password")}
                       type={isVisible ? "text" : "password"}
-                      className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-600"
+                      className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500"
                       placeholder="••••••••"
                     />
                     <button
@@ -167,15 +209,16 @@ const RegisterPage = () => {
                   )}
                 </div>
 
+                {/* Confirm Password Field */}
                 <div className="col-span-1">
                   <label className="block text-gray-700 mb-2 text-sm font-medium">
                     Confirm Password
                   </label>
                   <div className="relative">
                     <input
-                      {...register("confirmPassword")}
                       type={isVisible ? "text" : "password"}
-                      className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-600"
+                      {...register("confirmPassword")}
+                      className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500"
                       placeholder="••••••••"
                     />
                     <button
@@ -203,7 +246,7 @@ const RegisterPage = () => {
                   </label>
                   <textarea
                     {...register("address")}
-                    className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-600"
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500"
                     placeholder="123 Main St, Your City"
                     rows={2}
                   />

@@ -58,7 +58,6 @@ const LoginPage = () => {
   return (
     <div className="bg-gray-50 relative overflow-hidden h-[550px] rounded-xl flex items-center justify-center">
       {/* Background effects - Tropical Mango Theme */}
-     
 
       {/* Main content */}
       <Container className="relative z-10">
@@ -87,7 +86,7 @@ const LoginPage = () => {
                     {...register("contact")}
                     type="text"
                     className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500"
-                    placeholder="+8801XXXXXXXXX"
+                    placeholder="01XXXXXXXXX"
                   />
                   {errors.contact && (
                     <p className="mt-1.5 text-sm text-red-500">
@@ -127,20 +126,6 @@ const LoginPage = () => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-green-300 bg-gray-50 text-green-500 focus:ring-green-500"
-                    />
-                    <label
-                      htmlFor="remember-me"
-                      className="ml-2 block text-sm text-gray-600"
-                    >
-                      Remember me
-                    </label>
-                  </div>
                   <div className="text-sm">
                     <Link
                       href="/forgot-password"
