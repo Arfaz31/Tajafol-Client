@@ -1,29 +1,28 @@
-"use client"
+"use client";
 
-import { useShop } from "@/hooks/use-shop"
-import { ShopHero } from "@/components/shop/shop-hero"
-import { CategoryFilters } from "@/components/shop/category-filters"
-import { ShopSidebar } from "@/components/shop/shop-sidebar"
-import { MobileFilters } from "@/components/shop/mobile-filters"
-import { ProductGrid } from "@/components/shop/product-grid"
-
+import { useShop } from "@/hooks/use-shop";
+// import { ShopHero } from "@/components/shop/shop-hero"
+// import { CategoryFilters } from "@/components/shop/category-filters"
+// import { ShopSidebar } from "@/components/shop/shop-sidebar"
+// import { MobileFilters } from "@/components/shop/mobile-filters"
+// import { ProductGrid } from "@/components/shop/product-grid"
 
 export default function ShopPage() {
   const {
-    filters,
-    priceRange,
-    searchResults,
-    handleCategoryFilter,
-    handlePriceRangeChange,
-    applyPriceFilter,
-    handleSort,
-    handleResetFilters,
-    handleAddToCart,
-  } = useShop()
+    // filters,
+    // priceRange,
+    // searchResults,
+    // handleCategoryFilter,
+    // handlePriceRangeChange,
+    // applyPriceFilter,
+    // handleSort,
+    // handleResetFilters,
+    // handleAddToCart,
+  } = useShop();
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container-custom py-8">
+      {/* <div className="container-custom py-8">
         <ShopHero />
         
         <CategoryFilters 
@@ -60,7 +59,8 @@ export default function ShopPage() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
+      <h1>Shop</h1>
     </div>
-  )
+  );
 }
