@@ -12,10 +12,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import tajafol from "@/assets/logo/tajafol-logo1.png";
 import Image from "next/image";
+import Container from "../Shared/Container";
 const Footer = () => {
   return (
     <footer className="bg-foreground text-background pt-16 pb-8">
-      <div className="container-custom">
+      <Container className="px-4 ">
         {/* Top section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
           {/* Company info */}
@@ -150,10 +151,10 @@ const Footer = () => {
         </div>
 
         {/* Bottom section */}
-        <div className="pt-8 border-t border-background/20 text-center text-background/70">
+        <div className=" pt-8 border-t border-background/20 text-center text-background/70">
           <p>© {new Date().getFullYear()} TazaFol. All rights reserved.</p>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 };

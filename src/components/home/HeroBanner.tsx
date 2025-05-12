@@ -7,9 +7,10 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ShoppingCart, CheckCircle, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import banner1 from "@/assets/banner/mango-1.png";
-import banner2 from "@/assets/banner/mango-2.png";
-import banner3 from "@/assets/banner/litchi-1.png";
+import banner1 from "@/assets/banner/mango-2.png";
+import banner2 from "@/assets/banner/mango-3.png";
+import banner3 from "@/assets/banner/litchi-2.png";
+import Container from "../Shared/Container";
 
 interface Slide {
   id: number;
@@ -103,7 +104,7 @@ const HeroBanner = () => {
 
   return (
     <div className={`${currentSlideData.bgColor} overflow-hidden`}>
-      <div className="container mx-auto px-4 py-16 min-h-[90vh] flex flex-col justify-between">
+      <Container className=" mx-auto px-5 py-16 min-h-[90vh] flex flex-col justify-between">
         {/* Main Hero Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Text Content */}
@@ -261,7 +262,7 @@ const HeroBanner = () => {
             />
           ))}
         </div>
-      </div>
+      </Container>
     </div>
   );
 };

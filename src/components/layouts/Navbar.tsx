@@ -4,7 +4,15 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingCart, Search, Menu, X, User, LogIn } from "lucide-react";
+import {
+  ShoppingCart,
+  Search,
+  Menu,
+  X,
+  User,
+  LogIn,
+  LayoutDashboard,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -82,11 +90,11 @@ const Navbar = () => {
         {
           name: "Dashboard",
           href: `/dashboard/${rolePath}`,
-          icon: <User className="h-4 w-4" />,
+          icon: <LayoutDashboard className="h-4 w-4" />,
         },
         {
           name: "Profile",
-          href: `/profile/${user.id}`,
+          href: `/profile`,
           icon: <User className="h-4 w-4" />,
         },
       ]
@@ -147,7 +155,11 @@ const Navbar = () => {
 
           {/* Cart */}
           <Link href="/cart" className="relative">
-            <Button variant="ghost" size="icon">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="bg-orange-400 rounded-full p-2 text-white"
+            >
               <ShoppingCart className="h-5 w-5" />
               {cartItemCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
@@ -176,7 +188,7 @@ const Navbar = () => {
                   <DropdownMenuItem key={link.name} asChild>
                     <Link
                       href={link.href}
-                      className="flex items-center w-full p-2 hover:bg-accent"
+                      className="flex items-center w-full p-2 hover:bg-accent cursor-pointer"
                     >
                       {link.icon}
                       <span className="ml-2">{link.name}</span>
@@ -194,10 +206,19 @@ const Navbar = () => {
             </DropdownMenu>
           ) : (
             <div className="flex items-center space-x-2">
-              <Button variant="outline" onClick={() => router.push("/login")}>
+              <Button
+                variant="outline"
+                className="hover:bg-[#169344]"
+                onClick={() => router.push("/login")}
+              >
                 Login
               </Button>
-              <Button onClick={() => router.push("/register")}>Register</Button>
+              <Button
+                // className="bg-[#fdb900] hover:bg-[#ffb005]"
+                onClick={() => router.push("/register")}
+              >
+                Register
+              </Button>
             </div>
           )}
         </div>
