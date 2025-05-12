@@ -2,11 +2,18 @@ import Container from "@/components/Shared/Container";
 
 const WithAuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="min-h-screen bg-green-950 relative overflow-hidden">
+   <div className="relative overflow-hidden min-h-screen flex items-center justify-center"
+      style={{
+        backgroundImage: "url('https://res.cloudinary.com/dufs2ywc7/image/upload/w_1000,ar_16:9,c_fill,g_auto,e_sharpen/v1747044314/rajendra-biswal-BafVsMpoSF0-unsplash_kbnhgl.jpg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat"
+      }}
+    >
       {/* Background effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-green-900/80 via-green-950 to-green-900/80" />
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-800/60 to-gray-800/60" />
 
         {/* Organic shapes */}
         <div className="absolute w-[300px] h-[300px] bg-green-600/5 rounded-full blur-3xl top-1/4 -left-1/4" />
