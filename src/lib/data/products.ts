@@ -1,4 +1,5 @@
 export interface Product {
+  createdAt: string | number | Date
   id: string
   name: string
   description: string
@@ -22,7 +23,7 @@ export interface Product {
   }
 }
 
-export const products: Product[] = [
+export const products= [
   {
     id: "p1",
     name: "Premium Himsagar Mango",
