@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import { useRegisterMutation } from "@/redux/api/authApi";
 import Container from "@/components/Shared/Container";
+import { Button } from "@/components/ui/button";
 
 // Schema definition
 const registerSchema = z
@@ -59,106 +60,98 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className=" bg-yellow-600 relative overflow-hidden h-[700px] rounded-xl flex items-center justify-center ">
-      {/* Background effects */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-green-900/80 via-green-950 to-green-900/80" />
-
-        {/* Organic shapes */}
-        <div className="absolute w-[300px] h-[300px] bg-green-600/5 rounded-full blur-3xl top-1/4 -left-1/4" />
-        <div className="absolute w-[400px] h-[400px] bg-lime-500/5 rounded-full blur-3xl bottom-1/4 -right-1/4" />
-        <div className="absolute w-[250px] h-[250px] bg-emerald-400/5 rounded-full blur-3xl top-3/4 left-1/2" />
-      </div>
+    <div className="bg-gray-50 relative overflow-hidden h-[700px] rounded-xl flex items-center justify-center">
+      {/* Background effects - Tropical Mango Theme */}
+     
 
       {/* Main content */}
       <Container className="relative z-10">
-        <div className="min-h-screen flex items-center justify-center ">
+        <div className="min-h-screen flex items-center justify-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="md:w-[550px] w-full "
+            className="md:w-[550px] w-full"
           >
-            <div className="bg-gradient-to-br from-green-900/70 to-green-800/50 p-6 text-center border-b border-green-700/30 rounded-t-xl">
+            <div className="bg-gradient-to-br from-green-800 to-green-500 p-6 text-center border-b border-green-300 rounded-t-xl">
               <Link href="/">
-                <h1 className="text-2xl font-bold text-green-400">TajaFol</h1>
-                <p className="text-sm text-green-200/60 mt-1">
+                <h1 className="text-2xl font-bold text-white">TajaFol</h1>
+                <p className="text-sm text-white/80 mt-1">
                   Fresh Finds, Delivered Daily
                 </p>
               </Link>
             </div>
 
-            <div className="bg-green-950/50 p-6 rounded-b-xl border border-green-800/30">
+            <div className="bg-white shadow-lg p-6 rounded-b-xl border border-green-200/50">
               <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="grid grid-cols-1 md:grid-cols-2 gap-4"
               >
                 <div className="col-span-1">
-                  <label className="block text-green-100 mb-2 text-sm font-medium">
+                  <label className="block text-gray-700 mb-2 text-sm font-medium">
                     Full Name
                   </label>
                   <input
                     {...register("name")}
                     type="text"
-                    className="w-full px-4 py-2.5 bg-green-900/30 border border-green-700/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-green-50 placeholder-green-400/40"
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-600"
                     placeholder="John Doe"
                   />
                   {errors.name && (
-                    <p className="mt-1.5 text-sm text-red-400">
+                    <p className="mt-1.5 text-sm text-red-500">
                       {errors.name.message}
                     </p>
                   )}
                 </div>
 
                 <div className="col-span-1">
-                  <label className="block text-green-100 mb-2 text-sm font-medium">
+                  <label className="block text-gray-700 mb-2 text-sm font-medium">
                     Email
                   </label>
                   <input
                     {...register("email")}
                     type="email"
-                    className="w-full px-4 py-2.5 bg-green-900/30 border border-green-700/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-green-50 placeholder-green-400/40"
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-600"
                     placeholder="your@email.com"
                   />
                   {errors.email && (
-                    <p className="mt-1.5 text-sm text-red-400">
+                    <p className="mt-1.5 text-sm text-red-500">
                       {errors.email.message}
                     </p>
                   )}
                 </div>
 
                 <div className="col-span-1">
-                  <label className="block text-green-100 mb-2 text-sm font-medium">
+                  <label className="block text-gray-700 mb-2 text-sm font-medium">
                     Contact Number
                   </label>
                   <input
                     {...register("contact")}
                     type="tel"
-                    className="w-full px-4 py-2.5 bg-green-900/30 border border-green-700/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-green-50 placeholder-green-400/40"
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-600"
                     placeholder="+8801XXXXXXXXX"
                   />
                   {errors.contact && (
-                    <p className="mt-1.5 text-sm text-red-400">
+                    <p className="mt-1.5 text-sm text-red-500">
                       {errors.contact.message}
                     </p>
                   )}
                 </div>
 
                 <div className="col-span-1">
-                  <label className="block text-green-100 mb-2 text-sm font-medium">
+                  <label className="block text-gray-700 mb-2 text-sm font-medium">
                     Password
                   </label>
                   <div className="relative">
                     <input
                       {...register("password")}
                       type={isVisible ? "text" : "password"}
-                      className="w-full px-4 py-2.5 bg-green-900/30 border border-green-700/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-green-50 placeholder-green-400/40"
+                      className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-600"
                       placeholder="••••••••"
                     />
                     <button
                       type="button"
                       onClick={() => setIsVisible(!isVisible)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-400 hover:text-green-300"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-500 hover:text-green-600"
                     >
                       {isVisible ? (
                         <EyeOff className="h-5 w-5" />
@@ -168,27 +161,27 @@ const RegisterPage = () => {
                     </button>
                   </div>
                   {errors.password && (
-                    <p className="mt-1.5 text-sm text-red-400">
+                    <p className="mt-1.5 text-sm text-red-500">
                       {errors.password.message}
                     </p>
                   )}
                 </div>
 
                 <div className="col-span-1">
-                  <label className="block text-green-100 mb-2 text-sm font-medium">
+                  <label className="block text-gray-700 mb-2 text-sm font-medium">
                     Confirm Password
                   </label>
                   <div className="relative">
                     <input
                       {...register("confirmPassword")}
                       type={isVisible ? "text" : "password"}
-                      className="w-full px-4 py-2.5 bg-green-900/30 border border-green-700/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-green-50 placeholder-green-400/40"
+                      className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-600"
                       placeholder="••••••••"
                     />
                     <button
                       type="button"
                       onClick={() => setIsVisible(!isVisible)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-400 hover:text-green-300"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-500 hover:text-green-600"
                     >
                       {isVisible ? (
                         <EyeOff className="h-5 w-5" />
@@ -198,29 +191,29 @@ const RegisterPage = () => {
                     </button>
                   </div>
                   {errors.confirmPassword && (
-                    <p className="mt-1.5 text-sm text-red-400">
+                    <p className="mt-1.5 text-sm text-red-500">
                       {errors.confirmPassword.message}
                     </p>
                   )}
                 </div>
 
                 <div className="col-span-1 md:col-span-2">
-                  <label className="block text-green-100 mb-2 text-sm font-medium">
+                  <label className="block text-gray-700 mb-2 text-sm font-medium">
                     Address (Optional)
                   </label>
                   <textarea
                     {...register("address")}
-                    className="w-full px-4 py-2.5 bg-green-900/30 border border-green-700/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-green-50 placeholder-green-400/40"
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-600"
                     placeholder="123 Main St, Your City"
                     rows={2}
                   />
                 </div>
 
                 <div className="col-span-1 md:col-span-2">
-                  <button
+                  <Button
                     type="submit"
                     disabled={isPending}
-                    className="w-full py-3 px-4 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 rounded-lg text-white font-medium shadow-lg shadow-green-900/20 transition-all duration-200 flex items-center justify-center"
+                    className="w-full py-3 px-4flex items-center justify-center"
                   >
                     {isPending ? (
                       <>
@@ -230,31 +223,31 @@ const RegisterPage = () => {
                     ) : (
                       "Create Account"
                     )}
-                  </button>
+                  </Button>
                 </div>
               </form>
 
               <div className="mt-6 text-center">
-                <p className="text-green-300/70 text-sm">
+                <p className="text-gray-600 text-sm">
                   Already have an account?{" "}
                   <Link
                     href="/login"
-                    className="text-green-400 hover:text-green-300 font-medium"
+                    className="text-orange-600 hover:text-orange-700 font-medium"
                   >
                     Sign in
                   </Link>
                 </p>
               </div>
 
-              <div className="mt-4 text-center text-xs text-green-400/50">
+              <div className="mt-4 text-center text-xs text-gray-500">
                 By creating an account, you agree to our{" "}
-                <Link href="/terms" className="text-green-400 hover:underline">
+                <Link href="/terms" className="text-green-600 hover:underline">
                   Terms of Service
                 </Link>{" "}
                 and{" "}
                 <Link
                   href="/privacy"
-                  className="text-green-400 hover:underline"
+                  className="text-green-600 hover:underline"
                 >
                   Privacy Policy
                 </Link>
