@@ -1,123 +1,139 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
-import { ShoppingCart, Search, Menu, X, User, Apple, ChevronDown } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  ShoppingCart,
+  Search,
+  Menu,
+  X,
+  User,
+  Apple,
+  LogIn,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { categories } from "@/lib/data/categories"
-import { useSelector } from "react-redux"
-import { RootState } from "@/lib/redux/store"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import Image from "next/image";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useGetmeQuery } from "@/redux/api/userApi";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import userImage from "@/assets/logo/man.png";
+import { logout } from "@/redux/slices/authSlice";
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const pathname = usePathname()
-  const cartItems = useSelector((state: RootState) => state.cart.items)
-  const cartItemCount = cartItems.length
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const cartItemCount = cartItems.length;
+  const { user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { data: userData } = useGetmeQuery("");
 
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
-        setIsScrolled(true)
+        setIsScrolled(true);
       } else {
-        setIsScrolled(false)
+        setIsScrolled(false);
       }
-    }
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Handle search
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Searching for:", searchQuery)
+    e.preventDefault();
+    console.log("Searching for:", searchQuery);
     // TODO: Implement search functionality
-  }
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    // router.push("/login");
+    setIsMobileMenuOpen(false);
+    console.log("Logging out");
+  };
 
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Shop", path: "/shop" },
-    { name: "Blog", path: "/blog" },
-    { name: "Contact", path: "/contact" },
-  ]
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Shop", href: "/shop" },
+    { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" },
+  ];
+
+  const rolePath =
+    user?.role === "SUPER_ADMIN" || user?.role === "ADMIN"
+      ? "admin"
+      : user?.role === "CUSTOMER"
+      ? "customer"
+      : "";
+
+  const authLinks = user?.email
+    ? [
+        {
+          name: "Dashboard",
+          href: `/dashboard/${rolePath}`,
+          icon: <User className="h-4 w-4" />,
+        },
+        {
+          name: "Profile",
+          href: `/profile/${user.id}`,
+          icon: <User className="h-4 w-4" />,
+        },
+      ]
+    : [
+        {
+          name: "Login",
+          href: "/login",
+          icon: <LogIn className="h-4 w-4" />,
+        },
+        {
+          name: "Register",
+          href: "/register",
+          icon: <User className="h-4 w-4" />,
+        },
+      ];
 
   return (
-    <header 
+    <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled 
-          ? "bg-white shadow-md py-3" 
-          : "bg-transparent py-5"
+        isScrolled ? "bg-white shadow-md py-3" : "bg-transparent py-5"
       )}
     >
-      <div className="container-custom flex items-center justify-between">
+      <div className="container mx-auto px-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <Apple 
-            size={32} 
-            className="text-primary"
-          />
-          <span className="text-xl font-bold">TazaFol</span>
+          <Apple size={32} className="text-primary" />
+          <span className="text-xl font-bold">TajaFol</span>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
           {navLinks.map((link) => (
-            link.name === "Shop" ? (
-              <DropdownMenu key={link.name}>
-                <DropdownMenuTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                    className={cn(
-                      "flex items-center gap-1 px-1",
-                      pathname.startsWith(link.path) ? "text-primary font-medium" : "text-foreground"
-                    )}
-                  >
-                    Shop
-                    <ChevronDown size={16} />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" className="w-56">
-                  {categories.map((category) => (
-                    <DropdownMenuItem key={category.id} asChild>
-                      <Link href={`/shop/${category.slug}`} className="w-full">
-                        {category.name}
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                  <DropdownMenuItem asChild>
-                    <Link href="/shop" className="w-full font-medium">
-                      View All Categories
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Link 
-                key={link.name} 
-                href={link.path}
-                className={cn(
-                  "text-base transition-colors hover:text-primary",
-                  pathname === link.path ? "text-primary font-medium" : "text-foreground"
-                )}
-              >
-                {link.name}
-              </Link>
-            )
+            <Link
+              key={link.name}
+              href={link.href}
+              className="text-base transition-colors hover:text-primary text-foreground"
+            >
+              {link.name}
+            </Link>
           ))}
         </nav>
 
@@ -127,21 +143,14 @@ const Navbar = () => {
           <form onSubmit={handleSearch} className="relative">
             <Input
               type="search"
-              placeholder="Search fruits..."
+              placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-52 pl-9 rounded-full bg-background border-primary/20 focus:border-primary"
+              className="w-52 pl-9 rounded-full bg-background border-primary/20"
             />
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           </form>
 
-          {/* User */}
-          <Link href="/profile">
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-            </Button>
-          </Link>
-          
           {/* Cart */}
           <Link href="/cart" className="relative">
             <Button variant="ghost" size="icon">
@@ -153,13 +162,57 @@ const Navbar = () => {
               )}
             </Button>
           </Link>
+
+          {/* Auth Links - Desktop */}
+          {user?.email ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="rounded-full border-2 border-white cursor-pointer">
+                  <Image
+                    src={userData?.data?.profileImg || userImage}
+                    alt="user profile picture"
+                    width={35}
+                    height={35}
+                    className="rounded-full object-cover object-center w-9 h-9"
+                  />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                {authLinks.map((link) => (
+                  <DropdownMenuItem key={link.name} asChild>
+                    <Link
+                      href={link.href}
+                      className="flex items-center w-full p-2 hover:bg-accent"
+                    >
+                      {link.icon}
+                      <span className="ml-2">{link.name}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="flex items-center w-full p-2 hover:bg-accent cursor-pointer"
+                >
+                  <LogIn className="h-4 w-4" />
+                  <span className="ml-2">Logout</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <Button variant="outline" onClick={() => router.push("/login")}>
+                Login
+              </Button>
+              <Button onClick={() => router.push("/register")}>Register</Button>
+            </div>
+          )}
         </div>
 
         {/* Mobile menu button */}
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="md:hidden" 
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? (
@@ -185,17 +238,17 @@ const Navbar = () => {
       {/* Mobile menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-white border-t"
           >
-            <div className="container py-4 flex flex-col space-y-4">
+            <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
               <form onSubmit={handleSearch} className="relative">
                 <Input
                   type="search"
-                  placeholder="Search fruits..."
+                  placeholder="Search..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-9 rounded-full bg-background border-primary/20"
@@ -207,34 +260,43 @@ const Navbar = () => {
                 {navLinks.map((link) => (
                   <Link
                     key={link.name}
-                    href={link.path}
-                    className={cn(
-                      "py-2 px-3 rounded-md transition-colors",
-                      pathname === link.path 
-                        ? "bg-primary/10 text-primary font-medium" 
-                        : "text-foreground hover:bg-muted"
-                    )}
+                    href={link.href}
+                    className="py-2 px-3 rounded-md transition-colors text-foreground hover:bg-muted"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.name}
                   </Link>
                 ))}
+              </div>
 
-                <Link
-                  href="/profile"
-                  className="py-2 px-3 rounded-md transition-colors flex items-center gap-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <User size={18} />
-                  Profile
-                </Link>
+              <div className="flex flex-col space-y-2 pt-4 border-t">
+                {authLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className="flex items-center py-2 px-3 rounded-md transition-colors text-foreground hover:bg-muted"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.icon}
+                    <span className="ml-2">{link.name}</span>
+                  </Link>
+                ))}
+                {user?.email && (
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center py-2 px-3 rounded-md transition-colors text-foreground hover:bg-muted w-full"
+                  >
+                    <LogIn className="h-4 w-4" />
+                    <span className="ml-2">Logout</span>
+                  </button>
+                )}
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
     </header>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
