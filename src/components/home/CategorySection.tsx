@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import { useGetAllCategoriesQuery } from "@/redux/api/categoryApi";
+import Container from "../Shared/Container";
 
 const container = {
   hidden: { opacity: 0 },
@@ -47,8 +48,8 @@ const CategorySection = () => {
   const categories = categoriesData?.data?.result || [];
 
   return (
-    <section className="py-16 bg-background">
-      <div className="container-custom">
+    <Container className="py-16 lg:px-5 px-0 bg-background">
+      <div>
         <div className="text-center mb-12">
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
@@ -95,7 +96,7 @@ const CategorySection = () => {
           >
             {categories.map((category: any) => (
               <motion.div key={category._id} variants={item}>
-                <Link href={`/shop/${category.slug}`}>
+                <Link href={`/shop/${category._id}`}>
                   <div className="group relative rounded-lg overflow-hidden shadow-md bg-white transition-all hover:shadow-lg">
                     <div className="h-44 relative">
                       <Image
@@ -125,7 +126,7 @@ const CategorySection = () => {
           </motion.div>
         )}
       </div>
-    </section>
+    </Container>
   );
 };
 

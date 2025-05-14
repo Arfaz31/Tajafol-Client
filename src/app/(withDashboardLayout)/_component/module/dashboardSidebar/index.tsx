@@ -108,7 +108,7 @@ const DashboardSidebar = () => {
           <div className="flex items-center justify-center md:pt-28 pt-20 pb-3">
             <Link href="/">
               <button className="bg-[#19af69] hover:bg-[#33d589] rounded-lg  text-xs md:text-sm font-semibold text-white h-[40px] w-[100px] md:w-[130px] md:h-[42px]">
-                Go To Newsfeed
+                Go To Homepage
               </button>
             </Link>
           </div>
