@@ -53,7 +53,9 @@ const CustomersManagement = () => {
   return (
     <div className="bg-white rounded-lg shadow-lg w-full overflow-hidden">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 border-b">
-        <h2 className="text-2xl font-bold text-black">Customers List</h2>
+        <h2 className="lg:text-3xl md:text-2xl text-xl font-bold text-black">
+          Customers List
+        </h2>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
           {/* Search form */}

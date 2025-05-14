@@ -79,12 +79,12 @@ const DashboardSidebar = () => {
         </div>
         <hr className="opacity-30" />
         <div className="p-4">
-          <p className="xl:text-xl text-lg font-bold py-5 text-white">
+          <p className="xl:text-xl lg:text-lg  text-base font-bold py-5 text-white">
             {user?.data?.user?.role === "SUPER_ADMIN"
-              ? "ADMIN Dashboard"
+              ? "ADMIN DASHBOARD"
               : user?.data?.user?.role === "ADMIN"
-              ? "ADMIN Dashboard"
-              : "User Dashboard"}
+              ? "ADMIN DASHBOARD"
+              : "User DASHBOARD"}
           </p>
           <ul className="flex flex-col gap-4 border border-[#26f57c]  min-h-56">
             {links.map((link) => (
@@ -108,7 +108,7 @@ const DashboardSidebar = () => {
           <div className="flex items-center justify-center md:pt-28 pt-20 pb-3">
             <Link href="/">
               <button className="bg-[#19af69] hover:bg-[#33d589] rounded-lg  text-xs md:text-sm font-semibold text-white h-[40px] w-[100px] md:w-[130px] md:h-[42px]">
-                Go To Newsfeed
+                Go To Homepage
               </button>
             </Link>
           </div>

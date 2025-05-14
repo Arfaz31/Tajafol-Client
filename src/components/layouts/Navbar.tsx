@@ -30,6 +30,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import userImage from "@/assets/logo/man.png";
 import tajafol from "@/assets/logo/tajafol-logo1.png";
 import { logout } from "@/redux/slices/authSlice";
+import Container from "../Shared/Container";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -118,7 +119,7 @@ const Navbar = () => {
         isScrolled ? "bg-white shadow-md py-3" : "bg-transparent py-2"
       )}
     >
-      <div className="container mx-auto lg:px-4 px-2 flex items-center justify-between">
+      <Container className=" mx-auto lg:px-4 px-2 flex items-center justify-between">
         {/* Logo */}
         <div className="lg:block hidden">
           <Link href="/" className="flex items-center ">
@@ -255,7 +256,7 @@ const Navbar = () => {
             )}
           </Button>
         </Link>
-      </div>
+      </Container>
 
       {/* Mobile menu */}
       <AnimatePresence>

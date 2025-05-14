@@ -81,7 +81,9 @@ const ManageCategoriesPage = () => {
   return (
     <Container className="py-8">
       <div className="mb-8 flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Manage Categories</h1>
+        <h1 className="lg:text-3xl md:text-2xl text-xl font-bold">
+          Manage Categories
+        </h1>
         <Button onClick={() => setIsCreateModalOpen(true)}>
           <Plus className="mr-2 h-4 w-4" /> Create Category
         </Button>
