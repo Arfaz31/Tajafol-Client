@@ -16,14 +16,15 @@ import { Button } from "@/components/ui/button";
 import { setUser } from "@/redux/slices/authSlice";
 import { useAppDispatch } from "@/redux/hook";
 import { verifyToken } from "@/Utils/verifyToken";
-
+import tajafol from "@/assets/logo/tajafol-logo1.png";
+import Image from "next/image";
 // Schema definition
 const registerSchema = z
   .object({
     fullName: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Invalid email address"),
     contact: z.string().min(1, "Contact is required"),
-    emergencyContact: z.string().min(1, "Emergency Contact is required"),
+    emergencyContact: z.string().optional(),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().min(1, "Confirm Password is required"),
     address: z.string().optional(),
@@ -85,7 +86,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="bg-gray-50 relative overflow-hidden md:h-[700px] h-full md:py-0 py-4 rounded-xl flex items-center justify-center">
+    <div className="bg-gray-50 relative overflow-hidden md:h-[720px] h-full md:py-2 py-4 rounded-xl flex items-center justify-center">
       {/* Background effects - Tropical Mango Theme */}
 
       {/* Main content */}
@@ -98,7 +99,13 @@ const RegisterPage = () => {
           >
             <div className="bg-gradient-to-br from-green-800 to-green-500 p-6 text-center border-b border-green-300 rounded-t-xl">
               <Link href="/">
-                <h1 className="text-2xl font-bold text-white">TajaFol</h1>
+                <Image
+                  src={tajafol}
+                  alt="Logo"
+                  width={100}
+                  height={60}
+                  className="mx-auto"
+                />
                 <p className="text-sm text-white/80 mt-1">
                   Fresh Finds, Delivered Daily
                 </p>

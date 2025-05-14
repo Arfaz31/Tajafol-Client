@@ -18,3 +18,18 @@ export const registerSchema = z
     message: "Passwords don't match",
     path: ["confirmPassword"],
   });
+
+export const formSchema = z.object({
+  categoryName: z
+    .string()
+    .min(2, "Category name must be at least 2 characters")
+    .max(100, "Category name cannot exceed 100 characters"),
+  description: z.string().optional(),
+  slug: z
+    .string()
+    .min(2, "Slug must be at least 2 characters")
+    .max(100, "Slug cannot exceed 100 characters"),
+  image: z
+    .instanceof(File, { message: "Image is required" })
+    .refine((file) => file !== null, "Image is required"),
+});
