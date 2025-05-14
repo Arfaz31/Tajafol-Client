@@ -3,7 +3,7 @@
 // import { ArrowRight } from "lucide-react"
 // import { Button } from "@/components/ui/button"
 import HeroBanner from "@/components/home/HeroBanner";
-// import CategorySection from "@/components/home/CategorySection";
+import CategorySection from "@/components/home/CategorySection";
 // import FeaturedProducts from "@/components/home/FeaturedProducts"
 // import PopularProducts from "@/components/home/PopularProducts"
 // import NutritionCharts from "@/components/home/NutritionCharts"
@@ -15,7 +15,7 @@ export default function Home() {
       <HeroBanner />
 
       {/* Categories Section */}
-      {/* <CategorySection /> */}
+      <CategorySection />
 
       {/* Featured Products */}
       {/* <FeaturedProducts /> */}
