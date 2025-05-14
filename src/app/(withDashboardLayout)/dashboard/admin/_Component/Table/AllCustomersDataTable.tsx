@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -16,7 +16,9 @@ import spinner from "@/assets/lottie/loading2.json";
 import Image from "next/image";
 import { useGetAllCustomersQuery } from "@/redux/api/userApi";
 
-import userDefaultImage from "@/assets/user.png";
+import userDefaultImage from "@/assets/logo/man.png";
+import Pagination from "@/components/Shared/Pagination";
+import useDebounce from "@/hooks/useDebounce";
 // import {
 //   AlertDialog,
 //   AlertDialogAction,
@@ -64,19 +66,32 @@ const AllCustomersDataTable = ({
   //   const [selectedCustomer, setSelectedCustomer] = useState<ICustomer | null>(
   //     null
   //   );
+  const debouncedSearchTerm = useDebounce(searchQuery, 500);
+
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
 
   // Query parameters for API
-  const queryParams: any = {};
-  if (searchQuery) {
-    queryParams.searchTerm = searchQuery;
-  }
-  if (statusFilter && statusFilter !== "all") {
-    queryParams.isDeleted = statusFilter;
-  }
+  const queryParams = {
+    page,
+    limit,
+    ...(debouncedSearchTerm && { searchTerm: debouncedSearchTerm }),
+    ...(statusFilter !== "all" && { status: statusFilter }),
+  };
 
   const { data: customersData, isLoading } =
     useGetAllCustomersQuery(queryParams);
   const customers = customersData?.data?.result || [];
+  const meta = customersData?.data?.meta || {};
+  const totalPages = meta.totalPage || 1;
+  const totalItems = meta.total || 0;
+
+  // Handle page change
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  // Handle limit change
 
   //   const handleDeleteCustomer = async (customer: ICustomer) => {
   //     setSelectedCustomer(customer);
@@ -141,90 +156,91 @@ const AllCustomersDataTable = ({
 
   return (
     <div className="w-full overflow-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            {[
-              "Profile",
-              "Customer Name",
-              "Email",
-              "Contact",
-              "Emergency Contact",
-              "Address",
-              "Status",
-            ].map((header) => (
-              <TableHead key={header} className="font-semibold">
-                {header}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
+      <div className="rounded-md border bg-slate-50">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {[
+                "Profile",
+                "Customer Name",
+                "Email",
+                "Contact",
+                "Emergency Contact",
+                "Address",
+                "Status",
+              ].map((header) => (
+                <TableHead key={header} className="font-semibold">
+                  {header}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
 
-        <TableBody>
-          {isLoading ? (
-            <TableRow>
-              <TableCell colSpan={8} className="text-center py-20">
-                <div className="flex items-center justify-center w-full h-14">
-                  <Lottie
-                    animationData={spinner}
-                    loop={true}
-                    className="h-20 w-20"
-                  />
-                </div>
-              </TableCell>
-            </TableRow>
-          ) : customers.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={8} className="text-center h-40">
-                <div className="flex flex-col items-center justify-center">
-                  <UserX className="h-10 w-10 text-gray-400 mb-2" />
-                  <p className="text-lg font-medium text-gray-500">
-                    No customers found
-                  </p>
-                </div>
-              </TableCell>
-            </TableRow>
-          ) : (
-            customers.map((customer: ICustomer) => (
-              <TableRow key={customer._id} className="hover:bg-gray-50">
-                <TableCell>
-                  <div className="relative h-10 w-10">
-                    <Image
-                      src={customer.profileImage || userDefaultImage}
-                      alt={customer.fullName}
-                      width={40}
-                      height={40}
-                      className="rounded-full object-cover"
+          <TableBody>
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={8} className="text-center py-20">
+                  <div className="flex items-center justify-center w-full h-14">
+                    <Lottie
+                      animationData={spinner}
+                      loop={true}
+                      className="h-20 w-20"
                     />
-                    <span
-                      className={`absolute bottom-0 right-0 h-3 w-3 rounded-full ${
-                        customer.isDeleted ? "bg-red-500" : "bg-green-500"
-                      } border-2 border-white`}
-                    ></span>
                   </div>
                 </TableCell>
-
-                <TableCell className="font-medium">
-                  {customer.fullName}
+              </TableRow>
+            ) : customers.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={8} className="text-center h-40">
+                  <div className="flex flex-col items-center justify-center">
+                    <UserX className="h-10 w-10 text-gray-400 mb-2" />
+                    <p className="text-lg font-medium text-gray-500">
+                      No customers found
+                    </p>
+                  </div>
                 </TableCell>
-                <TableCell>{customer.email}</TableCell>
-                <TableCell>{customer.contact}</TableCell>
-                <TableCell>{customer.emergencyContact}</TableCell>
-                <TableCell className="max-w-[200px] truncate">
-                  {customer.address}
-                </TableCell>
+              </TableRow>
+            ) : (
+              customers.map((customer: ICustomer) => (
+                <TableRow key={customer._id} className="hover:bg-gray-50">
+                  <TableCell>
+                    <div className="relative h-10 w-10">
+                      <Image
+                        src={customer.profileImage || userDefaultImage}
+                        alt={customer.fullName}
+                        width={40}
+                        height={40}
+                        className="rounded-full object-cover"
+                      />
+                      <span
+                        className={`absolute bottom-0 right-0 h-3 w-3 rounded-full ${
+                          customer.isDeleted ? "bg-red-500" : "bg-green-500"
+                        } border-2 border-white`}
+                      ></span>
+                    </div>
+                  </TableCell>
 
-                <TableCell>
-                  <button
-                    className={`${
-                      customer.isDeleted ? "destructive" : "success"
-                    } p-3`}
-                  >
-                    {customer.isDeleted ? "Inactive" : "Active"}
-                  </button>
-                </TableCell>
+                  <TableCell className="font-medium">
+                    {customer.fullName}
+                  </TableCell>
+                  <TableCell>{customer.email}</TableCell>
+                  <TableCell>{customer.contact}</TableCell>
+                  <TableCell>{customer.emergencyContact}</TableCell>
+                  <TableCell className="max-w-[200px] truncate">
+                    {customer.address}
+                  </TableCell>
 
-                {/* <TableCell>
+                  <TableCell>
+                    <button
+                      className={`${
+                        customer.isDeleted ? "destructive" : "success"
+                      } p-3`}
+                    >
+                      {customer.isDeleted ? "Inactive" : "Active"}
+                    </button>
+                  </TableCell>
+
+                  {/* <TableCell>
                   <div className="flex items-center gap-2">
                     <Button
                       variant="outline"
@@ -259,11 +275,12 @@ const AllCustomersDataTable = ({
                     </Button>
                   </div>
                 </TableCell> */}
-              </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
 
       {/* Delete Confirmation Dialog */}
       {/* <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
@@ -316,6 +333,16 @@ const AllCustomersDataTable = ({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog> */}
+
+      {/* Use the new Pagination component */}
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        pageSize={limit}
+        totalItems={totalItems}
+        isLoading={isLoading}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };

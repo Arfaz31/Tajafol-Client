@@ -2,10 +2,10 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@/assets/logo2.png";
+import tazafol from "@/assets/logo/tajafol-logo1.png";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { AlignJustify, Search } from "lucide-react";
+import { AlignJustify } from "lucide-react";
 import Lottie from "lottie-react";
 import handWave from "@/assets/lottie/wavinghand.json";
 
@@ -55,26 +55,9 @@ const DashboardTopnav = () => {
             </p>
           </div>
           <div className="lg:hidden sm:block hidden">
-            <Link className="flex items-center gap-1 " href="/">
-              <Image className="xl:w-[35px] w-[35px]" src={logo} alt="logo" />
-              <span className="xl:text-3xl text-2xl text-white font-bold">
-                PETTALES
-              </span>
+            <Link href="/" className="flex items-center ">
+              <Image src={tazafol} alt="Logo" width={100} height={60} />
             </Link>
-          </div>
-
-          <div>
-            <div className="flex items-center  md:space-x-7 space-x-2  pr-5 ">
-              <div className="bg-[#d5e0f0] rounded-full p-3 w-11 h-11 flex items-center justify-center">
-                <Search className="w-6 h-6" />
-              </div>
-              {/* <div className="relative cursor-pointer bg-[#d5e0f0] rounded-full p-3 w-11 h-11 flex items-center justify-center">
-                <Mail className="w-6 h-6" />
-                <div className="absolute xl:-top-1 text-white -top-1 -right-1 lg:bg-[#6783cc] bg-[#268bfe]  w-6 h-6 rounded-full flex items-center justify-center">
-                  <p className="text-center text-xs">6+</p>
-                </div>
-              </div> */}
-            </div>
           </div>
         </div>
       </div>

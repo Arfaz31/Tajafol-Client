@@ -3,15 +3,14 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@/assets/logo2.png";
+import tazafol from "@/assets/logo/tajafol-logo1.png";
 
 import { LineChart, SquarePen } from "lucide-react";
-
-import { RiSecurePaymentFill } from "react-icons/ri";
+import { MdAdminPanelSettings } from "react-icons/md";
 import { usePathname } from "next/navigation";
-
+import { FaShippingFast } from "react-icons/fa";
 import { useGetmeQuery } from "@/redux/api/userApi";
-
+import { IoNewspaperSharp } from "react-icons/io5";
 const DashboardSidebar = () => {
   const { data: user } = useGetmeQuery("");
 
@@ -32,10 +31,14 @@ const DashboardSidebar = () => {
   // ];
   const adminDashboardLinks = [
     { name: "Insights", link: "/dashboard/admin", icon: <LineChart /> },
-
+    {
+      name: "Manage Orders",
+      link: "/dashboard/admin/orders",
+      icon: <FaShippingFast className="w-7 h-7" />,
+    },
     {
       name: "Manage Products",
-      link: "/dashboard/admin/manage-all-post",
+      link: "/dashboard/admin/manage-products",
       icon: <SquarePen />,
     },
     {
@@ -43,11 +46,15 @@ const DashboardSidebar = () => {
       link: "/dashboard/admin/manage-categories",
       icon: <SquarePen />,
     },
-
     {
-      name: "Manage Orders",
-      link: "/dashboard/admin/orders",
-      icon: <RiSecurePaymentFill />,
+      name: "Create Admin",
+      link: "/dashboard/admin/create-admin",
+      icon: <MdAdminPanelSettings className="w-7 h-7" />,
+    },
+    {
+      name: "Create Blog",
+      link: "/dashboard/admin/create-blog",
+      icon: <IoNewspaperSharp className="w-7 h-7" />,
     },
   ];
 
@@ -64,30 +71,29 @@ const DashboardSidebar = () => {
     <aside>
       <div>
         <div className="h-[79px]">
-          <div className="pt-4 pl-4">
-            <Link className="flex items-center gap-1" href="/newsfeed">
-              <Image className="w-[35px]" src={logo} alt="logo" />
-              <span className="text-2xl text-white font-bold">
-                PET<span>TALES</span>
-              </span>
+          <div className="w-full flex justify-center items-center pt-2">
+            <Link href="/" className="flex items-center ">
+              <Image src={tazafol} alt="Logo" width={100} height={60} />
             </Link>
           </div>
         </div>
         <hr className="opacity-30" />
         <div className="p-4">
           <p className="xl:text-xl text-lg font-bold py-5 text-white">
-            {user?.data?.role === "admin"
-              ? "Admin Dashboard"
+            {user?.data?.user?.role === "SUPER_ADMIN"
+              ? "ADMIN Dashboard"
+              : user?.data?.user?.role === "ADMIN"
+              ? "ADMIN Dashboard"
               : "User Dashboard"}
           </p>
-          <ul className="flex flex-col gap-4 border border-[#136bd7]  min-h-56">
+          <ul className="flex flex-col gap-4 border border-[#26f57c]  min-h-56">
             {links.map((link) => (
               <li key={link.name}>
                 <Link
                   href={link.link}
-                  className={`flex items-center gap-2 text-sm hover:bg-[#414193] py-2 text-white ${
+                  className={`flex items-center gap-2 text-sm hover:bg-[#30bf7c] py-2 text-white ${
                     isActive(link.link)
-                      ? "bg-[#414193] w-full pl-2 "
+                      ? "bg-[#19af69] w-full pl-2 "
                       : "w-full pl-2"
                   }`}
                 >
@@ -100,8 +106,8 @@ const DashboardSidebar = () => {
             ))}
           </ul>
           <div className="flex items-center justify-center md:pt-28 pt-20 pb-3">
-            <Link href="/newsfeed">
-              <button className="bg-[#268bff] text-xs md:text-sm font-semibold text-white h-[40px] w-[100px] md:w-[130px] md:h-[42px]">
+            <Link href="/">
+              <button className="bg-[#19af69] hover:bg-[#33d589] rounded-lg  text-xs md:text-sm font-semibold text-white h-[40px] w-[100px] md:w-[130px] md:h-[42px]">
                 Go To Newsfeed
               </button>
             </Link>

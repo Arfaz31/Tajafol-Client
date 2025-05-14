@@ -24,7 +24,7 @@ const registerSchema = z
     fullName: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Invalid email address"),
     contact: z.string().min(1, "Contact is required"),
-    emergencyContact: z.string().min(1, "Emergency Contact is required"),
+    emergencyContact: z.string().optional(),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().min(1, "Confirm Password is required"),
     address: z.string().optional(),
