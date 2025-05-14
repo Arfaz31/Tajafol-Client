@@ -26,8 +26,8 @@ const NewArrivalProducts = () => {
   const newArrivalProducts = data?.data || [];
 
   return (
-    <Container className="py-16 bg-background">
-      <div>
+    <div className="py-16 bg-background ">
+      <Container className="xl:px-20 lg:px-16 px-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -90,7 +90,7 @@ const NewArrivalProducts = () => {
                   : newArrivalProducts.map((product: any, index: number) => (
                       <CarouselItem
                         key={product._id}
-                        className="pl-2 md:pl-8 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                        className="pl-2 md:pl-8 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 h-[400px]"
                       >
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
@@ -110,8 +110,8 @@ const NewArrivalProducts = () => {
             </Carousel>
           </motion.div>
         )}
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 };
 

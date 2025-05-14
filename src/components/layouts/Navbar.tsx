@@ -60,8 +60,11 @@ const Navbar = () => {
   // Handle search
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Searching for:", searchQuery);
-    // TODO: Implement search functionality
+
+    // Navigate to shop page with search query
+    if (searchQuery.trim()) {
+      router.push(`/shop?searchTerm=${encodeURIComponent(searchQuery.trim())}`);
+    }
   };
 
   const handleLogout = () => {

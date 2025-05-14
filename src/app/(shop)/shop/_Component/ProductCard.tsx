@@ -31,7 +31,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   return (
-    <div className="product-card group bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div className="product-card group bg-white rounded-xl  shadow-lg transition-shadow duration-300">
       <div className="relative h-64 overflow-hidden rounded-t-xl">
         <Link href={`/shop/product/${product._id}`}>
           <Image
@@ -62,26 +62,30 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <Heart className="h-4 w-4 text-rose-500" />
         </Button>
 
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-          <Button
-            onClick={handleAddToCart}
-            className="w-full bg-primary hover:bg-primary/90 text-white font-medium flex items-center justify-center gap-2 py-2"
-          >
-            <ShoppingCart className="h-4 w-4" />
-            Add to Cart
-          </Button>
-        </div>
+        {product.quantity > 0 && (
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+            <Button
+              onClick={handleAddToCart}
+              className="w-full bg-primary hover:bg-primary/90 text-white font-medium flex items-center justify-center gap-2 py-2"
+            >
+              <ShoppingCart className="h-4 w-4" />
+              Add to Cart
+            </Button>
+          </div>
+        )}
       </div>
 
       <div className="p-4">
-        <Link
-          href={`/shop/product/${product._id}`}
-          className="hover:text-primary transition-colors duration-200"
-        >
-          <h3 className="font-semibold text-lg line-clamp-1 mb-2">
-            {product.productName}
-          </h3>
-        </Link>
+        <div className="h-16">
+          <Link
+            href={`/shop/product/${product._id}`}
+            className="hover:text-primary transition-colors duration-200 "
+          >
+            <h3 className="font-semibold text-lg  mb-2">
+              {product.productName}
+            </h3>
+          </Link>
+        </div>
 
         <div className="flex items-center gap-2">
           {product.discountPrice ? (
@@ -99,7 +103,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </span>
           )}
           <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full ml-auto">
-            {product.unit}
+            {product.unit} কেজি
           </span>
         </div>
       </div>
