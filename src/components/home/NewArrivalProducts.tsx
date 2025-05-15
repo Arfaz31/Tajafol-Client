@@ -84,7 +84,7 @@ const NewArrivalProducts = () => {
                 }),
               ]}
             >
-              <CarouselContent className="-ml-2 md:-ml-4 ">
+              <CarouselContent className=" md:-ml-4 ml-0 h-[420px]">
                 {isLoading
                   ? [...Array(4)].map((_, index) => (
                       <CarouselItem
@@ -97,7 +97,7 @@ const NewArrivalProducts = () => {
                   : newArrivalProducts.map((product: any, index: number) => (
                       <CarouselItem
                         key={product._id}
-                        className="pl-6 basis-full xs:basis-1/2 sm:basis-1/2 md:basis-1/3 xl:basis-1/4"
+                        className="md:pl-6 pl-0  basis-full xs:basis-1/2 sm:basis-1/2 md:basis-1/3 xl:basis-1/4"
                       >
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
