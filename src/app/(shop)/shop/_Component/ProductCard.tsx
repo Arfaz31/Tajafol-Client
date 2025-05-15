@@ -17,17 +17,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
-    dispatch(
-      addToCart({
-        id: product._id,
-        productName: product.productName,
-        price: product.discountPrice || product.price,
-        images: product.images,
-        quantity: 1,
-        unit: product.unit,
-        sku: product.sku,
-      })
-    );
+    const productToAdd = {
+      ...product,
+      quantity: 1,
+    };
+
+    dispatch(addToCart(productToAdd));
   };
 
   return (

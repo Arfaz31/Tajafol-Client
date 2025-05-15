@@ -13,6 +13,7 @@ import ProductGallery from "../../_Component/ProductDetails/ProductGallery";
 import ProductInfo from "../../_Component/ProductDetails/ProductInfo";
 import ProductTabs from "../../_Component/ProductDetails/ProductTabs";
 import Container from "@/components/Shared/Container";
+import RelatedProducts from "../../_Component/ProductDetails/RelatedProducts";
 
 export default function ProductDetailPage({
   params,
@@ -55,7 +56,7 @@ export default function ProductDetailPage({
 
   return (
     <div className="min-h-screen">
-      <Container className="px-5 py-8 bg-[#f7fafc]">
+      <Container className="md:px-5 px-2 py-8  bg-[#f7fafc]">
         {/* Breadcrumb Navigation */}
         <ProductBreadcrumb productName={product.productName} />
 
@@ -81,6 +82,9 @@ export default function ProductDetailPage({
 
           {/* Product Tabs */}
           <ProductTabs product={product} />
+
+          {/* Related Product */}
+          <RelatedProducts currentProductId={product._id} />
         </div>
       </Container>
     </div>

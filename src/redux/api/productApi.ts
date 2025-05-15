@@ -21,6 +21,14 @@ const productApi = baseApi.injectEndpoints({
       providesTags: (result, error, id) => [{ type: "Products", id }],
     }),
 
+    getRelatedProducts: builder.query({
+      query: (productId) => ({
+        url: `/product/${productId}/related`,
+        method: "GET",
+      }),
+      providesTags: ["Products"],
+    }),
+
     // Get new arrival products
     getNewArrivals: builder.query({
       query: () => ({
@@ -75,4 +83,5 @@ export const {
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useGetRelatedProductsQuery,
 } = productApi;

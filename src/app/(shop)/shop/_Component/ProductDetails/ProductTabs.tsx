@@ -17,7 +17,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
       <div className="flex border-b">
         <button
           onClick={() => setActiveTab("description")}
-          className={`py-3 px-6 font-medium text-gray-700 ${
+          className={`py-3 md:px-6 px-2 font-medium text-sm md:text-base text-gray-700 ${
             activeTab === "description"
               ? "border-b-2 border-gray-800"
               : "hover:bg-gray-50"
@@ -27,7 +27,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
         </button>
         <button
           onClick={() => setActiveTab("additional")}
-          className={`py-3 px-6 font-medium text-gray-700 ${
+          className={`py-3 md:px-6 px-2 text-sm md:text-base font-medium text-gray-700 ${
             activeTab === "additional"
               ? "border-b-2 border-gray-800"
               : "hover:bg-gray-50"
@@ -37,7 +37,7 @@ export default function ProductTabs({ product }: ProductTabsProps) {
         </button>
         <button
           onClick={() => setActiveTab("reviews")}
-          className={`py-3 px-6 font-medium text-gray-700 ${
+          className={`py-3 md:px-6 px-2 font-medium text-sm md:text-base text-gray-700 ${
             activeTab === "reviews"
               ? "border-b-2 border-gray-800"
               : "hover:bg-gray-50"
