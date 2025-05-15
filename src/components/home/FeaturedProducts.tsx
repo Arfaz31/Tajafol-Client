@@ -17,10 +17,6 @@ const FeaturedProducts = () => {
 
   const featuredProducts = data?.data || [];
 
-  console.log("data", data);
-
-  console.log("featuredProducts", featuredProducts);
-
   return (
     <div className="bg-white">
       <Container className="py-16 ">

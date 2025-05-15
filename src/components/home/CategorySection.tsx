@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import { useGetAllCategoriesQuery } from "@/redux/api/categoryApi";
 import Container from "../Shared/Container";
+import { useRouter } from "next/navigation";
 
 const container = {
   hidden: { opacity: 0 },
@@ -42,10 +42,16 @@ const CategorySkeleton = () => (
 );
 
 const CategorySection = () => {
+  const router = useRouter();
   const { data: categoriesData, isLoading } = useGetAllCategoriesQuery({
     limit: 100,
   });
   const categories = categoriesData?.data?.result || [];
+
+  // Function to handle category click and navigate with query parameter
+  const handleCategoryClick = (categoryId: string) => {
+    router.push(`/shop?category=${categoryId}`);
+  };
 
   return (
     <Container className="py-16 lg:px-5 px-0 bg-background">
@@ -96,31 +102,32 @@ const CategorySection = () => {
           >
             {categories.map((category: any) => (
               <motion.div key={category._id} variants={item}>
-                <Link href={`/shop/${category._id}`}>
-                  <div className="group relative rounded-lg overflow-hidden shadow-md bg-white transition-all hover:shadow-lg">
-                    <div className="h-44 relative">
-                      <Image
-                        src={category.image}
-                        alt={category.categoryName}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    </div>
+                <div
+                  onClick={() => handleCategoryClick(category._id)}
+                  className="group relative rounded-lg overflow-hidden shadow-md bg-white transition-all hover:shadow-lg cursor-pointer"
+                >
+                  <div className="h-44 relative">
+                    <Image
+                      src={category.image}
+                      alt={category.categoryName}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  </div>
 
-                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                      <div className="flex justify-between items-center">
-                        <h3 className="text-lg font-semibold mb-1">
-                          {category.categoryName}
-                        </h3>
-                        <span className="bg-white/40 rounded-full p-1 transition-transform duration-300 group-hover:translate-x-1">
-                          <ChevronRight className="h-4 w-4" />
-                        </span>
-                      </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-lg font-semibold mb-1">
+                        {category.categoryName}
+                      </h3>
+                      <span className="bg-white/40 rounded-full p-1 transition-transform duration-300 group-hover:translate-x-1">
+                        <ChevronRight className="h-4 w-4" />
+                      </span>
                     </div>
                   </div>
-                </Link>
+                </div>
               </motion.div>
             ))}
           </motion.div>

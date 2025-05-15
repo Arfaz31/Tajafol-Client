@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import { useSelector } from "react-redux";
+
 import { RootState } from "@/redux/store";
 import { useGetmeQuery } from "@/redux/api/userApi";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
@@ -36,7 +36,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const cartItems = useAppSelector((store) => store.cart.products);
   const cartItemCount = cartItems.length;
   const { user } = useAppSelector((state: RootState) => state.auth);
   const dispatch = useAppDispatch();
@@ -60,8 +60,11 @@ const Navbar = () => {
   // Handle search
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Searching for:", searchQuery);
-    // TODO: Implement search functionality
+
+    // Navigate to shop page with search query
+    if (searchQuery.trim()) {
+      router.push(`/shop?searchTerm=${encodeURIComponent(searchQuery.trim())}`);
+    }
   };
 
   const handleLogout = () => {
@@ -159,11 +162,11 @@ const Navbar = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="bg-orange-400 rounded-full p-2 text-white"
+              className="bg-[#f59f00] rounded-full p-2 text-white"
             >
               <ShoppingCart className="h-5 w-5" />
               {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                   {cartItemCount}
                 </span>
               )}
@@ -246,11 +249,15 @@ const Navbar = () => {
         </div>
 
         {/* Mobile cart */}
-        <Link href="/cart" className="relative lg:hidden">
-          <Button variant="ghost" size="icon">
+        <Link href="/cart" className="relative lg:hidden mr-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="bg-[#f59f00] rounded-full p-2 text-white"
+          >
             <ShoppingCart className="h-5 w-5" />
             {cartItemCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-primary text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                 {cartItemCount}
               </span>
             )}

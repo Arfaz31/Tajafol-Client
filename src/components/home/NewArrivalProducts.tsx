@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useGetAllProductsQuery } from "@/redux/api/productApi";
-
 import {
   Carousel,
   CarouselContent,
@@ -16,35 +15,38 @@ import {
 import ProductCardSkeleton from "@/app/(shop)/shop/_Component/ProductCardSkeleton";
 import ProductCard from "@/app/(shop)/shop/_Component/ProductCard";
 import Container from "../Shared/Container";
-
+import Autoplay from "embla-carousel-autoplay";
 const NewArrivalProducts = () => {
   const { data, isLoading, isError } = useGetAllProductsQuery({
     limit: 8,
-    isNewArrival: true, // Only fetch new arrival products
+    isNewArrival: true,
   });
 
   const newArrivalProducts = data?.data || [];
 
   return (
-    <Container className="py-16 bg-background">
-      <div>
+    <div className="py-12 sm:py-16 bg-background">
+      <Container className="xl:px-20 lg:px-16 px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-4"
+          className="flex flex-col md:flex-row md:items-center justify-between mb-8 sm:mb-12 gap-4"
         >
           <div>
-            <h2 className="section-title mb-2">New Arrivals</h2>
-            <p className="text-muted-foreground max-w-2xl">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+              New Arrivals
+            </h2>
+            <p className="text-muted-foreground text-sm sm:text-base max-w-2xl">
               Discover our latest seasonal fruits just arrived in store
             </p>
           </div>
           <Link href="/shop" className="shrink-0">
             <Button
               variant="outline"
-              className="border-primary text-primary hover:bg-primary hover:text-white"
+              size="sm"
+              className="border-primary text-primary hover:bg-primary hover:text-white text-sm sm:text-base"
             >
               View All
             </Button>
@@ -76,13 +78,18 @@ const NewArrivalProducts = () => {
                 loop: true,
               }}
               className="w-full"
+              plugins={[
+                Autoplay({
+                  delay: 2000,
+                }),
+              ]}
             >
-              <CarouselContent className="-ml-2 md:-ml-4">
+              <CarouselContent className="-ml-2 md:-ml-4 ">
                 {isLoading
                   ? [...Array(4)].map((_, index) => (
                       <CarouselItem
                         key={`skeleton-${index}`}
-                        className="pl-2 md:pl-8 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                        className="pl-2 basis-full xs:basis-1/2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/4"
                       >
                         <ProductCardSkeleton />
                       </CarouselItem>
@@ -90,7 +97,7 @@ const NewArrivalProducts = () => {
                   : newArrivalProducts.map((product: any, index: number) => (
                       <CarouselItem
                         key={product._id}
-                        className="pl-2 md:pl-8 sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
+                        className="pl-6 basis-full xs:basis-1/2 sm:basis-1/2 md:basis-1/3 xl:basis-1/4"
                       >
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
@@ -103,15 +110,13 @@ const NewArrivalProducts = () => {
                       </CarouselItem>
                     ))}
               </CarouselContent>
-              <div className="hidden md:block">
-                <CarouselPrevious className="border-primary text-primary hover:bg-primary hover:text-white" />
-                <CarouselNext className="border-primary text-primary hover:bg-primary hover:text-white" />
-              </div>
+              <CarouselPrevious className="md:block hidden absolute xl:left-[18%] lg:left-[25%] md:left-[30%] sm:left-[48%] xl:-top-[98px] lg:-top-24 md:-top-24 sm:-top-32  transform -translate-y-1/2   border-primary text-primary hover:bg-primary hover:text-white" />
+              <CarouselNext className="md:block hidden absolute xl:right-[72%] lg:right-[62%] md:right-[56%] sm:right-[28%] xl:-top-[98px] lg:-top-24 md:-top-24 sm:-top-32 transform -translate-y-1/2  border-primary text-primary hover:bg-primary hover:text-white" />
             </Carousel>
           </motion.div>
         )}
-      </div>
-    </Container>
+      </Container>
+    </div>
   );
 };
 
