@@ -54,7 +54,7 @@ const CategorySection = () => {
   };
 
   return (
-    <Container className="py-16 lg:px-5 px-0 bg-background">
+    <Container className="py-16 px-5  bg-background">
       <div>
         <div className="text-center mb-12">
           <motion.h2

@@ -21,7 +21,7 @@ export default function Home() {
       <FeaturedProducts />
 
       {/* Nutrition Charts */}
-      {/* <NutritionCharts /> */}
+      <NutritionCharts />
 
       {/* Popular Products */}
       <PopularProducts />

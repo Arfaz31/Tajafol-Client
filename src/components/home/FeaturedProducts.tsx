@@ -19,7 +19,7 @@ const FeaturedProducts = () => {
 
   return (
     <div className="bg-white">
-      <Container className="py-16 ">
+      <Container className="py-16 px-5">
         <div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
