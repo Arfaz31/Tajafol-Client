@@ -228,7 +228,7 @@ const OrderCompletionPage = ({
 
           {user?.id && (
             <Link
-              href={`/my-orders`}
+              href={`/dashboard/customer`}
               className="px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-md hover:bg-gray-50 transition duration-200"
             >
               View Order Details
