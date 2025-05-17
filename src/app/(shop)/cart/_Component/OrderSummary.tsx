@@ -5,15 +5,15 @@ import { ArrowRight } from "lucide-react";
 
 interface OrderSummaryProps {
   subtotal: number;
-  shipping: number;
+  shippingCost: number;
   total: number;
   isCheckoutDisabled: boolean;
 }
 
 export default function OrderSummary({
   subtotal,
-
   total,
+  shippingCost,
   isCheckoutDisabled,
 }: OrderSummaryProps) {
   return (
@@ -24,6 +24,15 @@ export default function OrderSummary({
         <div className="flex justify-between items-center">
           <span className="text-muted-foreground">Subtotal</span>
           <span>৳{subtotal.toFixed(2)}</span>
+        </div>
+
+        <div className="flex justify-between font-medium">
+          <span className="text-gray-700">Shipping</span>
+          <span className="text-gray-800">
+            {shippingCost
+              ? `Outside Dhaka: ৳${shippingCost.toLocaleString()}`
+              : "Not Selected Yet"}
+          </span>
         </div>
 
         <Separator />

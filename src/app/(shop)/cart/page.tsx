@@ -49,7 +49,7 @@ export default function CartPage() {
             <div className="lg:col-span-1">
               <OrderSummary
                 subtotal={totalPrice}
-                shipping={shippingCost}
+                shippingCost={shippingCost}
                 total={grandTotal}
                 isCheckoutDisabled={isCheckoutDisabled}
               />

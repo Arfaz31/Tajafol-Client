@@ -1,28 +1,41 @@
+import { setShippingCost } from "@/redux/slices/cartSlice";
 import React from "react";
+import { useDispatch } from "react-redux";
 
 interface ShippingMethodProps {
   onSelectMethod: (cost: number) => void;
   onBack: () => void;
+  onPlaceOrder: () => void;
+  isLoading: boolean;
 }
 
 const ShippingMethod: React.FC<ShippingMethodProps> = ({
   onSelectMethod,
   onBack,
+  onPlaceOrder,
+  isLoading,
 }) => {
+  const dispatch = useDispatch();
+
   const shippingOptions = [
     {
-      id: "inside-dhaka",
-      name: "Inside Dhaka",
+      id: "inside-rajshahi",
+      name: "Inside Rajshahi",
       cost: 60,
       description: "Delivery within 1-2 business days",
     },
     {
-      id: "outside-dhaka",
-      name: "Outside Dhaka",
+      id: "outside-rajshahi",
+      name: "Outside Rajshahi",
       cost: 120,
       description: "Delivery within 3-5 business days",
     },
   ];
+
+  const handleSelectMethod = (cost: number) => {
+    dispatch(setShippingCost(cost));
+    onSelectMethod(cost);
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
@@ -38,7 +51,7 @@ const ShippingMethod: React.FC<ShippingMethodProps> = ({
               name="shipping-method"
               type="radio"
               className="mt-1 h-4 w-4 text-green-600 border-gray-300 focus:ring-green-500"
-              onChange={() => onSelectMethod(option.cost)}
+              onChange={() => handleSelectMethod(option.cost)}
             />
             <label htmlFor={option.id} className="ml-3 block">
               <span className="block text-sm font-medium text-gray-700">
@@ -65,10 +78,13 @@ const ShippingMethod: React.FC<ShippingMethodProps> = ({
         </button>
         <button
           type="button"
-          className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md"
-          onClick={() => onSelectMethod(0)}
+          onClick={onPlaceOrder}
+          disabled={isLoading}
+          className={`px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md ${
+            isLoading ? "opacity-70 cursor-not-allowed" : ""
+          }`}
         >
-          Continue to Payment
+          {isLoading ? "Processing..." : "Place Order"}
         </button>
       </div>
     </div>

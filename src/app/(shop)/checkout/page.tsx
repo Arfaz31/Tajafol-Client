@@ -3,7 +3,7 @@ import CheckoutPage from "./_component/CheckoutPage";
 
 const Checkout = () => {
   return (
-    <div>
+    <div className="mb-12">
       <CheckoutPage />
     </div>
   );
