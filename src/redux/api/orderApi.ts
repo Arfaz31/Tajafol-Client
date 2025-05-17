@@ -28,7 +28,7 @@ const orderApi = baseApi.injectEndpoints({
         url: `/order/${id}`,
         method: "GET",
       }),
-      providesTags: (result, error, id) => [{ type: "Orders", id }],
+      providesTags: (id) => [{ type: "Orders", id }],
     }),
 
     // Get orders for current user
@@ -47,7 +47,7 @@ const orderApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: { status },
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Orders", id }],
+      invalidatesTags: ({ id }) => [{ type: "Orders", id }],
     }),
   }),
 });
