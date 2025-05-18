@@ -1,61 +1,62 @@
 import Link from "next/link";
 import {
   Facebook,
-  Twitter,
   Instagram,
   Youtube,
-  Mail,
   MapPin,
   Phone,
+  Crown,
+ 
+  MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import tajafol from "@/assets/logo/tajafol-logo1.png";
 import Image from "next/image";
 import Container from "../Shared/Container";
+
 const Footer = () => {
   return (
-    <footer className="bg-foreground text-background pt-16 pb-8">
-      <Container className="px-4 ">
-        {/* Top section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
+    <footer className="bg-gradient-to-br from-green-800 via-green-900 to-green-950 text-white pt-16 pb-8">
+      <Container className="px-4">
+        {/* Main grid layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Company info */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <Link href="/" className="flex items-center ">
-                <Image src={tajafol} alt="Logo" width={100} height={60} />
+          <div className="flex flex-col justify-between">
+            <div>
+              <Link href="/" className="block mb-4">
+                <Image src={tajafol} alt="টাজাফল লোগো" width={120} height={60} />
               </Link>
+              <p className="text-green-100 mb-6 text-sm leading-relaxed">
+                চাঁপাইনবাবগঞ্জের আম রাজধানী থেকে সরাসরি আপনার ঘরে। বাংলাদেশের 
+                সেরা আম, লিচু ও তাজা ফলের নিশ্চয়তা টাজাফলে।
+              </p>
             </div>
-            <p className="text-background/80 mb-6">
-              Delivering the freshest seasonal fruits from across Bangladesh
-              straight to your doorstep.
-            </p>
-            <div className="flex gap-4">
+            <div className="flex gap-3">
               <Button
                 size="icon"
                 variant="ghost"
-                className="h-9 w-9 rounded-full bg-background/10 hover:bg-background/20"
+                className="h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 hover:text-blue-400 transition-all"
               >
                 <Facebook size={18} />
               </Button>
               <Button
                 size="icon"
                 variant="ghost"
-                className="h-9 w-9 rounded-full bg-background/10 hover:bg-background/20"
+                className="h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 hover:text-green-400 transition-all"
               >
-                <Twitter size={18} />
+                <MessageCircle size={18} />
               </Button>
               <Button
                 size="icon"
                 variant="ghost"
-                className="h-9 w-9 rounded-full bg-background/10 hover:bg-background/20"
+                className="h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 hover:text-pink-400 transition-all"
               >
                 <Instagram size={18} />
               </Button>
               <Button
                 size="icon"
                 variant="ghost"
-                className="h-9 w-9 rounded-full bg-background/10 hover:bg-background/20"
+                className="h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 hover:text-red-400 transition-all"
               >
                 <Youtube size={18} />
               </Button>
@@ -64,95 +65,127 @@ const Footer = () => {
 
           {/* Quick links */}
           <div>
-            <h3 className="text-lg font-semibold mb-6">Quick Links</h3>
+            <h3 className="text-xl font-bold mb-6 flex items-center">
+              <Crown className="h-5 w-5 text-yellow-400 mr-2" />
+              গুরুত্বপূর্ণ লিংক
+            </h3>
             <ul className="space-y-3">
               <li>
                 <Link
                   href="/about"
-                  className="text-background/80 hover:text-primary transition-colors"
+                  className="text-green-100 hover:text-yellow-300 transition-colors flex items-center group"
                 >
-                  About Us
+                  <span className="group-hover:translate-x-1 transition-transform">
+                    → আমাদের সম্পর্কে
+                  </span>
                 </Link>
               </li>
               <li>
                 <Link
                   href="/shop"
-                  className="text-background/80 hover:text-primary transition-colors"
+                  className="text-green-100 hover:text-yellow-300 transition-colors flex items-center group"
                 >
-                  Shop
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog"
-                  className="text-background/80 hover:text-primary transition-colors"
-                >
-                  Blog
+                  <span className="group-hover:translate-x-1 transition-transform">
+                    → ফল কিনুন
+                  </span>
                 </Link>
               </li>
               <li>
                 <Link
                   href="/contact"
-                  className="text-background/80 hover:text-primary transition-colors"
+                  className="text-green-100 hover:text-yellow-300 transition-colors flex items-center group"
                 >
-                  Contact Us
+                  <span className="group-hover:translate-x-1 transition-transform">
+                    → যোগাযোগ
+                  </span>
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/faq"
-                  className="text-background/80 hover:text-primary transition-colors"
+                  href="/privacy"
+                  className="text-green-100 hover:text-yellow-300 transition-colors flex items-center group"
                 >
-                  FAQ
+                  <span className="group-hover:translate-x-1 transition-transform">
+                    → গোপনীয়তার নীতি
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms"
+                  className="text-green-100 hover:text-yellow-300 transition-colors flex items-center group"
+                >
+                  <span className="group-hover:translate-x-1 transition-transform">
+                    → শর্তাবলী
+                  </span>
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Contact info */}
+          {/* Contact info & Services */}
           <div>
-            <h3 className="text-lg font-semibold mb-6">Contact Info</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-background/80">
-                  Banani, Road 12, House 35, Dhaka, Bangladesh
-                </span>
+            <h3 className="text-xl font-bold mb-6 flex items-center">
+              <Phone className="h-5 w-5 text-yellow-400 mr-2" />
+              যোগাযোগ ও সেবা
+            </h3>
+            <ul className="space-y-4 mb-6">
+              <li className="flex items-start gap-3 p-3 bg-white/10 rounded-lg">
+                <MapPin className="h-5 w-5 text-yellow-400 shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold">প্রধান অফিস</p>
+                  <span className="text-green-100 text-sm">
+                    ৩৫ নং বাড়ি, রোড ১২, বনানী<br />ঢাকা-১২১৩, বাংলাদেশ
+                  </span>
+                </div>
               </li>
-              <li className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-primary" />
-                <span className="text-background/80">+880 1712345678</span>
+              <li className="flex items-center gap-3 p-3 bg-white/10 rounded-lg">
+                <Phone className="h-5 w-5 text-yellow-400" />
+                <div>
+                  <p className="text-sm font-semibold">হটলাইন</p>
+                  <span className="text-green-100 text-sm">+৮৮০ ১৭১২৩৪৫৬৭৮</span>
+                </div>
               </li>
-              <li className="flex items-center gap-3">
-                <Mail className="h-5 w-5 text-primary" />
-                <span className="text-background/80">info@tazafol.com</span>
+              <li className="flex items-center gap-3 p-3 bg-white/10 rounded-lg">
+                <MessageCircle className="h-5 w-5 text-yellow-400" />
+                <div>
+                  <p className="text-sm font-semibold">WhatsApp</p>
+                  <span className="text-green-100 text-sm">+৮৮০ ১৯১২৩৪৫৬৭৮</span>
+                </div>
               </li>
             </ul>
+
+           
           </div>
 
-          {/* Newsletter */}
+          {/* Seasonal Promo Banner */}
           <div>
-            <h3 className="text-lg font-semibold mb-6">Newsletter</h3>
-            <p className="text-background/80 mb-4">
-              Subscribe to our newsletter to receive updates on new arrivals and
-              special offers.
-            </p>
-            <div className="flex gap-2">
-              <Input
-                type="email"
-                placeholder="Your email"
-                className="bg-background/10 border-background/20 text-background"
-              />
-              <Button className="bg-primary hover:bg-primary-hover text-white">
-                Subscribe
-              </Button>
+            <div className="bg-gradient-to-r from-yellow-600 to-orange-500 rounded-2xl p-6 text-center h-full flex flex-col justify-center">
+              <h3 className="text-2xl font-bold text-white mb-2">
+                🥭 আম সিজন ২০২৫ শুরু! 🥭
+              </h3>
+              <p className="text-yellow-100 mb-4">
+                খিরসাপাত, গোপালভোগ, লাংড়া - সকল জাতের তাজা আম এখনই অর্ডার করুন!
+              </p>
+              <Link href="/shop" className="mt-auto">
+                <Button className="bg-white text-orange-600 hover:bg-gray-100 font-bold px-8 py-2 rounded-full">
+                  এখনই অর্ডার করুন
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
 
         {/* Bottom section */}
-        <div className=" pt-8 border-t border-background/20 text-center text-background/70">
-          <p>© {new Date().getFullYear()} TazaFol. All rights reserved.</p>
+        <div className="pt-8 border-t border-white/20">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-green-200 text-sm">
+              © {new Date().getFullYear()} TaazaFol। সর্বস্বত্ব সংরক্ষিত।
+            </p>
+            <p className="text-green-200 text-sm">
+              Developed with ❤️ by Arvion Tech
+            </p>
+          </div>
         </div>
       </Container>
     </footer>
