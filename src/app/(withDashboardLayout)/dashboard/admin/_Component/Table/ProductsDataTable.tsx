@@ -113,8 +113,8 @@ const ProductsDataTable = ({
 
   return (
     <>
-      <div className="rounded-md border bg-slate-50">
-        <Table>
+      <div className="rounded-md border bg-slate-50 overflow-x-auto ">
+        <Table className="w-[1500px]">
           <TableHeader>
             <TableRow>
               <TableHead>Image</TableHead>
@@ -122,6 +122,7 @@ const ProductsDataTable = ({
               <TableHead>SKU</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Price</TableHead>
+              <TableHead>Discount Price</TableHead>
               <TableHead>Stock</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Tags</TableHead>
@@ -171,6 +172,7 @@ const ProductsDataTable = ({
                     </span>
                   </div>
                 </TableCell>
+                <TableCell>{product?.discountPrice} ৳</TableCell>
                 <TableCell>
                   <Badge
                     variant={product.quantity > 0 ? "default" : "destructive"}

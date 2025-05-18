@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ShoppingCart,
@@ -31,6 +31,7 @@ import userImage from "@/assets/logo/man.png";
 import tajafol from "@/assets/logo/tajafol-logo1.png";
 import { logout } from "@/redux/slices/authSlice";
 import Container from "../Shared/Container";
+import { protectedRoutes } from "@/constant";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -42,6 +43,7 @@ const Navbar = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { data: userData } = useGetmeQuery("");
+  const pathname = usePathname();
 
   // Handle scroll effect
   useEffect(() => {
@@ -71,14 +73,17 @@ const Navbar = () => {
     dispatch(logout());
     // router.push("/login");
     setIsMobileMenuOpen(false);
-    console.log("Logging out");
+
+    if (protectedRoutes.some((route: string) => pathname.match(route))) {
+      router.push("/"); //protected route gulo te thaka obosthai logout korle homepage redirect korbe only.
+    }
   };
 
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
     { name: "Shop", href: "/shop" },
-    { name: "Blog", href: "/blog" },
+    // { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
   ];
 
@@ -114,6 +119,10 @@ const Navbar = () => {
           icon: <User className="h-4 w-4" />,
         },
       ];
+
+  const handleNavigation = (pathname: string) => {
+    router.push(pathname);
+  };
 
   return (
     <header
@@ -189,7 +198,11 @@ const Navbar = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 {authLinks.map((link) => (
-                  <DropdownMenuItem key={link.name} asChild>
+                  <DropdownMenuItem
+                    key={link.name}
+                    asChild
+                    onClick={() => handleNavigation(`${link.href}`)}
+                  >
                     <Link
                       href={link.href}
                       className="flex items-center w-full p-2 hover:bg-accent cursor-pointer"

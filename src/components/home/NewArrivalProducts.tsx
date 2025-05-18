@@ -26,7 +26,7 @@ const NewArrivalProducts = () => {
 
   return (
     <div className="py-12 sm:py-16 bg-background">
-      <Container className="xl:px-20 lg:px-16 px-4 sm:px-6">
+      <Container className=" px-5 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -110,8 +110,8 @@ const NewArrivalProducts = () => {
                       </CarouselItem>
                     ))}
               </CarouselContent>
-              <CarouselPrevious className="md:block hidden absolute xl:left-[18%] lg:left-[25%] md:left-[30%] sm:left-[48%] xl:-top-[98px] lg:-top-24 md:-top-24 sm:-top-32  transform -translate-y-1/2   border-primary text-primary hover:bg-primary hover:text-white" />
-              <CarouselNext className="md:block hidden absolute xl:right-[72%] lg:right-[62%] md:right-[56%] sm:right-[28%] xl:-top-[98px] lg:-top-24 md:-top-24 sm:-top-32 transform -translate-y-1/2  border-primary text-primary hover:bg-primary hover:text-white" />
+              <CarouselPrevious className="md:block hidden absolute xl:left-[18%] lg:left-[25%] md:left-[30%] sm:left-[48%] xl:-top-[98px] lg:-top-24 md:-top-24 sm:-top-32  transform -translate-y-1/2   border-primary text-primary hover:bg-primary hover:text-white pl-2" />
+              <CarouselNext className="pl-2 md:block hidden absolute xl:right-[72%] lg:right-[62%] md:right-[56%] sm:right-[28%] xl:-top-[98px] lg:-top-24 md:-top-24 sm:-top-32 transform -translate-y-1/2  border-primary text-primary hover:bg-primary hover:text-white" />
             </Carousel>
           </motion.div>
         )}

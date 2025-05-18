@@ -49,6 +49,15 @@ const orderApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ({ id }) => [{ type: "Orders", id }],
     }),
+
+    updatePaymentStatus: builder.mutation({
+      query: ({ id, paymentStatus }) => ({
+        url: `/order/${id}/payment-status`,
+        method: "PATCH",
+        body: { paymentStatus },
+      }),
+      invalidatesTags: ({ id }) => [{ type: "Orders", id }],
+    }),
   }),
 });
 
@@ -58,4 +67,5 @@ export const {
   useGetSingleOrderQuery,
   useGetMyOrdersQuery,
   useUpdateOrderStatusMutation,
+  useUpdatePaymentStatusMutation,
 } = orderApi;

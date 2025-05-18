@@ -12,7 +12,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { useUpdateOrderStatusMutation } from "@/redux/api/orderApi";
+import {
+  useUpdateOrderStatusMutation,
+  useUpdatePaymentStatusMutation,
+} from "@/redux/api/orderApi";
 import { toast } from "sonner";
 import Pagination from "@/components/Shared/Pagination";
 import {
@@ -59,6 +62,7 @@ const OrdersDataTable = ({
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updateOrderStatus] = useUpdateOrderStatusMutation();
+  const [updatePaymentStatus] = useUpdatePaymentStatusMutation();
 
   const handleStatusChange = async (
     orderId: string,
@@ -70,6 +74,22 @@ const OrdersDataTable = ({
     } catch (error) {
       console.error("Failed to update order status:", error);
       toast.error("Failed to update order status");
+    }
+  };
+
+  const handlePaymentStatusChange = async (
+    orderId: string,
+    newPaymentStatus: "paid" | "unpaid"
+  ) => {
+    try {
+      await updatePaymentStatus({
+        id: orderId,
+        paymentStatus: newPaymentStatus,
+      }).unwrap();
+      toast.success("Payment status updated successfully");
+    } catch (error) {
+      console.error("Failed to update payment status:", error);
+      toast.error("Failed to update payment status");
     }
   };
 
@@ -111,7 +131,7 @@ const OrdersDataTable = ({
           className="max-w-md"
         />
 
-        <div className="flex gap-2">
+        <div className="flex md:flex-row flex-col gap-2">
           {(
             ["pending", "confirmed", "shipped", "cancelled"] as TOrderStatus[]
           ).map((tab) => (
@@ -189,7 +209,7 @@ const OrdersDataTable = ({
                   </span>
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="flex gap-2 justify-end">
+                  <div className="flex  gap-2 items-end justify-end">
                     <Select
                       value={order.status}
                       onValueChange={(value) =>
@@ -206,6 +226,23 @@ const OrdersDataTable = ({
                         {order.status === "pending" && (
                           <SelectItem value="cancelled">Cancelled</SelectItem>
                         )}
+                      </SelectContent>
+                    </Select>
+                    <Select
+                      value={order.paymentStatus}
+                      onValueChange={(value) =>
+                        handlePaymentStatusChange(
+                          order._id,
+                          value as "paid" | "unpaid"
+                        )
+                      }
+                    >
+                      <SelectTrigger className="w-[100px]">
+                        <SelectValue placeholder="Payment" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="paid">Paid</SelectItem>
+                        <SelectItem value="unpaid">Unpaid</SelectItem>
                       </SelectContent>
                     </Select>
                     <Button
