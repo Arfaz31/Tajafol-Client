@@ -1,165 +1,197 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, ShoppingCart, CheckCircle, Truck } from "lucide-react";
+import { ArrowRight, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import banner1 from "@/assets/banner/mango-2.png";
 import banner2 from "@/assets/banner/mango-3.png";
 import banner3 from "@/assets/banner/litchi-2.png";
 import Container from "../Shared/Container";
+import HowItWorks from "./HowitWorks";
 
 interface Slide {
   id: number;
   title: string;
   subtitle: string;
   description: string;
+  benefits: string[];
   cta: string;
   link: string;
-  image: any; // Changed to any to accept imported image
-  bgColor: string;
+  image: any;
+  gradientFrom: string;
+  gradientTo: string;
 }
 
 const slides: Slide[] = [
   {
     id: 1,
-    title: "Fresh and Authentic Mango",
-    subtitle: "from Chapai Nawabganj",
-    description:
-      "Mango is a delicious fruit grown on various species of tropical plants of the Mangifera genus. Mangoes are green when unripe and yellow when ripe. Mango is an Indian subcontinental fruit. Its original habitat is South Asia. Chapai Nawabganj district of Bangladesh is called the mango capital. Mango, scientific name Mangifera indica, is one of the most widely cultivated fruits worldwide. Mangoes are believed to be around 600 years old.",
-    cta: "Shop Mangoes",
-    link: "/shop/mangoes",
-    image: banner2, // Using the imported image
-    bgColor: "bg-[#f7ffed]", // Light green background
+    title: "সতেজ ও খাঁটি আম",
+    subtitle: "চাঁপাইনবাবগঞ্জের সোনালি স্বাদ",
+    description: "আমাদের প্রিয় বাংলাদেশের আম রাজধানী চাঁপাইনবাবগঞ্জের মিষ্টি আমে ভরে উঠুক আপনার ঘর। প্রতিটি আম সযত্নে বাছাই করা, রসে ভরপুর এবং প্রাকৃতিক মিষ্টতায় ভরা।",
+    benefits: ["১০০% প্রাকৃতিক ও অর্গানিক", "বিনামূল্যে হোম ডেলিভারি", "১৫ দিনের মানি ব্যাক গ্যারান্টি"],
+    cta: "আম অর্ডার করুন",
+    link: "/shop",
+    image: banner2,
+    gradientFrom: "#FFF8DC", // Cornsilk - light creamy yellow
+    gradientTo: "#FFE135",   // Golden yellow matching mango color
   },
   {
     id: 2,
-    title: "Premium Tropical Fruits",
-    subtitle: "from Bangladesh's Finest Gardens",
-    description:
-      "Discover our collection of premium tropical fruits sourced directly from the best gardens across Bangladesh. We ensure each fruit is hand-picked at the perfect ripeness to deliver maximum flavor and nutrition to your doorstep.",
-    cta: "Explore Collection",
-    link: "/shop/tropical-fruits",
-    image: banner1, // Using the imported image
-    bgColor: "bg-[#fff6e9]", // Light yellow background
+    title: "মিষ্টি লিচু",
+    subtitle: "গ্রীষ্মের মধুর উপহার",
+    description: "রসালো ও মিষ্টি লিচুর স্বাদে মাতিয়ে দিন আপনার প্রিয়জনদের। দিনাজপুর ও রাজশাহীর বিখ্যাত লিচু বাগান থেকে সরাসরি।",
+    benefits: ["তাজা ও রসালো লিচু", "৪৮ ঘন্টার মধ্যে ডেলিভারি", "বিনামূল্যে স্যাম্পল টেস্টিং"],
+    cta: "লিচু অর্ডার করুন",
+    link: "/shop",
+    image: banner3,
+    gradientFrom: "#FFF0F5", // Lavender blush - light pinkish
+    gradientTo: "#FFB6C1",   // Light pink matching litchi skin color
   },
   {
     id: 3,
-    title: "Summer Fruits Special",
-    subtitle: "Beat the Heat Naturally",
-    description:
-      "Our summer collection features refreshing seasonal fruits perfect for hot weather. Hydrate naturally with these juicy fruits packed with essential vitamins and minerals to keep you healthy and energized throughout summer.",
-    cta: "Get Summer Fruits",
-    link: "/shop/summer-fruits",
-    image: banner3, // Using the imported image
-    bgColor: "bg-[#e9f5ff]", // Light blue background
+    title: "ট্রপিক্যাল ফ্রুটস কালেকশন",
+    subtitle: "স্বর্গীয় স্বাদের সমারোহ",
+    description: "বাংলাদেশের সেরা উষ্ণমণ্ডলীয় ফলগুলির এক অনন্য সংগ্রহ। তাজা নারিকেল, মিষ্টি পেপে, সুগন্ধি কাঁঠাল এবং আরও অনেক কিছু।",
+    benefits: ["৮+ প্রকার বিশেষ ফল", "স্বাস্থ্যের জন্য ১০০% কার্যকর", "প্রিমিয়াম প্যাকেজিং"],
+    cta: "কালেকশন দেখুন",
+    link: "/shop",
+    image: banner1,
+    gradientFrom: "#F0FFF0", // Honeydew - light green
+    gradientTo: "#98FB98",   // Pale green representing tropical freshness
   },
 ];
 
-// Process steps shown at the bottom of the hero
-const processSteps = [
-  {
-    icon: <ShoppingCart className="h-8 w-8 text-orange-500" />,
-    title: "Select Product",
-    bgColor: "bg-red-50",
+// Simplified animation variants
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 300 : -300,
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
   },
-  {
-    icon: <ShoppingCart className="h-8 w-8 text-green-500" />,
-    title: "Add To Cart",
-    bgColor: "bg-green-50",
-  },
-  {
-    icon: <CheckCircle className="h-8 w-8 text-orange-500" />,
-    title: "Check Out",
-    bgColor: "bg-red-50",
-  },
-  {
-    icon: <Truck className="h-8 w-8 text-green-500" />,
-    title: "Fast Delivery",
-    bgColor: "bg-green-50",
-  },
-];
+  exit: (direction: number) => ({
+    x: direction < 0 ? 300 : -300,
+    opacity: 0,
+  }),
+};
 
 const HeroBanner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [direction, setDirection] = useState(0);
 
   // Auto-rotate slides
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 7000);
-
+      paginate(1);
+    }, 8000);
     return () => clearInterval(interval);
   }, []);
 
-  // Handle manual navigation
-  const goToSlide = (index: number) => {
+  const paginate = useCallback((newDirection: number) => {
+    setDirection(newDirection);
+    setCurrentSlide((prev) => {
+      if (newDirection > 0) {
+        return prev === slides.length - 1 ? 0 : prev + 1;
+      } else {
+        return prev === 0 ? slides.length - 1 : prev - 1;
+      }
+    });
+  }, []);
+
+  const goToSlide = useCallback((index: number) => {
+    const newDirection = index > currentSlide ? 1 : -1;
+    setDirection(newDirection);
     setCurrentSlide(index);
-  };
+  }, [currentSlide]);
 
   const currentSlideData = slides[currentSlide];
 
   return (
-    <div className={`${currentSlideData.bgColor} overflow-hidden`}>
-      <Container className=" mx-auto px-5 py-16 min-h-[90vh] flex flex-col justify-between">
+    <div 
+      className="relative overflow-hidden min-h-screen"
+      style={{
+        background: `linear-gradient(135deg, ${currentSlideData.gradientFrom} 0%, ${currentSlideData.gradientTo} 100%)`,
+      }}
+    >
+      {/* Navigation Arrows */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => paginate(-1)}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg text-green-600 hover:bg-green-50 transition-colors"
+        aria-label="Previous slide"
+      >
+        <ChevronLeft className="w-6 h-6" />
+      </motion.button>
+
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => paginate(1)}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg text-green-600 hover:bg-green-50 transition-colors"
+        aria-label="Next slide"
+      >
+        <ChevronRight className="w-6 h-6" />
+      </motion.button>
+
+      <Container className="mx-auto px-5 py-16 min-h-screen relative z-10">
         {/* Main Hero Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          {/* Text Content */}
-          <AnimatePresence mode="wait">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+          
+          {/* Content */}
+          <AnimatePresence mode="wait" custom={direction}>
             <motion.div
-              key={`content-${currentSlide}`}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-              className="flex flex-col justify-center"
+              key={currentSlide}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 },
+              }}
+              className="flex flex-col justify-center space-y-6"
             >
-              <motion.h1
-                key={`title-${currentSlide}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-4xl md:text-5xl font-bold text-green-600 mb-2"
-              >
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-green-700 leading-tight">
                 {currentSlideData.title}
-              </motion.h1>
+              </h1>
 
-              <motion.h2
-                key={`subtitle-${currentSlide}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-3xl md:text-4xl font-bold text-green-600 mb-6"
-              >
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-green-600 opacity-90">
                 {currentSlideData.subtitle}
-              </motion.h2>
+              </h2>
 
-              <motion.p
-                key={`description-${currentSlide}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-gray-700 mb-8 leading-relaxed max-w-xl"
-              >
+              <p className="text-gray-700 text-lg leading-relaxed max-w-xl font-medium">
                 {currentSlideData.description}
-              </motion.p>
+              </p>
 
-              <motion.div
-                key={`cta-${currentSlide}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-              >
+              {/* Benefits */}
+              <div className="space-y-3">
+                {currentSlideData.benefits.map((benefit, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                      <Heart className="w-3 h-3 text-white" />
+                    </div>
+                    <span className="text-gray-700 font-medium">{benefit}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA Button */}
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link href={currentSlideData.link}>
                   <Button
                     size="lg"
-                    className="bg-green-600 hover:bg-green-700 text-white rounded-full px-8 py-6 text-lg"
+                    className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl px-10 py-6 text-xl font-bold shadow-xl hover:shadow-2xl transition-all duration-300"
                   >
                     {currentSlideData.cta}
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="ml-3 h-6 w-6" />
                   </Button>
                 </Link>
               </motion.div>
@@ -167,101 +199,51 @@ const HeroBanner = () => {
           </AnimatePresence>
 
           {/* Image */}
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={`image-${currentSlide}`}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.6 }}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 },
+              }}
               className="flex justify-center items-center"
             >
-              <div className="relative h-[400px] w-full">
+              <div className="relative h-[500px] w-full max-w-lg">
                 <Image
                   src={currentSlideData.image}
                   alt={currentSlideData.title}
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-contain"
+                  className="object-contain drop-shadow-xl"
                 />
               </div>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* Process Steps - Redesigned */}
-        <div className="mt-12 md:mt-16 pt-8 border-t border-green-200/50">
-          <h3 className="text-center text-lg md:text-xl font-semibold text-green-600 mb-6">
-            How It Works
-          </h3>
-          <div className="relative">
-            {/* Progress line */}
-            <div className="hidden md:block absolute top-6 left-0 right-0 h-1 bg-green-100 mx-16"></div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-              {processSteps.map((step, index) => (
-                <motion.div
-                  key={index}
-                  whileHover={{ y: -5 }}
-                  className="flex flex-col items-center text-center p-4 md:py-6 md:px-4 rounded-xl bg-white shadow-sm hover:shadow-md transition-all duration-300 border border-green-50"
-                >
-                  {/* Step number */}
-                  <div className="relative mb-4">
-                    <div
-                      className={`absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white ${
-                        index % 2 === 0 ? "bg-orange-500" : "bg-green-500"
-                      }`}
-                    >
-                      {index + 1}
-                    </div>
-                    <div className={`${step.bgColor} p-3 rounded-full`}>
-                      {step.icon}
-                    </div>
-                  </div>
-
-                  <span className="font-medium text-gray-800 text-sm md:text-base">
-                    {step.title}
-                  </span>
-
-                  {/* Mobile arrow (only show between steps on mobile) */}
-                  {index < processSteps.length - 1 && (
-                    <div className="md:hidden flex justify-center mt-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-green-400"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Slide indicators */}
-        <div className="flex justify-center gap-2 mt-8">
+        {/* Slide Indicators */}
+        <div className="flex justify-center gap-3 ">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
               className={`h-3 rounded-full transition-all duration-300 ${
                 index === currentSlide
-                  ? "w-8 bg-green-600"
+                  ? "w-10 bg-green-600"
                   : "w-3 bg-green-200 hover:bg-green-300"
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </div>
+
+        <HowItWorks />
       </Container>
     </div>
   );
