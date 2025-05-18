@@ -43,6 +43,8 @@ interface Product {
   sku: string;
   price: number;
   quantity: number;
+  unit: number;
+  productUnitType: string;
   discountPrice?: number;
   images: string[];
   isActive: boolean;
@@ -124,6 +126,7 @@ const ProductsDataTable = ({
               <TableHead>Price</TableHead>
               <TableHead>Discount Price</TableHead>
               <TableHead>Stock</TableHead>
+              <TableHead>Unit</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Tags</TableHead>
               <TableHead>Created At</TableHead>
@@ -180,6 +183,10 @@ const ProductsDataTable = ({
                   >
                     {product.quantity}
                   </Badge>
+                </TableCell>
+
+                <TableCell>
+                  {product?.unit} {product?.productUnitType}
                 </TableCell>
                 <TableCell>
                   <Badge

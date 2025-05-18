@@ -11,7 +11,8 @@ interface ProductInfoProps {
     discountPrice?: number;
     shortdescription: string;
     quantity: number;
-    unit: string;
+    unit: number;
+    productUnitType: string;
     category?: { name: string };
     isNewArrival?: boolean;
     isTrending?: boolean;
@@ -67,7 +68,9 @@ export default function ProductInfo({
 
         {/* Unit Package */}
         <div className="mb-4">
-          <span className="text-gray-700">1 = {product.unit} কেজির প্যাক</span>
+          <span className="text-gray-700">
+            1 = {product.unit} {product.productUnitType}
+          </span>
         </div>
 
         {/* Quantity Selector - Only show if in stock */}

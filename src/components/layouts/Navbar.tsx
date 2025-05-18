@@ -32,6 +32,7 @@ import tajafol from "@/assets/logo/tajafol-logo1.png";
 import { logout } from "@/redux/slices/authSlice";
 import Container from "../Shared/Container";
 import { protectedRoutes } from "@/constant";
+import { removeTokenFromCookies } from "@/app/ServerAction/AuthService";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -71,6 +72,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    removeTokenFromCookies();
     // router.push("/login");
     setIsMobileMenuOpen(false);
 
