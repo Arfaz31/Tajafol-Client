@@ -4,7 +4,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
 import { useState } from "react";
@@ -18,6 +18,7 @@ import Container from "@/components/Shared/Container";
 import { Button } from "@/components/ui/button";
 import tajafol from "@/assets/logo/tajafol-logo1.png";
 import Image from "next/image";
+import { setTokenInCookies } from "@/app/ServerAction/AuthService";
 
 // Schema definition
 const loginSchema = z.object({
@@ -28,6 +29,8 @@ const loginSchema = z.object({
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
 const LoginPage = () => {
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
@@ -48,9 +51,15 @@ const LoginPage = () => {
       if (res?.success) {
         const user: any = verifyToken(res?.data?.accessToken);
         dispatch(setUser({ user, token: res?.data?.accessToken }));
+        await setTokenInCookies(res?.data?.accessToken);
 
         toast.success(res?.message || "Login successful");
-        router.push("/");
+        // Redirect after login success
+        if (redirect) {
+          router.push(redirect);
+        } else {
+          router.push("/");
+        }
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Login failed. Please try again.");

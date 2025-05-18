@@ -133,7 +133,7 @@ export default function ProductInfo({
               <ShoppingCart className="h-5 w-5 mr-2" />
               Add to Cart
             </Button>
-            <Link href="/cart" className="flex-1">
+            <Link href="/checkout" onClick={handleAddToCart} className="flex-1">
               <Button
                 size="lg"
                 variant="outline"
