@@ -34,6 +34,7 @@ type FormValues = {
   price: number;
   quantity: number;
   unit: number;
+  productUnitType: string;
   discountPrice?: number;
   isActive: boolean;
   isNewArrival: boolean;
@@ -78,6 +79,7 @@ const EditProductModal = ({
       price: product.price,
       quantity: product.quantity,
       unit: product.unit,
+      productUnitType: product.productUnitType,
       discountPrice: product.discountPrice,
       isActive: product.isActive,
       isNewArrival: product.isNewArrival || false,
@@ -170,7 +172,9 @@ const EditProductModal = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Product Name */}
             <div className="space-y-1">
-              <label className="block text-sm font-medium">Product Name*</label>
+              <label className="block text-sm font-medium">
+                Product Name<span className="text-red-500">*</span>
+              </label>
               <input
                 {...register("productName")}
                 className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500"
@@ -185,7 +189,9 @@ const EditProductModal = ({
 
             {/* SKU */}
             <div className="space-y-1">
-              <label className="block text-sm font-medium">SKU*</label>
+              <label className="block text-sm font-medium">
+                SKU<span className="text-red-500">*</span>
+              </label>
               <input
                 {...register("sku")}
                 className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500"
@@ -198,7 +204,9 @@ const EditProductModal = ({
 
             {/* Category */}
             <div className="space-y-1">
-              <label className="block text-sm font-medium">Category*</label>
+              <label className="block text-sm font-medium">
+                Category<span className="text-red-500">*</span>
+              </label>
               <Select
                 onValueChange={(value) => setValue("category", value)}
                 defaultValue={product.category._id}
@@ -223,7 +231,9 @@ const EditProductModal = ({
 
             {/* Price */}
             <div className="space-y-1">
-              <label className="block text-sm font-medium">Price*</label>
+              <label className="block text-sm font-medium">
+                Price<span className="text-red-500">*</span>
+              </label>
               <input
                 type="number"
                 step="0.01"
@@ -238,7 +248,9 @@ const EditProductModal = ({
 
             {/* Quantity */}
             <div className="space-y-1">
-              <label className="block text-sm font-medium">Quantity*</label>
+              <label className="block text-sm font-medium">
+                Quantity<span className="text-red-500">*</span>
+              </label>
               <input
                 type="number"
                 {...register("quantity", { valueAsNumber: true })}
@@ -255,7 +267,7 @@ const EditProductModal = ({
             {/* unit */}
             <div className="space-y-1">
               <label className="block text-sm font-medium">
-                Per Package Unit*
+                Per Package Unit<span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -266,6 +278,45 @@ const EditProductModal = ({
 
               {errors.unit && (
                 <p className="text-sm text-red-500">{errors.unit.message}</p>
+              )}
+            </div>
+
+            {/* unit Type*/}
+            {/* <div className="space-y-1">
+              <label className="block text-sm font-medium">
+                Unit Type<span className="text-red-500">*</span>
+              </label>
+              <input
+                {...register("productUnitType", { required: true })}
+                className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500"
+                placeholder="Enter unit"
+              />
+
+              {errors.productUnitType && (
+                <p className="text-sm text-red-500">
+                  {errors.productUnitType.message}
+                </p>
+              )}
+            </div> */}
+            <div className="space-y-1">
+              <label className="block text-sm font-medium">
+                Unit Type<span className="text-red-500">*</span>
+              </label>
+              <select
+                {...register("productUnitType", {
+                  required: "Unit type is required",
+                })}
+                className="w-full px-4 py-2.5 bg-gray-50 border border-green-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800"
+              >
+                <option value="">Select Unit Type</option>
+                <option value="কেজি">কেজি</option>
+                <option value="পিস">পিস</option>
+              </select>
+
+              {errors.productUnitType && (
+                <p className="text-sm text-red-500">
+                  {errors.productUnitType.message}
+                </p>
               )}
             </div>
 
@@ -292,7 +343,7 @@ const EditProductModal = ({
           {/* Short Description */}
           <div className="space-y-1">
             <label className="block text-sm font-medium">
-              Short Description*
+              Short Description<span className="text-red-500">*</span>
             </label>
             <textarea
               {...register("shortdescription")}
@@ -310,7 +361,7 @@ const EditProductModal = ({
           {/* Broad Description */}
           <div className="space-y-1">
             <label className="block text-sm font-medium">
-              Broad Description*
+              Broad Description<span className="text-red-500">*</span>
             </label>
             <textarea
               {...register("broaddescription")}
@@ -327,7 +378,9 @@ const EditProductModal = ({
 
           {/* Product Images */}
           <div className="space-y-1">
-            <label className="block text-sm font-medium">Product Images*</label>
+            <label className="block text-sm font-medium">
+              Product Images<span className="text-red-500">*</span>
+            </label>
             <div className="flex flex-col space-y-4">
               {/* File Input */}
               <div className="relative">

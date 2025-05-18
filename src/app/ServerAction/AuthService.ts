@@ -13,8 +13,8 @@ export const getAccessTokenFromCookies = async () => {
   return cookieStore.get("accessToken")?.value;
 };
 
-export const logout = async () => {
+export const removeTokenFromCookies = async () => {
   const cookieStore = await cookies();
   cookieStore.delete("accessToken");
-  cookieStore.delete("refreshToken");
+  // cookieStore.delete("refreshToken");
 };

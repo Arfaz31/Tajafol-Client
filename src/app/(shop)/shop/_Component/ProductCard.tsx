@@ -98,7 +98,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             </span>
           )}
           <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full ml-auto">
-            {product.unit} কেজি
+            {product.unit} {product.productUnitType}
           </span>
         </div>
       </div>
