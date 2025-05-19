@@ -18,7 +18,7 @@ export default function CartItemsList({
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
         <div className="p-6">
           <div className="space-y-6">
-            {products.map((product) => (
+            {products.map((product: any) => (
               <CartItem
                 key={product._id}
                 product={product}
