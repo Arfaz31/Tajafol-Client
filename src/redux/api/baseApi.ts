@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { logout, setUser } from "../slices/authSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5000/api/v1",
+  baseUrl: "http://192.168.10.141:5000/api/v1",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = ((getState() as RootState).auth as any).token;

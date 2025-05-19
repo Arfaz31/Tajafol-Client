@@ -122,7 +122,7 @@ const RegisterPage = () => {
 
         const user: any = verifyToken(result?.data?.accessToken);
         dispatch(setUser({ user, token: result?.data?.accessToken }));
-        router.push("/");
+        router.push("/login");
       }
     } catch (error: any) {
       toast.error(

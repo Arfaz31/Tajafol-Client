@@ -1,3 +1,4 @@
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
 import Link from "next/link";
@@ -35,50 +36,58 @@ export default function CartItem({ product, stockInfo }: CartItemProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex gap-4 p-4 border-b border-border last:border-b-0"
+      className="flex gap-3 sm:gap-4 p-3 sm:p-4 border-b border-border last:border-b-0"
     >
-      <div className="relative h-24 w-24 rounded-md overflow-hidden">
+      {/* Product Image - Responsive sizing */}
+      <div className="relative h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0 rounded-md overflow-hidden">
         <Image
           src={product.images[0]}
           alt={product.productName}
           fill
-          sizes="96px"
+          sizes="(max-width: 640px) 80px, 96px"
           className="object-cover"
         />
       </div>
 
-      <div className="flex-1">
+      {/* Product Details */}
+      <div className="flex-1 min-w-0"> {/* min-w-0 prevents text overflow */}
         <Link
           href={`/shop/product/${product._id}`}
-          className="hover:text-primary"
+          className="hover:text-primary block"
         >
-          <h3 className="font-medium mb-1">{product.productName}</h3>
+          <h3 className="font-medium mb-1 text-sm sm:text-base line-clamp-2">
+            {product.productName}
+          </h3>
         </Link>
 
         {isOutOfStock && (
-          <p className="text-sm text-destructive mb-1">Out of stock</p>
+          <p className="text-xs sm:text-sm text-destructive mb-1">Out of stock</p>
         )}
 
-        <p className="text-sm text-muted-foreground mb-2">
+        <p className="text-xs sm:text-sm text-muted-foreground mb-2 sm:mb-3">
           ৳{product.discountPrice || product.price} per {product.unit}
         </p>
 
-        <div className="flex md:flex-row flex-col items-center justify-between">
+        {/* Controls and Price - Responsive Layout */}
+        <div className="space-y-3 sm:space-y-0 sm:flex sm:items-center sm:justify-between">
+          {/* Quantity Controls */}
           <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="icon"
-              className="h-8 w-8"
+              className="h-7 w-7 sm:h-8 sm:w-8"
               onClick={() => handleUpdateQuantity("decrement")}
               disabled={product.cartQuantity <= 1}
             >
               <Minus className="h-3 w-3" />
             </Button>
-            <span className="w-8 text-center">{product.cartQuantity}</span>
+            <span className="w-8 text-center text-sm font-medium">
+              {product.cartQuantity}
+            </span>
             <Button
               variant="outline"
               size="icon"
-              className="h-8 w-8"
+              className="h-7 w-7 sm:h-8 sm:w-8"
               onClick={() => handleUpdateQuantity("increment")}
               disabled={isOutOfStock}
             >
@@ -86,27 +95,34 @@ export default function CartItem({ product, stockInfo }: CartItemProps) {
             </Button>
           </div>
 
-          <div className="flex items-center md:gap-4 gap-8">
-            {product.discountPrice ? (
-              <div className="flex items-baseline gap-2">
-                <span className="font-medium">৳{product.discountPrice}</span>
-                <span className="text-lg text-muted-foreground line-through">
-                  ৳{product.price}
+          {/* Price and Remove Button */}
+          <div className="flex items-center justify-between sm:justify-end sm:gap-4">
+            {/* Price Display */}
+            <div className="flex items-baseline gap-2">
+              {product.discountPrice ? (
+                <>
+                  <span className="font-medium text-sm sm:text-base">
+                    ৳{(product.discountPrice * product.cartQuantity).toFixed(2)}
+                  </span>
+                  <span className="text-xs sm:text-sm text-muted-foreground line-through">
+                    ৳{(product.price * product.cartQuantity).toFixed(2)}
+                  </span>
+                </>
+              ) : (
+                <span className="font-medium text-sm sm:text-base">
+                  ৳{(product.price * product.cartQuantity).toFixed(2)}
                 </span>
-              </div>
-            ) : (
-              <div className="flex items-baseline gap-2">
-                <span className="font-medium">৳{product.price}</span>
-              </div>
-            )}
+              )}
+            </div>
 
+            {/* Remove Button */}
             <Button
               variant="ghost"
               size="icon"
-              className="h-8 w-8 text-muted-foreground hover:text-white"
+              className="h-7 w-7 sm:h-8 sm:w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
               onClick={handleRemoveItem}
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
             </Button>
           </div>
         </div>

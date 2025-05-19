@@ -1,67 +1,84 @@
-"use client";
-import React from "react";
+import React, { useState } from "react";
+import { Menu, Search, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import tazafol from "@/assets/logo/tajafol-logo1.png";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { AlignJustify } from "lucide-react";
-import Lottie from "lottie-react";
-import handWave from "@/assets/lottie/wavinghand.json";
-
-import DashboardSidebar from "../dashboardSidebar";
 import { useGetmeQuery } from "@/redux/api/userApi";
-const DashboardTopnav = () => {
-  const { data: user } = useGetmeQuery("");
+import userImage from "@/assets/logo/man.png";
+
+interface DashboardTopnavProps {
+  onMenuClick?: () => void;
+}
+
+const DashboardTopnav: React.FC<DashboardTopnavProps> = ({ onMenuClick }) => {
+  const { data: userData } = useGetmeQuery("");
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.profile-dropdown-container')) {
+        setIsProfileOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className="h-[80px] w-full lg:bg-[#eff2f6] bg-[#0a9f43]  shadow-md sticky top-0 z-50  pt-3">
-      <div className="md:px-4 px-0">
-        <div className="flex justify-between items-center ">
-          <div className="lg:hidden block">
-            <div className="flex items-center justify-center ">
-              <div>
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <Button className="text-white bg-transparent">
-                      <AlignJustify />
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent
-                    side="left"
-                    className="bg-[#066836]      text-white shadow-2xl "
-                  >
-                    <div>
-                      <DashboardSidebar />
-                    </div>
-                  </SheetContent>
-                </Sheet>
+    <nav className="bg-white shadow-sm border-b border-gray-200 px-4 py-3 sticky top-0 z-10">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          {/* Mobile menu button */}
+          <button
+            onClick={onMenuClick}
+            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+            aria-label="Toggle mobile menu"
+          >
+            <Menu className="w-5 h-5 text-gray-600" />
+          </button>
+        </div>
+
+        <div className="flex items-center space-x-4">
+          {/* Search button for mobile */}
+          <button className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+            <Search className="w-5 h-5 text-gray-600" />
+          </button>
+
+          {/* Profile Dropdown */}
+          <div className="relative profile-dropdown-container">
+            <button 
+              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              className="p-1 rounded-full hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              <Image
+                src={userData?.data?.profileImg || userImage}
+                alt="User profile picture"
+                width={32}
+                height={32}
+                className="rounded-full object-cover object-center w-8 h-8"
+              />
+            </button>
+            
+            {isProfileOpen && (
+              <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-50">
+                <Link
+                  href="/profile"
+                  className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200 cursor-pointer outline-none"
+                  onClick={() => setIsProfileOpen(false)}
+                >
+                  <User className="h-4 w-4 mr-3" />
+                  <span>Profile</span>
+                </Link>
               </div>
-            </div>
-          </div>
-          <div className="lg:block hidden">
-            <div className="flex items-center  gap-1">
-              <p className="text-lg ">Welcome {user?.data?.name} </p>
-              <div className=" ">
-                <Lottie
-                  animationData={handWave}
-                  loop={true}
-                  className="w-9 h-9"
-                />
-              </div>
-            </div>
-            <p className="text-sm text-gray-500 ">
-              Here&apos;s what&apos;s happening with your store today.
-            </p>
-          </div>
-          <div className="lg:hidden sm:block hidden">
-            <Link href="/" className="flex items-center ">
-              <Image src={tazafol} alt="Logo" width={100} height={60} />
-            </Link>
+            )}
           </div>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

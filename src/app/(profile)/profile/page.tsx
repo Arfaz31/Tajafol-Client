@@ -1,3 +1,4 @@
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -92,9 +93,13 @@ const ProfilePage = () => {
         formData: submitFormData,
       }).unwrap();
 
-      if (response?.statusCode === 200) {
-        toast.success(response?.message);
+      // Check for success property instead of statusCode
+      if (response?.success === true) {
+        toast.success(response?.message || "Profile updated successfully");
         setIsEditing(false);
+      } else {
+        // Handle unsuccessful update with success: false
+        toast.error(response?.message || "Failed to update profile");
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Failed to update profile");
@@ -145,7 +150,7 @@ const ProfilePage = () => {
                   }
                   alt={profile?.fullName}
                   fill
-                  className="w-full h-full object-cover"
+                  className="w-full h-full rounded-full border-4 border-yellow-500 object-cover"
                 />
               </div>
               {isEditing && (
