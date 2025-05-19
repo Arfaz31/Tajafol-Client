@@ -136,7 +136,7 @@ const Navbar = () => {
       <header
         className={cn(
           "hidden lg:block fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-          isScrolled ? "bg-white shadow-md py-3" : "bg-transparent py-2"
+          isScrolled ? "bg-white shadow-md py-3" : "bg-white py-2"
         )}
       >
         <Container className="mx-auto lg:px-4 px-2 flex items-center justify-between">
@@ -247,7 +247,7 @@ const Navbar = () => {
         </Container>
       </header>
 
-      {/* Mobile Top Header */}
+
       {/* Mobile Top Header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b">
         <div className="flex items-center justify-between px-4 py-3">
@@ -258,12 +258,12 @@ const Navbar = () => {
             onClick={() => setIsMobileMenuOpen(true)}
             className="p-2"
           >
-            <Search className="h-5 w-5" />
+            <Search className="h-10 w-10" />
           </Button>
 
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <Image src={tajafol} alt="Logo" width={80} height={48} />
+            <Image src={tajafol} alt="Logo" width={90} height={55} />
           </Link>
 
           {/* Profile/Auth */}
@@ -312,7 +312,7 @@ const Navbar = () => {
               onClick={() => router.push("/login")}
               className="p-2"
             >
-              <UserCircle className="h-5 w-5" />
+              <UserCircle className="h-10 w-10" />
             </Button>
           )}
         </div>

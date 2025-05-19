@@ -146,12 +146,11 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className=" relative overflow-hidden min-h-screen py-4">
-      {/* Decorative background elements */}
+
      
 
       <Container className="relative z-10">
-        <div className="min-h-screen flex items-center justify-center py-8">
+        <div className="h-[700px] flex items-center justify-center py-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -493,7 +492,7 @@ const RegisterPage = () => {
           </motion.div>
         </div>
       </Container>
-    </div>
+   
   );
 };
 

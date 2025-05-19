@@ -1,102 +1,86 @@
 "use client";
-
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 const HowItWorks = () => {
   return (
-    <div className="mt-6  border-t border-green-200/30">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
-        className="text-center"
-      >
-        <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
-          How It <span className="text-green-600">Works</span>
-        </h3>
-        <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
+    <section className="py-16">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-center mb-4">
+          How It Works
+        </h2>
+        <p className="text-center text-gray-600 mb-12">
           Get fresh fruits delivered in 4 simple steps
         </p>
-
-        {/* Visual Process Flow */}
-        <div className="relative max-w-5xl mx-auto">
-          {/* Connecting Line */}
-          <div className="hidden md:block absolute top-8 left-0 right-0 h-0.5 bg-gradient-to-r from-green-200 via-orange-200 to-green-200 mx-12 opacity-50"></div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4">
-            {[
-              {
-                icon: "🔍",
-                title: "Browse",
-                desc: "Select fresh fruits"
-              },
-              {
-                icon: "🛒",
-                title: "Add to Cart",
-                desc: "Choose quantities"
-              },
-              {
-                icon: "💳",
-                title: "Pay Securely",
-                desc: "Safe checkout"
-              },
-              {
-                icon: "🚚",
-                title: "Fast Delivery",
-                desc: "Fresh to your door"
-              }
-            ].map((step, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.5, 
-                  delay: 1 + index * 0.1,
-                  ease: "easeOut"
-                }}
-                whileHover={{ 
-                  y: -5,
-                  transition: { duration: 0.2 }
-                }}
-                className="group cursor-pointer"
-              >
-                <div className="relative p-6 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg hover:border-green-200 transition-all duration-300">
-                  {/* Step Number */}
-                  <div className="absolute -top-3 -right-3 w-7 h-7 bg-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
-                    {index + 1}
-                  </div>
-                  
-                  {/* Emoji Icon */}
-                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                    {step.icon}
-                  </div>
-                  
-                  {/* Title */}
-                  <h4 className="font-semibold text-gray-800 mb-2 group-hover:text-green-600 transition-colors duration-300">
-                    {step.title}
-                  </h4>
-                  
-                  {/* Description */}
-                  <p className="text-sm text-gray-500 leading-relaxed">
-                    {step.desc}
-                  </p>
-                </div>
-
-                {/* Mobile Arrow */}
-                {index < 3 && (
-                  <div className="md:hidden flex justify-center mt-4">
-                    
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
         
-      </motion.div>
-    </div>
+        {/* Visual Process Flow */}
+        <div className="flex flex-col md:flex-row justify-between items-center max-w-5xl mx-auto">
+          {[
+            {
+              icon: "🔍",
+              title: "Browse",
+              desc: "Select fresh fruits"
+            },
+            {
+              icon: "🛒",
+              title: "Add to Cart",
+              desc: "Choose quantities"
+            },
+            {
+              icon: "💳",
+              title: "Pay Securely",
+              desc: "Safe checkout"
+            },
+            {
+              icon: "🚚",
+              title: "Fast Delivery",
+              desc: "Fresh to your door"
+            }
+          ].map((step, index) => (
+            <div key={index} className="flex flex-col md:flex-row items-center mb-8 md:mb-0">
+              {/* Step Card */}
+              <motion.div 
+                className="flex flex-col items-center text-center bg-white rounded-lg shadow-lg p-6 w-60 py-8"
+                whileHover={{ y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Step Number */}
+                
+                
+                {/* Emoji Icon */}
+                <div className="text-4xl mb-4">
+                  {step.icon}
+                </div>
+                
+                {/* Title */}
+                <h3 className="font-bold text-xl mb-2">
+                  {step.title}
+                </h3>
+                
+                {/* Description */}
+                <p className="text-gray-600">
+                  {step.desc}
+                </p>
+              </motion.div>
+
+              {/* Arrow - Only show between steps, not after the last step */}
+              {index < 3 && (
+                <div className="hidden md:block mx-4">
+                  <ArrowRight size={32} className="text-black/50 " />
+                </div>
+              )}
+              
+              {/* Mobile Arrow - Shown only on mobile */}
+              {index < 3 && (
+                <div className="block md:hidden my-4">
+                  <ArrowRight size={24} className="text-white transform rotate-90" />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 

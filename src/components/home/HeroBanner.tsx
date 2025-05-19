@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -5,7 +6,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Heart} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import banner1 from "@/assets/banner/mango-2.png";
 import banner2 from "@/assets/banner/mango-3.png";
@@ -85,15 +86,7 @@ const slideVariants = {
 };
 
 // Enhanced arrow button animations
-const arrowVariants = {
-  initial: { scale: 1, backgroundColor: "rgba(255, 255, 255, 0.9)" },
-  hover: { 
-    scale: 1.15, 
-    backgroundColor: "rgba(255, 255, 255, 1)",
-    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)",
-  },
-  tap: { scale: 0.9 },
-};
+
 
 // Image floating animation
 const imageFloatVariants = {
@@ -152,38 +145,12 @@ const HeroBanner = () => {
       onMouseLeave={() => setIsHovering(false)}
     >
       {/* Enhanced Navigation Arrows - Both positioned on the right side */}
-      <div className="absolute right-2 sm:right-4 md:right-6 lg:right-8 xl:right-12 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3">
-        <motion.button
-          variants={arrowVariants}
-          initial="initial"
-          whileHover="hover"
-          whileTap="tap"
-          onClick={() => paginate(-1)}
-          className="p-3 sm:p-4 rounded-full bg-white/95 backdrop-blur-md shadow-xl border border-white/20 text-green-600 hover:text-green-700 transition-all duration-300 touch-manipulation"
-          style={{ minWidth: '48px', minHeight: '48px' }}
-          aria-label="Previous slide"
-        >
-          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-        </motion.button>
+      
 
-        <motion.button
-          variants={arrowVariants}
-          initial="initial"
-          whileHover="hover"
-          whileTap="tap"
-          onClick={() => paginate(1)}
-          className="p-3 sm:p-4 rounded-full bg-white/95 backdrop-blur-md shadow-xl border border-white/20 text-green-600 hover:text-green-700 transition-all duration-300 touch-manipulation"
-          style={{ minWidth: '48px', minHeight: '48px' }}
-          aria-label="Next slide"
-        >
-          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
-        </motion.button>
-      </div>
-
-      <Container className="mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 relative z-10">
+      <Container className="mx-auto px-4 sm:px-6 pt-20 lg:px-8 xl:px-12 2xl:px-16 relative z-10">
         {/* Main Hero Content - Improved responsive layout */}
         <div 
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 xl:gap-20 2xl:gap-24 items-center"
+          className="grid  grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 xl:gap-20 2xl:gap-24 items-center"
           style={{
             minHeight: "calc(100vh - 120px)",
             paddingTop: "2rem",

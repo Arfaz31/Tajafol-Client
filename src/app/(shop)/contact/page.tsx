@@ -6,9 +6,9 @@ import { MapPin, Phone, Mail, MessageCircle, Clock, Headphones, Truck, Gift, Fac
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-yellow-50 ">
       {/* Hero Section with SEO-optimized content */}
-      <div className="relative bg-gradient-to-r from-green-600 to-yellow-600 text-white">
+      <div className="relative pt-10 bg-gradient-to-r from-green-600 to-yellow-600 text-white">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="container mx-auto px-4 py-20 relative z-10">
           <div className="text-center max-w-4xl mx-auto">

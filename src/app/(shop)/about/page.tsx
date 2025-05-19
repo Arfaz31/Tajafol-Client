@@ -7,9 +7,9 @@ import Link from "next/link"
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background ">
       {/* Hero Section */}
-      <div className="relative h-[70vh] overflow-hidden">
+      <div className="relative h-[70vh] pt-20 overflow-hidden">
         <Image
           src="/images/about-hero.jpg"
           alt="Chapai Nawabganj mango orchards"
