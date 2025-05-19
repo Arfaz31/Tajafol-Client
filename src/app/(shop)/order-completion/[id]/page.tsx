@@ -1,15 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
+import tajafol from "@/assets/logo/tajafol-logo1.png";
 import React, { useRef } from "react";
 import Link from "next/link";
 import { useGetSingleOrderQuery } from "@/redux/api/orderApi";
 import { useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
 import generatePDF, { Margin } from "react-to-pdf";
-import { FaFilePdf, FaCheckCircle, FaShoppingBag, FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
+import {
+  FaFilePdf,
+  FaCheckCircle,
+  FaShoppingBag,
+  FaMapMarkerAlt,
+  FaPhone,
+  FaEnvelope,
+} from "react-icons/fa";
 import { MdReceipt } from "react-icons/md";
 import Container from "@/components/Shared/Container";
+import Image from "next/image";
 
 const OrderCompletionPage = ({
   params,
@@ -62,14 +70,16 @@ const OrderCompletionPage = ({
       <div className="min-h-screen bg-gradient-to-br from-red-50 to-pink-50 flex items-center justify-center">
         <div className="text-center p-8 bg-white rounded-xl shadow-lg">
           <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h2 className="text-2xl font-bold text-red-600 mb-2">অর্ডার লোড করতে ত্রুটি</h2>
+          <h2 className="text-2xl font-bold text-red-600 mb-2">
+            অর্ডার লোড করতে ত্রুটি
+          </h2>
           <p className="text-gray-600">দয়া করে পুনরায় চেষ্টা করুন</p>
         </div>
       </div>
     );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-yellow-50 to-orange-50">
+    <div className="min-h-screen pt-20 bg-gradient-to-br from-green-50 via-yellow-50 to-orange-50">
       <Container className="mx-auto px-4 pt-8 pb-12">
         {/* Success Banner */}
         <div className="max-w-4xl mx-auto mb-8">
@@ -77,8 +87,12 @@ const OrderCompletionPage = ({
             <div className="flex items-center justify-center mb-4">
               <FaCheckCircle className="text-4xl mr-4" />
               <div className="text-center">
-                <h1 className="text-3xl font-bold">অর্ডার সফলভাবে সম্পন্ন হয়েছে!</h1>
-                <p className="text-green-100 mt-2">TaazaFol-এ অর্ডার করার জন্য ধন্যবাদ</p>
+                <h1 className="text-3xl font-bold">
+                  অর্ডার সফলভাবে সম্পন্ন হয়েছে!
+                </h1>
+                <p className="text-green-100 mt-2">
+                  TaazaFol-এ অর্ডার করার জন্য ধন্যবাদ
+                </p>
               </div>
             </div>
           </div>
@@ -107,7 +121,11 @@ const OrderCompletionPage = ({
             <div className="flex items-center justify-center mb-4">
               <FaShoppingBag className="text-4xl mr-4" />
               <div>
-                <h1 className="text-3xl font-bold">TaazaFol</h1>
+                <div>
+                  <Link href="/" className="flex items-center justify-center">
+                    <Image src={tajafol} alt="Logo" width={100} height={60} />
+                  </Link>
+                </div>
                 <p className="text-green-100">বাংলাদেশের সেরা ফলের দোকান</p>
               </div>
             </div>
@@ -117,36 +135,48 @@ const OrderCompletionPage = ({
             </div>
           </div>
 
-          <div className="p-8">
+          <div className="py-8 px-4">
             {/* Order Information Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
               {/* Order Details */}
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-lg border border-green-200">
                 <div className="flex items-center mb-4">
                   <MdReceipt className="text-green-600 text-2xl mr-3" />
-                  <h3 className="text-xl font-bold text-green-800">অর্ডার বিবরণ</h3>
+                  <h3 className="text-xl font-bold text-green-800">
+                    অর্ডার বিবরণ
+                  </h3>
                 </div>
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-gray-600">অর্ডার নং:</span>
-                    <span className="font-semibold text-green-700">#{order?.orderNo}</span>
+                    <span className="font-semibold text-green-700">
+                      #{order?.orderNo}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">তারিখ:</span>
-                    <span className="font-semibold">{new Date(order?.createdAt).toLocaleDateString('bn-BD')}</span>
+                    <span className="font-semibold">
+                      {new Date(order?.createdAt).toLocaleDateString("bn-BD")}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">মোট পরিমাণ:</span>
-                    <span className="font-bold text-green-700 text-lg">৳{order?.totalPrice?.toLocaleString()}</span>
+                    <span className="font-bold text-green-700 text-lg">
+                      ৳{order?.totalPrice?.toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">পেমেন্ট স্ট্যাটাস:</span>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      order?.paymentStatus === 'paid' 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {order?.paymentStatus === 'paid' ? 'পরিশোধিত' : 'অপরিশোধিত'}
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        order?.paymentStatus === "paid"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-yellow-100 text-yellow-800"
+                      }`}
+                    >
+                      {order?.paymentStatus === "paid"
+                        ? "পরিশোধিত"
+                        : "অপরিশোধিত"}
                     </span>
                   </div>
                 </div>
@@ -156,11 +186,13 @@ const OrderCompletionPage = ({
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-200">
                 <div className="flex items-center mb-4">
                   <FaMapMarkerAlt className="text-blue-600 text-2xl mr-3" />
-                  <h3 className="text-xl font-bold text-blue-800">গ্রাহক তথ্য</h3>
+                  <h3 className="text-xl font-bold text-blue-800">
+                    গ্রাহক তথ্য
+                  </h3>
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-center">
-                    <span className="text-gray-600 w-20">নাম:</span>
+                    <span className="text-gray-600 ">নাম:</span>
                     <span className="font-semibold ml-2">{order?.name}</span>
                   </div>
                   <div className="flex items-center">
@@ -186,34 +218,73 @@ const OrderCompletionPage = ({
 
             {/* Order Items */}
             <div className="mb-8">
-              <div className="flex items-center mb-6">
-                <FaShoppingBag className="text-orange-600 text-2xl mr-3" />
-                <h3 className="text-xl font-bold text-orange-800">অর্ডার করা পণ্যসমূহ</h3>
+              <div className="flex items-center mb-4 md:mb-6">
+                <FaShoppingBag className="text-orange-600 text-xl md:text-2xl mr-2 md:mr-3 flex-shrink-0" />
+                <h3 className="text-lg md:text-xl font-bold text-orange-800">
+                  অর্ডার করা পণ্যসমূহ
+                </h3>
               </div>
-              
               <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-lg border border-orange-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white p-4">
-                  <div className="grid grid-cols-12 gap-4 font-bold">
-                    <div className="col-span-6">পণ্যের নাম</div>
+                {/* Table Header - Hidden on mobile, visible on md and up */}
+                <div className="hidden md:block bg-gradient-to-r from-orange-500 to-yellow-500 text-white p-3 md:p-4">
+                  <div className="grid grid-cols-12 gap-2 md:gap-4 font-bold">
+                    <div className="col-span-5 md:col-span-6">পণ্যের নাম</div>
                     <div className="col-span-2 text-center">পরিমাণ</div>
                     <div className="col-span-2 text-center">দাম (প্রতি)</div>
-                    <div className="col-span-2 text-right">মোট</div>
+                    <div className="col-span-3 md:col-span-2 text-right">
+                      মোট
+                    </div>
                   </div>
                 </div>
-                
-                <div className="p-4">
+
+                {/* Mobile and Desktop Items */}
+                <div className="p-3 md:p-4">
                   {order?.orderItems?.map((item: any, index: number) => (
                     <div
                       key={index}
-                      className="grid grid-cols-12 gap-4 py-3 border-b border-orange-100 last:border-b-0 items-center"
+                      className="mb-4 md:mb-0 md:py-3 border-b border-orange-100 last:border-b-0"
                     >
-                      <div className="col-span-6">
-                        <h4 className="font-semibold text-gray-800">{item.name}</h4>
+                      {/* Mobile View (Card Style) */}
+                      <div className="md:hidden space-y-2 pb-3">
+                        <h4 className="font-semibold text-gray-800 text-lg">
+                          {item.name}
+                        </h4>
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div className="text-gray-600">পরিমাণ:</div>
+                          <div className="font-medium text-right">
+                            {item.quantity}
+                          </div>
+
+                          <div className="text-gray-600">দাম (প্রতি):</div>
+                          <div className="font-medium text-right">
+                            ৳{item.price?.toLocaleString()}
+                          </div>
+
+                          <div className="text-gray-600 font-semibold">
+                            মোট:
+                          </div>
+                          <div className="font-bold text-orange-600 text-right">
+                            ৳{(item.quantity * item.price)?.toLocaleString()}
+                          </div>
+                        </div>
                       </div>
-                      <div className="col-span-2 text-center font-medium">{item.quantity}</div>
-                      <div className="col-span-2 text-center font-medium">৳{item.price?.toLocaleString()}</div>
-                      <div className="col-span-2 text-right font-bold text-orange-600">
-                        ৳{(item.quantity * item.price)?.toLocaleString()}
+
+                      {/* Desktop View (Table Style) */}
+                      <div className="hidden md:grid grid-cols-12 gap-4 items-center">
+                        <div className="col-span-6">
+                          <h4 className="font-semibold text-gray-800">
+                            {item.name}
+                          </h4>
+                        </div>
+                        <div className="col-span-2 text-center font-medium">
+                          {item.quantity}
+                        </div>
+                        <div className="col-span-2 text-center font-medium">
+                          ৳{item.price?.toLocaleString()}
+                        </div>
+                        <div className="col-span-2 text-right font-bold text-orange-600">
+                          ৳{(item.quantity * item.price)?.toLocaleString()}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -221,20 +292,29 @@ const OrderCompletionPage = ({
               </div>
 
               {/* Order Total */}
-              <div className="mt-6 bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-lg border border-green-200">
-                <div className="space-y-3">
-                  <div className="flex justify-between text-lg">
+              <div className="mt-4 md:mt-6 bg-gradient-to-r from-green-50 to-emerald-50 p-4 md:p-6 rounded-lg border border-green-200">
+                <div className="space-y-2 md:space-y-3">
+                  <div className="flex justify-between text-base md:text-lg">
                     <span className="text-gray-700">সাবটোটাল:</span>
-                    <span className="font-semibold">৳{order?.totalPrice?.toLocaleString()}</span>
+                    <span className="font-semibold">
+                      ৳{order?.totalPrice?.toLocaleString()}
+                    </span>
                   </div>
-                  <div className="flex justify-between text-lg">
+                  <div className="flex justify-between text-base md:text-lg">
                     <span className="text-gray-700">ডেলিভারি চার্জ:</span>
-                    <span className="font-semibold">৳{order?.shippingCost?.toLocaleString()}</span>
+                    <span className="font-semibold">
+                      ৳{order?.shippingCost?.toLocaleString()}
+                    </span>
                   </div>
-                  <div className="border-t border-green-300 pt-3">
-                    <div className="flex justify-between text-xl font-bold text-green-700">
+                  <div className="border-t border-green-300 pt-2 md:pt-3">
+                    <div className="flex justify-between text-lg md:text-xl font-bold text-green-700">
                       <span>সর্বমোট:</span>
-                      <span>৳{(order?.totalPrice + order?.shippingCost)?.toLocaleString()}</span>
+                      <span>
+                        ৳
+                        {(
+                          order?.totalPrice + order?.shippingCost
+                        )?.toLocaleString()}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -248,8 +328,13 @@ const OrderCompletionPage = ({
                 <p className="text-gray-600">বাংলাদেশের সেরা ফলের দোকান</p>
               </div>
               <div className="text-sm text-gray-500 border-t border-gray-300 pt-4">
-                <p className="mb-1">অর্ডার সংক্রান্ত যেকোনো সমস্যার জন্য আমাদের কাস্টমার সাপোর্টে যোগাযোগ করুন</p>
-                <p className="font-medium">ধন্যবাদ TaazaFol এর সাথে কেনাকাটা করার জন্য!</p>
+                <p className="mb-1">
+                  অর্ডার সংক্রান্ত যেকোনো সমস্যার জন্য আমাদের কাস্টমার সাপোর্টে
+                  যোগাযোগ করুন
+                </p>
+                <p className="font-medium">
+                  ধন্যবাদ TaazaFol এর সাথে কেনাকাটা করার জন্য!
+                </p>
               </div>
             </div>
           </div>

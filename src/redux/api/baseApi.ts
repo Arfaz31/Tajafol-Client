@@ -13,8 +13,10 @@ import { toast } from "sonner";
 import { logout, setUser } from "../slices/authSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://server.taazafol.arviontech.online/api/v1",
+  baseUrl: "http://localhost:5000/api/v1",
+  //"https://server.taazafol.arviontech.online/api/v1"
   credentials: "include",
+
   prepareHeaders: (headers, { getState }) => {
     const token = ((getState() as RootState).auth as any).token;
     if (token) {
@@ -41,7 +43,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 
   if (result?.error?.status === 401) {
     const res = await fetch(
-      "https://server.taazafol.arviontech.online/api/v1/auth/generate-access-token-via-refresh-token",
+      "http://localhost:5000/api/v1/auth/generate-access-token-via-refresh-token",
       {
         method: "POST",
         credentials: "include",

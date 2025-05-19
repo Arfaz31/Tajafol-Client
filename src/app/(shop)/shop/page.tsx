@@ -23,31 +23,30 @@ export default function ShopPage() {
   const pageFromQuery = searchParams.get("page")
     ? parseInt(searchParams.get("page")!, 10)
     : 1;
+  const minPriceFromQuery = searchParams.get("minPrice")
+    ? parseInt(searchParams.get("minPrice")!, 10)
+    : undefined;
+  const maxPriceFromQuery = searchParams.get("maxPrice")
+    ? parseInt(searchParams.get("maxPrice")!, 10)
+    : undefined;
 
-  // Parse price range if it exists in the URL
-  const priceRangeFromQuery: [number, number] = [0, 10000];
-  if (searchParams.get("price")) {
-    const priceRange = searchParams.get("price")?.split("-").map(Number);
-    if (priceRange && priceRange.length === 2) {
-      priceRangeFromQuery[0] = priceRange[0] || 0;
-      priceRangeFromQuery[1] = priceRange[1] || 10000;
-    }
-  }
-
+  // State management
   const [searchInput, setSearchInput] = useState(searchTermFromQuery);
   const [selectedCategory, setSelectedCategory] = useState(categoryFromQuery);
-  const [priceRange, setPriceRange] =
-    useState<[number, number]>(priceRangeFromQuery);
+  const [minPrice, setMinPrice] = useState<number | undefined>(
+    minPriceFromQuery
+  );
+  const [maxPrice, setMaxPrice] = useState<number | undefined>(
+    maxPriceFromQuery
+  );
   const [sortOption, setSortOption] = useState(sortOptionFromQuery);
   const [page, setPage] = useState(pageFromQuery);
   const [limit] = useState(10);
 
   // Update URL when filters change
   useEffect(() => {
-    // Create a URLSearchParams object
     const params = new URLSearchParams();
 
-    // Only add parameters that are not default values
     if (selectedCategory !== "all") {
       params.set("category", selectedCategory);
     }
@@ -56,8 +55,12 @@ export default function ShopPage() {
       params.set("searchTerm", searchInput);
     }
 
-    if (priceRange[0] > 0 || priceRange[1] < 10000) {
-      params.set("price", `${priceRange[0]}-${priceRange[1]}`);
+    if (minPrice !== undefined) {
+      params.set("minPrice", minPrice.toString());
+    }
+
+    if (maxPrice !== undefined) {
+      params.set("maxPrice", maxPrice.toString());
     }
 
     if (sortOption !== "newest") {
@@ -68,53 +71,62 @@ export default function ShopPage() {
       params.set("page", page.toString());
     }
 
-    // Update the URL without reloading the page
     const queryString = params.toString();
     const newUrl = queryString ? `/shop?${queryString}` : "/shop";
-
-    // Use router.replace to update the URL without adding to history stack
     router.replace(newUrl, { scroll: false });
-
-    // We're using router.replace() with scroll: false to prevent scrolling to top
-  }, [selectedCategory, searchInput, priceRange, sortOption, page, router]);
+  }, [
+    selectedCategory,
+    searchInput,
+    minPrice,
+    maxPrice,
+    sortOption,
+    page,
+    router,
+  ]);
 
   const debouncedSearchTerm = useDebounce<string>(searchInput, 500);
-  const debouncedPriceRange = useDebounce<[number, number]>(priceRange, 500);
+  const debouncedMinPrice = useDebounce<number | undefined>(minPrice, 500);
+  const debouncedMaxPrice = useDebounce<number | undefined>(maxPrice, 500);
 
   const { data: categoriesData } = useGetAllCategoriesQuery({ limit: 100 });
   const categories = categoriesData?.data?.result || [];
 
-  // Build query params - only include non-default filters
+  // Build query params
   const queryParams: Record<string, any> = {
     page,
     limit,
   };
 
-  // Handle sort option correctly - we need to set 'sort' not 'sortBy'
+  // Handle sort options
   if (sortOption === "newest") {
-    queryParams.sort = "-createdAt"; // Newest first (descending)
+    queryParams.sort = "-createdAt";
   } else if (sortOption === "oldest") {
-    queryParams.sort = "createdAt"; // Oldest first (ascending)
+    queryParams.sort = "createdAt";
   } else if (sortOption === "priceHighToLow") {
-    queryParams.sort = "-price"; // High to low
+    queryParams.sort = "-price";
   } else if (sortOption === "priceLowToHigh") {
-    queryParams.sort = "price"; // Low to high
+    queryParams.sort = "price";
   }
 
-  // Only add search term if it's not empty
+  // Add search term if not empty
   if (debouncedSearchTerm) {
     queryParams.searchTerm = debouncedSearchTerm;
   }
 
-  // Only add category if it's not "all"
+  // Add category if not "all"
   if (selectedCategory !== "all") {
     queryParams.category = selectedCategory;
   }
 
-  // Only add price range if it's not the default
-  if (debouncedPriceRange[0] > 0 || debouncedPriceRange[1] < 10000) {
-    queryParams.price = `${debouncedPriceRange[0]}-${debouncedPriceRange[1]}`;
+  // Add price range if specified
+  if (debouncedMinPrice !== undefined) {
+    queryParams.minPrice = debouncedMinPrice;
   }
+  if (debouncedMaxPrice !== undefined) {
+    queryParams.maxPrice = debouncedMaxPrice;
+  }
+
+  console.log("Query Params:", queryParams);
 
   const { data, isLoading, isFetching } = useGetAllProductsQuery(queryParams);
 
@@ -126,11 +138,10 @@ export default function ShopPage() {
   const clearFilters = () => {
     setSearchInput("");
     setSelectedCategory("all");
-    setPriceRange([0, 10000]);
+    setMinPrice(undefined);
+    setMaxPrice(undefined);
     setSortOption("newest");
     setPage(1);
-
-    // Clear URL parameters
     router.replace("/shop", { scroll: false });
   };
 
@@ -142,12 +153,12 @@ export default function ShopPage() {
           src={banner}
           alt="Banner"
           fill
-          priority // optional: helps load the banner faster
+          priority
         />
         <div className="absolute top-0 left-0 w-full h-full bg-black/15 opacity-25 z-10"></div>
       </div>
 
-      <Container className="flex flex-col md:flex-row gap-8 py-20 px-5 ">
+      <Container className="flex flex-col md:flex-row gap-8 py-20 px-5">
         <FiltersSidebar
           searchInput={searchInput}
           handleSearchChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,8 +170,16 @@ export default function ShopPage() {
             setSelectedCategory(category);
             setPage(1);
           }}
-          priceRange={priceRange}
-          setPriceRange={setPriceRange}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          setMinPrice={(price) => {
+            setMinPrice(price);
+            setPage(1);
+          }}
+          setMaxPrice={(price) => {
+            setMaxPrice(price);
+            setPage(1);
+          }}
           clearFilters={clearFilters}
           categories={categories}
         />
