@@ -247,18 +247,17 @@ const Navbar = () => {
         </Container>
       </header>
 
-
       {/* Mobile Top Header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b">
-        <div className="flex items-center justify-between px-4 py-3">
-          {/* Search Button/Icon */}
+        <div className="flex items-center justify-between px-4 py-4">
+          {/* Search Button/Icon - Made Much Larger */}
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setIsMobileMenuOpen(true)}
-            className="p-2"
+            className="p-4 h-12 w-12"
           >
-            <Search className="h-10 w-10" />
+            <Search className="h-20 w-20" />
           </Button>
 
           {/* Logo */}
@@ -266,17 +265,17 @@ const Navbar = () => {
             <Image src={tajafol} alt="Logo" width={90} height={55} />
           </Link>
 
-          {/* Profile/Auth */}
+          {/* Profile/Auth - Made Much Larger */}
           {user?.email ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className="rounded-full cursor-pointer">
+                <div className="rounded-full cursor-pointer p-2">
                   <Image
                     src={userData?.data?.profileImage || userImage}
                     alt="user profile picture"
-                    width={32}
-                    height={32}
-                    className="rounded-full object-cover object-center w-8 h-8"
+                    width={20}
+                    height={20}
+                    className="rounded-full object-cover object-center w-13 h-13"
                   />
                 </div>
               </DropdownMenuTrigger>
@@ -310,9 +309,9 @@ const Navbar = () => {
               variant="ghost"
               size="icon"
               onClick={() => router.push("/login")}
-              className="p-2"
+              className="p-4 h-10 w-10"
             >
-              <UserCircle className="h-10 w-10" />
+              <UserCircle className="h-8 w-8" />
             </Button>
           )}
         </div>
@@ -465,7 +464,7 @@ const Navbar = () => {
         @media (max-width: 1024px) {
           body {
             padding-bottom: 70px;
-            padding-top: 64px;
+            padding-top: 70px;
           }
         }
         @media (min-width: 1024px) {

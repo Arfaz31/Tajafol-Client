@@ -136,7 +136,7 @@ export default function ShopPage() {
 
   return (
     <div className="bg-white">
-      <div className="relative md:h-[300px] h-[300px] w-full">
+      <div className="relative md:h-[300px] h-[300px] pt-20 w-full">
         <Image
           className="object-cover"
           src={banner}
