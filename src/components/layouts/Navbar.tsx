@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ShoppingCart,
   Search,
-  
   X,
   User,
   LogIn,
@@ -49,7 +48,7 @@ const Navbar = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { data: userData } = useGetmeQuery("");
-  console.log(userData)
+  console.log(userData);
   const pathname = usePathname();
 
   // Handle scroll effect
@@ -194,9 +193,9 @@ const Navbar = () => {
             {user?.email ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <div className="rounded-full border-2 border-white cursor-pointer">
+                  <div className="rounded-full border-2 border-amber-300 cursor-pointer">
                     <Image
-                      src={userData?.data?.profileImg || userImage}
+                      src={userData?.data?.profileImage || userImage}
                       alt="user profile picture"
                       width={35}
                       height={35}
@@ -251,14 +250,13 @@ const Navbar = () => {
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b">
         <div className="flex items-center justify-between px-4 py-4">
           {/* Search Button/Icon - Made Much Larger */}
-          <Button
-            variant="ghost"
-            size="icon"
+          <button
+            type="button"
             onClick={() => setIsMobileMenuOpen(true)}
-            className="p-4 h-12 w-12"
+            className=" bg-amber-400 border border-orange-500 rounded-full p-2"
           >
-            <Search className="h-20 w-20" />
-          </Button>
+            <Search className="w-6 h-6 text-white flex items-center justify-center" />
+          </button>
 
           {/* Logo */}
           <Link href="/" className="flex items-center">
@@ -269,15 +267,18 @@ const Navbar = () => {
           {user?.email ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className="rounded-full cursor-pointer p-2">
+                <button
+                  type="button"
+                  className=" border-2 border-amber-300 rounded-full   flex items-center justify-center"
+                >
                   <Image
                     src={userData?.data?.profileImage || userImage}
                     alt="user profile picture"
-                    width={20}
-                    height={20}
-                    className="rounded-full object-cover object-center w-13 h-13"
+                    width={24}
+                    height={24}
+                    className="w-10 h-10 rounded-full object-cover object-center border "
                   />
-                </div>
+                </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 {authLinks.map((link) => (
@@ -335,7 +336,7 @@ const Navbar = () => {
               <span className="text-xs mt-1 truncate">{link.name}</span>
             </Link>
           ))}
-          
+
           {/* Cart in bottom bar */}
           <Link
             href="/cart"
