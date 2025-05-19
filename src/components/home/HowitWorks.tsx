@@ -21,7 +21,7 @@ const HowItWorks = () => {
         {/* Visual Process Flow */}
         <div className="relative max-w-5xl mx-auto">
           {/* Connecting Line */}
-          <div className="hidden md:block absolute top-8 left-0 right-0 h-0.5 bg-gradient-to-r from-green-200 via-blue-200 via-orange-200 to-green-200 mx-12 opacity-50"></div>
+          <div className="hidden md:block absolute top-8 left-0 right-0 h-0.5 bg-gradient-to-r from-green-200 via-orange-200 to-green-200 mx-12 opacity-50"></div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4">
             {[
