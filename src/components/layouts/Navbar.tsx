@@ -49,6 +49,7 @@ const Navbar = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { data: userData } = useGetmeQuery("");
+  console.log(userData)
   const pathname = usePathname();
 
   // Handle scroll effect
@@ -247,6 +248,7 @@ const Navbar = () => {
       </header>
 
       {/* Mobile Top Header */}
+      {/* Mobile Top Header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b">
         <div className="flex items-center justify-between px-4 py-3">
           {/* Search Button/Icon */}
@@ -270,7 +272,7 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <div className="rounded-full cursor-pointer">
                   <Image
-                    src={userData?.data?.profileImg || userImage}
+                    src={userData?.data?.profileImage || userImage}
                     alt="user profile picture"
                     width={32}
                     height={32}
