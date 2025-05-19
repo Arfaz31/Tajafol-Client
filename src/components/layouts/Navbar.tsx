@@ -7,11 +7,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   ShoppingCart,
   Search,
-  Menu,
+  
   X,
   User,
   LogIn,
   LayoutDashboard,
+  Home,
+  Info,
+  Store,
+  Phone,
+  UserCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -73,20 +78,18 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(logout());
     removeTokenFromCookies();
-    // router.push("/login");
     setIsMobileMenuOpen(false);
 
     if (protectedRoutes.some((route: string) => pathname.match(route))) {
-      router.push("/"); //protected route gulo te thaka obosthai logout korle homepage redirect korbe only.
+      router.push("/");
     }
   };
 
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About", href: "/about" },
-    { name: "Shop", href: "/shop" },
-    // { name: "Blog", href: "/blog" },
-    { name: "Contact", href: "/contact" },
+    { name: "Home", href: "/", icon: <Home className="h-5 w-5" /> },
+    { name: "About", href: "/about", icon: <Info className="h-5 w-5" /> },
+    { name: "Shop", href: "/shop", icon: <Store className="h-5 w-5" /> },
+    { name: "Contact", href: "/contact", icon: <Phone className="h-5 w-5" /> },
   ];
 
   const rolePath =
@@ -127,74 +130,151 @@ const Navbar = () => {
   };
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-white shadow-md py-3" : "bg-transparent py-2"
-      )}
-    >
-      <Container className=" mx-auto lg:px-4 px-2 flex items-center justify-between">
-        {/* Logo */}
-        <div className="lg:block hidden">
-          <Link href="/" className="flex items-center ">
-            <Image src={tajafol} alt="Logo" width={100} height={60} />
-          </Link>
-        </div>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-6">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="text-base transition-colors hover:text-primary text-foreground"
-            >
-              {link.name}
+    <>
+      {/* Desktop Header */}
+      <header
+        className={cn(
+          "hidden lg:block fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          isScrolled ? "bg-white shadow-md py-3" : "bg-transparent py-2"
+        )}
+      >
+        <Container className="mx-auto lg:px-4 px-2 flex items-center justify-between">
+          {/* Logo */}
+          <div>
+            <Link href="/" className="flex items-center">
+              <Image src={tajafol} alt="Logo" width={100} height={60} />
             </Link>
-          ))}
-        </nav>
+          </div>
 
-        {/* Desktop Right Actions */}
-        <div className="hidden lg:flex items-center gap-4">
-          {/* Search form */}
-          <form onSubmit={handleSearch} className="relative">
-            <Input
-              type="search"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-52 pl-9 rounded-full bg-background border-primary/20"
-            />
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-          </form>
+          {/* Desktop Navigation */}
+          <nav className="flex items-center space-x-6">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-base transition-colors hover:text-primary text-foreground"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </nav>
 
-          {/* Cart */}
-          <Link href="/cart" className="relative">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bg-[#f59f00] rounded-full p-2 text-white"
-            >
-              <ShoppingCart className="h-5 w-5" />
-              {cartItemCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                  {cartItemCount}
-                </span>
-              )}
-            </Button>
+          {/* Desktop Right Actions */}
+          <div className="flex items-center gap-4">
+            {/* Search form */}
+            <form onSubmit={handleSearch} className="relative">
+              <Input
+                type="search"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-52 pl-9 rounded-full bg-background border-primary/20"
+              />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+            </form>
+
+            {/* Cart */}
+            <Link href="/cart" className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="bg-[#f59f00] rounded-full p-2 text-white"
+              >
+                <ShoppingCart className="h-5 w-5" />
+                {cartItemCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartItemCount}
+                  </span>
+                )}
+              </Button>
+            </Link>
+
+            {/* Auth Links - Desktop */}
+            {user?.email ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <div className="rounded-full border-2 border-white cursor-pointer">
+                    <Image
+                      src={userData?.data?.profileImg || userImage}
+                      alt="user profile picture"
+                      width={35}
+                      height={35}
+                      className="rounded-full object-cover object-center w-9 h-9"
+                    />
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  {authLinks.map((link) => (
+                    <DropdownMenuItem
+                      key={link.name}
+                      asChild
+                      onClick={() => handleNavigation(`${link.href}`)}
+                    >
+                      <Link
+                        href={link.href}
+                        className="flex items-center w-full p-2 hover:bg-accent cursor-pointer"
+                      >
+                        {link.icon}
+                        <span className="ml-2">{link.name}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="flex items-center w-full p-2 hover:bg-accent cursor-pointer"
+                  >
+                    <LogIn className="h-4 w-4" />
+                    <span className="ml-2">Logout</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  className="hover:bg-[#169344]"
+                  onClick={() => router.push("/login")}
+                >
+                  Login
+                </Button>
+                <Button onClick={() => router.push("/register")}>
+                  Register
+                </Button>
+              </div>
+            )}
+          </div>
+        </Container>
+      </header>
+
+      {/* Mobile Top Header */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b">
+        <div className="flex items-center justify-between px-4 py-3">
+          {/* Search Button/Icon */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="p-2"
+          >
+            <Search className="h-5 w-5" />
+          </Button>
+
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <Image src={tajafol} alt="Logo" width={80} height={48} />
           </Link>
 
-          {/* Auth Links - Desktop */}
+          {/* Profile/Auth */}
           {user?.email ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div className="rounded-full border-2 border-white cursor-pointer">
+                <div className="rounded-full cursor-pointer">
                   <Image
                     src={userData?.data?.profileImg || userImage}
                     alt="user profile picture"
-                    width={35}
-                    height={35}
-                    className="rounded-full object-cover object-center w-9 h-9"
+                    width={32}
+                    height={32}
+                    className="rounded-full object-cover object-center w-8 h-8"
                   />
                 </div>
               </DropdownMenuTrigger>
@@ -224,123 +304,176 @@ const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className="flex items-center space-x-2">
-              <Button
-                variant="outline"
-                className="hover:bg-[#169344]"
-                onClick={() => router.push("/login")}
-              >
-                Login
-              </Button>
-              <Button
-                // className="bg-[#fdb900] hover:bg-[#ffb005]"
-                onClick={() => router.push("/register")}
-              >
-                Register
-              </Button>
-            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => router.push("/login")}
+              className="p-2"
+            >
+              <UserCircle className="h-5 w-5" />
+            </Button>
           )}
         </div>
+      </header>
 
-        {/* Mobile menu button */}
-        <Button
-          // variant="ghost"
-          size="icon"
-          className="lg:hidden"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </Button>
-
-        {/* Logo */}
-        <div className="lg:hidden block">
-          <Link href="/" className="flex items-center ">
-            <Image src={tajafol} alt="Logo" width={100} height={60} />
+      {/* Mobile Bottom App Bar */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t shadow-lg">
+        <div className="flex items-center justify-around px-2 py-2">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              className={cn(
+                "flex flex-col items-center justify-center px-3 py-2 rounded-lg transition-colors min-w-0 flex-1",
+                pathname === link.href
+                  ? "text-primary bg-primary/10"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {link.icon}
+              <span className="text-xs mt-1 truncate">{link.name}</span>
+            </Link>
+          ))}
+          
+          {/* Cart in bottom bar */}
+          <Link
+            href="/cart"
+            className={cn(
+              "flex flex-col items-center justify-center px-3 py-2 rounded-lg transition-colors min-w-0 flex-1 relative",
+              pathname === "/cart"
+                ? "text-primary bg-primary/10"
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <div className="relative">
+              <ShoppingCart className="h-5 w-5" />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
+                  {cartItemCount > 99 ? "99+" : cartItemCount}
+                </span>
+              )}
+            </div>
+            <span className="text-xs mt-1">Cart</span>
           </Link>
         </div>
+      </nav>
 
-        {/* Mobile cart */}
-        <Link href="/cart" className="relative lg:hidden mr-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="bg-[#f59f00] rounded-full p-2 text-white"
-          >
-            <ShoppingCart className="h-5 w-5" />
-            {cartItemCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                {cartItemCount}
-              </span>
-            )}
-          </Button>
-        </Link>
-      </Container>
-
-      {/* Mobile menu */}
+      {/* Mobile Search Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="lg:hidden fixed inset-0 z-50 bg-white"
           >
-            <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-              <form onSubmit={handleSearch} className="relative">
-                <Input
-                  type="search"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 rounded-full bg-background border-primary/20"
-                />
-                <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-              </form>
-
-              <div className="flex flex-col space-y-2">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    className="py-2 px-3 rounded-md transition-colors text-foreground hover:bg-muted"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
+            <div className="flex flex-col h-full">
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b">
+                <h2 className="text-lg font-semibold">Search</h2>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <X className="h-5 w-5" />
+                </Button>
               </div>
 
-              <div className="flex flex-col space-y-2 pt-4 border-t">
-                {authLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    className="flex items-center py-2 px-3 rounded-md transition-colors text-foreground hover:bg-muted"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {link.icon}
-                    <span className="ml-2">{link.name}</span>
-                  </Link>
-                ))}
+              {/* Search Form */}
+              <div className="p-4">
+                <form onSubmit={handleSearch} className="relative">
+                  <Input
+                    type="search"
+                    placeholder="Search products..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 text-base rounded-full bg-gray-50 border-0 focus:ring-2 focus:ring-primary"
+                    autoFocus
+                  />
+                  <Search className="absolute left-3 top-3.5 h-5 w-5 text-muted-foreground" />
+                </form>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="p-4 space-y-3">
+                <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                  Quick Actions
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {!user?.email ? (
+                    <>
+                      <Button
+                        variant="outline"
+                        className="justify-start h-12"
+                        onClick={() => {
+                          router.push("/login");
+                          setIsMobileMenuOpen(false);
+                        }}
+                      >
+                        <LogIn className="h-4 w-4 mr-2" />
+                        Login
+                      </Button>
+                      <Button
+                        className="justify-start h-12"
+                        onClick={() => {
+                          router.push("/register");
+                          setIsMobileMenuOpen(false);
+                        }}
+                      >
+                        <User className="h-4 w-4 mr-2" />
+                        Register
+                      </Button>
+                    </>
+                  ) : (
+                    authLinks.map((link) => (
+                      <Button
+                        key={link.name}
+                        variant="outline"
+                        className="justify-start h-12"
+                        onClick={() => {
+                          router.push(link.href);
+                          setIsMobileMenuOpen(false);
+                        }}
+                      >
+                        {link.icon}
+                        <span className="ml-2">{link.name}</span>
+                      </Button>
+                    ))
+                  )}
+                </div>
                 {user?.email && (
-                  <button
+                  <Button
+                    variant="destructive"
+                    className="w-full justify-start h-12 mt-3"
                     onClick={handleLogout}
-                    className="flex items-center py-2 px-3 rounded-md transition-colors text-foreground hover:bg-muted w-full"
                   >
-                    <LogIn className="h-4 w-4" />
-                    <span className="ml-2">Logout</span>
-                  </button>
+                    <LogIn className="h-4 w-4 mr-2" />
+                    Logout
+                  </Button>
                 )}
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+
+      {/* Add bottom padding to body content on mobile */}
+      <style jsx global>{`
+        @media (max-width: 1024px) {
+          body {
+            padding-bottom: 70px;
+            padding-top: 64px;
+          }
+        }
+        @media (min-width: 1024px) {
+          body {
+            padding-bottom: 0;
+            padding-top: 0;
+          }
+        }
+      `}</style>
+    </>
   );
 };
 

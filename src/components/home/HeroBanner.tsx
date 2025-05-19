@@ -9,7 +9,7 @@ import { ArrowRight, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import banner1 from "@/assets/banner/mango-2.png";
 import banner2 from "@/assets/banner/mango-3.png";
-import banner3 from "@/assets/images/litchi.png";
+import banner3 from "@/assets/banner/litchi.png";
 import Container from "../Shared/Container";
 import HowItWorks from "./HowitWorks";
 
@@ -143,41 +143,53 @@ const HeroBanner = () => {
 
   return (
     <div 
-      className="relative overflow-hidden min-h-screen"
+      className="relative overflow-hidden"
       style={{
         background: `linear-gradient(135deg, ${currentSlideData.gradientFrom} 0%, ${currentSlideData.gradientTo} 100%)`,
+        minHeight: "calc(100vh - 60px)", // Account for header
       }}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      {/* Enhanced Navigation Arrows */}
-      <motion.button
-        variants={arrowVariants}
-        initial="initial"
-        whileHover="hover"
-        whileTap="tap"
-        onClick={() => paginate(-1)}
-        className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 lg:p-4 rounded-full bg-white/90 backdrop-blur-sm shadow-lg text-green-600 hover:text-green-700 transition-all duration-300"
-        aria-label="Previous slide"
-      >
-        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />
-      </motion.button>
+      {/* Enhanced Navigation Arrows - Both positioned on the right side */}
+      <div className="absolute right-2 sm:right-4 md:right-6 lg:right-8 xl:right-12 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3">
+        <motion.button
+          variants={arrowVariants}
+          initial="initial"
+          whileHover="hover"
+          whileTap="tap"
+          onClick={() => paginate(-1)}
+          className="p-3 sm:p-4 rounded-full bg-white/95 backdrop-blur-md shadow-xl border border-white/20 text-green-600 hover:text-green-700 transition-all duration-300 touch-manipulation"
+          style={{ minWidth: '48px', minHeight: '48px' }}
+          aria-label="Previous slide"
+        >
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+        </motion.button>
 
-      <motion.button
-        variants={arrowVariants}
-        initial="initial"
-        whileHover="hover"
-        whileTap="tap"
-        onClick={() => paginate(1)}
-        className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 lg:p-4 rounded-full bg-white/90 backdrop-blur-sm shadow-lg text-green-600 hover:text-green-700 transition-all duration-300"
-        aria-label="Next slide"
-      >
-        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />
-      </motion.button>
+        <motion.button
+          variants={arrowVariants}
+          initial="initial"
+          whileHover="hover"
+          whileTap="tap"
+          onClick={() => paginate(1)}
+          className="p-3 sm:p-4 rounded-full bg-white/95 backdrop-blur-md shadow-xl border border-white/20 text-green-600 hover:text-green-700 transition-all duration-300 touch-manipulation"
+          style={{ minWidth: '48px', minHeight: '48px' }}
+          aria-label="Next slide"
+        >
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+        </motion.button>
+      </div>
 
-      <Container className="mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 min-h-screen relative z-10">
-        {/* Main Hero Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20 items-center min-h-[calc(100vh-8rem)]">
+      <Container className="mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 relative z-10">
+        {/* Main Hero Content - Improved responsive layout */}
+        <div 
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 xl:gap-20 2xl:gap-24 items-center"
+          style={{
+            minHeight: "calc(100vh - 120px)",
+            paddingTop: "2rem",
+            paddingBottom: "2rem",
+          }}
+        >
           
           {/* Content Section */}
           <AnimatePresence mode="wait" custom={direction}>
@@ -195,37 +207,49 @@ const HeroBanner = () => {
               }}
               className="flex flex-col justify-center space-y-4 sm:space-y-6 lg:space-y-8 text-center lg:text-left"
             >
-              {/* Main Title */}
+              {/* Main Title - Responsive scaling for 1440x984 */}
               <motion.h1 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-green-700 leading-tight"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-green-700 leading-tight"
+                style={{ 
+                  lineHeight: '1.1',
+                  fontSize: 'clamp(1.875rem, 4vw, 4.5rem)', // Better scaling for 1440x984
+                }}
               >
                 {currentSlideData.title}
               </motion.h1>
 
-              {/* Subtitle */}
+              {/* Subtitle - Better sizing for medium screens */}
               <motion.h2 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-green-600 opacity-90"
+                className="text-xl sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-semibold text-green-600 opacity-90"
+                style={{
+                  fontSize: 'clamp(1.25rem, 2.5vw, 2.25rem)', // Responsive scaling
+                }}
               >
                 {currentSlideData.subtitle}
               </motion.h2>
 
-              {/* Description */}
+              {/* Description - Better text sizing and spacing */}
               <motion.p 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="text-gray-700 text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium"
+                className="text-gray-700 text-base sm:text-lg lg:text-xl leading-relaxed font-medium"
+                style={{
+                  maxWidth: '90%',
+                  margin: '0 auto',
+                  fontSize: 'clamp(1rem, 1.5vw, 1.25rem)', // Responsive text
+                }}
               >
                 {currentSlideData.description}
               </motion.p>
 
-              {/* Benefits */}
+              {/* Benefits - Improved spacing */}
               <motion.div 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -247,12 +271,19 @@ const HeroBanner = () => {
                     >
                       <Heart className="w-3 h-3 lg:w-4 lg:h-4 text-white" />
                     </motion.div>
-                    <span className="text-gray-700 font-medium text-sm sm:text-base lg:text-lg">{benefit}</span>
+                    <span 
+                      className="text-gray-700 font-medium"
+                      style={{
+                        fontSize: 'clamp(0.875rem, 1.25vw, 1.125rem)',
+                      }}
+                    >
+                      {benefit}
+                    </span>
                   </motion.div>
                 ))}
               </motion.div>
 
-              {/* CTA Button */}
+              {/* CTA Button - Better sizing for all screens */}
               <motion.div 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -267,15 +298,21 @@ const HeroBanner = () => {
                   <Link href={currentSlideData.link}>
                     <Button
                       size="lg"
-                      className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl px-6 sm:px-8 lg:px-12 py-4 sm:py-5 lg:py-6 text-lg sm:text-xl lg:text-2xl font-bold shadow-xl hover:shadow-2xl transition-all duration-300 group"
+                      className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 group touch-manipulation"
+                      style={{ 
+                        minHeight: '48px',
+                        padding: 'clamp(0.75rem, 2vw, 1.5rem) clamp(1.5rem, 4vw, 3rem)',
+                        fontSize: 'clamp(1rem, 1.5vw, 1.25rem)',
+                        fontWeight: '700',
+                      }}
                     >
                       {currentSlideData.cta}
                       <motion.div
-                        className="ml-3"
+                        className="ml-2"
                         whileHover={{ x: 5 }}
                         transition={{ type: "spring", stiffness: 400, damping: 10 }}
                       >
-                        <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7" />
+                        <ArrowRight className="h-5 w-5 lg:h-6 lg:w-6" />
                       </motion.div>
                     </Button>
                   </Link>
@@ -284,7 +321,7 @@ const HeroBanner = () => {
             </motion.div>
           </AnimatePresence>
 
-          {/* Enhanced Image Section */}
+          {/* Enhanced Image Section - Fixed responsive sizing */}
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={`image-${currentSlide}`}
@@ -298,18 +335,20 @@ const HeroBanner = () => {
                 opacity: { duration: 0.3 },
                 scale: { duration: 0.3 },
               }}
-              className="flex justify-center items-center"
+              className="flex justify-center items-center px-4 lg:px-0"
             >
               <motion.div
                 variants={imageFloatVariants}
                 animate="animate"
-                className="relative w-full max-w-xl lg:max-w-2xl xl:max-w-3xl"
+                className="relative w-full"
                 style={{
-                  height: "clamp(350px, 50vh + 100px, 700px)",
+                  maxWidth: 'min(90vw, 600px)',
+                  height: 'clamp(300px, 35vw, 500px)', // Better scaling for 1440x984
+                  aspectRatio: '1',
                 }}
               >
                 <motion.div
-                  whileHover={{ scale: 1.05, rotate: 1 }}
+                  whileHover={{ scale: 1.03, rotate: 0.5 }}
                   transition={{ type: "spring", stiffness: 300, damping: 10 }}
                   className="relative w-full h-full"
                 >
@@ -318,10 +357,10 @@ const HeroBanner = () => {
                     alt={currentSlideData.title}
                     fill
                     priority
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 60vw, 50vw"
+                    sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 45vw"
                     className="object-contain drop-shadow-2xl"
                     style={{
-                      filter: "drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1))",
+                      filter: "drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15))",
                     }}
                   />
                 </motion.div>
@@ -335,7 +374,7 @@ const HeroBanner = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1 }}
-          className="flex justify-center gap-2 sm:gap-3 lg:gap-4 mt-8 lg:mt-12"
+          className="flex justify-center gap-3 lg:gap-4 pb-8 lg:pb-12"
         >
           {slides.map((_, index) => (
             <motion.button
@@ -343,21 +382,21 @@ const HeroBanner = () => {
               onClick={() => goToSlide(index)}
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
-              className={`h-2 sm:h-3 lg:h-4 rounded-full transition-all duration-500 ${
+              className={`h-3 lg:h-4 rounded-full transition-all duration-500 ${
                 index === currentSlide
-                  ? "w-8 sm:w-10 lg:w-12 bg-green-600 shadow-lg"
-                  : "w-2 sm:w-3 lg:w-4 bg-green-200 hover:bg-green-300"
+                  ? "w-10 lg:w-12 bg-green-600 shadow-lg"
+                  : "w-3 lg:w-4 bg-green-200 hover:bg-green-300"
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
         </motion.div>
-
-        {/* How It Works Section */}
-        <div className="mt-16 lg:mt-24">
-          <HowItWorks />
-        </div>
       </Container>
+
+      {/* How It Works Section */}
+      <div className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pb-16 lg:pb-24">
+        <HowItWorks />
+      </div>
     </div>
   );
 };

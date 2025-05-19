@@ -86,18 +86,7 @@ const HowItWorks = () => {
                 {/* Mobile Arrow */}
                 {index < 3 && (
                   <div className="md:hidden flex justify-center mt-4">
-                    <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
-                      <motion.div
-                        animate={{ x: [0, 3, 0] }}
-                        transition={{
-                          duration: 1.5,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                        }}
-                      >
-                        ⬇️
-                      </motion.div>
-                    </div>
+                    
                   </div>
                 )}
               </motion.div>
