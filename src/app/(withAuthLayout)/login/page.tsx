@@ -1,3 +1,4 @@
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -9,7 +10,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Loader2, Eye, EyeOff } from "lucide-react";
+import { Loader2, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useAppDispatch } from "@/redux/hook";
 import { useLoginMutation } from "@/redux/api/authApi";
 import { verifyToken } from "@/Utils/verifyToken";
@@ -78,7 +79,15 @@ const LoginPage = () => {
             animate={{ opacity: 1, y: 0 }}
             className="md:w-[450px] w-full"
           >
-            <div className="bg-gradient-to-br from-green-800 to-green-500 p-6 text-center border-b border-green-300 rounded-t-xl">
+            <div className="bg-gradient-to-br from-green-800 to-green-500 p-6 text-center border-b border-green-300 rounded-t-xl relative">
+              <Link
+                href="/"
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-green-200 transition-colors p-2 rounded-lg hover:bg-white/10"
+                title="Back to Home"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Link>
+              
               <Link href="/">
                 <Image
                   src={tajafol}
