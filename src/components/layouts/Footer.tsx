@@ -6,7 +6,6 @@ import {
   MapPin,
   Phone,
   Crown,
- 
   MessageCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,14 +14,16 @@ import Image from "next/image";
 import Container from "../Shared/Container";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+  
   return (
     <footer className="bg-gradient-to-br from-green-800 via-green-900 to-green-950 text-white pt-16 pb-8">
       <Container className="px-4">
         {/* Main grid layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Company info */}
-          <div className="flex flex-col justify-between">
-            <div>
+          <div className="flex flex-col justify-between h-full">
+            <div className="flex-1">
               <Link href="/" className="block mb-4">
                 <Image src={tajafol} alt="টাজাফল লোগো" width={120} height={60} />
               </Link>
@@ -31,7 +32,7 @@ const Footer = () => {
                 সেরা আম, লিচু ও তাজা ফলের নিশ্চয়তা টাজাফলে।
               </p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-3 mt-auto">
               <Button
                 size="icon"
                 variant="ghost"
@@ -64,12 +65,12 @@ const Footer = () => {
           </div>
 
           {/* Quick links */}
-          <div>
+          <div className="flex flex-col h-full">
             <h3 className="text-xl font-bold mb-6 flex items-center">
               <Crown className="h-5 w-5 text-yellow-400 mr-2" />
               গুরুত্বপূর্ণ লিংক
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-3 flex-1">
               <li>
                 <Link
                   href="/about"
@@ -124,12 +125,12 @@ const Footer = () => {
           </div>
 
           {/* Contact info & Services */}
-          <div>
+          <div className="flex flex-col h-full">
             <h3 className="text-xl font-bold mb-6 flex items-center">
               <Phone className="h-5 w-5 text-yellow-400 mr-2" />
               যোগাযোগ ও সেবা
             </h3>
-            <ul className="space-y-4 mb-6">
+            <ul className="space-y-4 flex-1">
               <li className="flex items-start gap-3 p-3 bg-white/10 rounded-lg">
                 <MapPin className="h-5 w-5 text-yellow-400 shrink-0 mt-0.5" />
                 <div>
@@ -143,7 +144,7 @@ const Footer = () => {
                 <Phone className="h-5 w-5 text-yellow-400" />
                 <div>
                   <p className="text-sm font-semibold">হটলাইন</p>
-                  <span className="text-green-100 text-sm">+৮৮০ ১৭১২৩৪৫৬৭৮</span>
+                  <span className="text-green-100 text-sm">+৮৮০ ১৭১২৩৪৫৬১৮</span>
                 </div>
               </li>
               <li className="flex items-center gap-3 p-3 bg-white/10 rounded-lg">
@@ -154,21 +155,21 @@ const Footer = () => {
                 </div>
               </li>
             </ul>
-
-           
           </div>
 
           {/* Seasonal Promo Banner */}
-          <div>
-            <div className="bg-gradient-to-r from-yellow-600 to-orange-500 rounded-2xl p-6 text-center h-full flex flex-col justify-center">
-              <h3 className="text-2xl font-bold text-white mb-2">
-                🥭 আম সিজন ২০২৫ শুরু! 🥭
-              </h3>
-              <p className="text-yellow-100 mb-4">
-                খিরসাপাত, গোপালভোগ, লাংড়া - সকল জাতের তাজা আম এখনই অর্ডার করুন!
-              </p>
+          <div className="flex flex-col h-full">
+            <div className="bg-gradient-to-r from-yellow-600 to-orange-500 rounded-2xl p-6 text-center h-full flex flex-col justify-between">
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  🥭 আম সিজন {currentYear} শুরু! 🥭
+                </h3>
+                <p className="text-yellow-100 mb-4">
+                  খিরসাপাত, গোপালভোগ, লাংড়া - সকল জাতের তাজা আম এখনই অর্ডার করুন!
+                </p>
+              </div>
               <Link href="/shop" className="mt-auto">
-                <Button className="bg-white text-orange-600 hover:bg-gray-100 font-bold px-8 py-2 rounded-full">
+                <Button className="bg-white text-orange-600 hover:bg-gray-100 font-bold px-8 py-2 rounded-full w-full">
                   এখনই অর্ডার করুন
                 </Button>
               </Link>
@@ -180,7 +181,7 @@ const Footer = () => {
         <div className="pt-8 border-t border-white/20">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-green-200 text-sm">
-              © {new Date().getFullYear()} TaazaFol। সর্বস্বত্ব সংরক্ষিত।
+              © {currentYear} TaazaFol। সর্বস্বত্ব সংরক্ষিত।
             </p>
             <p className="text-green-200 text-sm">
               Developed with ❤️ by Arvion Tech

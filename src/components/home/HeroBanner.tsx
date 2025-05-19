@@ -9,7 +9,7 @@ import { ArrowRight, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import banner1 from "@/assets/banner/mango-2.png";
 import banner2 from "@/assets/banner/mango-3.png";
-import banner3 from "@/assets/banner/litchi-2.png";
+import banner3 from "@/assets/images/litchi.png";
 import Container from "../Shared/Container";
 import HowItWorks from "./HowitWorks";
 
@@ -36,8 +36,8 @@ const slides: Slide[] = [
     cta: "আম অর্ডার করুন",
     link: "/shop",
     image: banner2,
-    gradientFrom: "#FFF8DC", // Cornsilk - light creamy yellow
-    gradientTo: "#FFE135",   // Golden yellow matching mango color
+    gradientFrom: "#FFF8DC",
+    gradientTo: "#FFE135",
   },
   {
     id: 2,
@@ -48,8 +48,8 @@ const slides: Slide[] = [
     cta: "লিচু অর্ডার করুন",
     link: "/shop",
     image: banner3,
-    gradientFrom: "#FFF0F5", // Lavender blush - light pinkish
-    gradientTo: "#FFB6C1",   // Light pink matching litchi skin color
+    gradientFrom: "#FFF0F5",
+    gradientTo: "#FFB6C1",
   },
   {
     id: 3,
@@ -60,38 +60,67 @@ const slides: Slide[] = [
     cta: "কালেকশন দেখুন",
     link: "/shop",
     image: banner1,
-    gradientFrom: "#F0FFF0", // Honeydew - light green
-    gradientTo: "#98FB98",   // Pale green representing tropical freshness
+    gradientFrom: "#F0FFF0",
+    gradientTo: "#98FB98",
   },
 ];
 
-// Simplified animation variants
+// Enhanced animation variants with better transitions
 const slideVariants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 300 : -300,
+    x: direction > 0 ? 400 : -400,
     opacity: 0,
+    scale: 0.95,
   }),
   center: {
     x: 0,
     opacity: 1,
+    scale: 1,
   },
   exit: (direction: number) => ({
-    x: direction < 0 ? 300 : -300,
+    x: direction < 0 ? 400 : -400,
     opacity: 0,
+    scale: 0.95,
   }),
+};
+
+// Enhanced arrow button animations
+const arrowVariants = {
+  initial: { scale: 1, backgroundColor: "rgba(255, 255, 255, 0.9)" },
+  hover: { 
+    scale: 1.15, 
+    backgroundColor: "rgba(255, 255, 255, 1)",
+    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.2)",
+  },
+  tap: { scale: 0.9 },
+};
+
+// Image floating animation
+const imageFloatVariants = {
+  animate: {
+    y: [-10, 10, -10],
+    transition: {
+      duration: 4,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
 };
 
 const HeroBanner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
 
-  // Auto-rotate slides
+  // Auto-rotate slides (paused on hover)
   useEffect(() => {
+    if (isHovering) return;
+    
     const interval = setInterval(() => {
       paginate(1);
-    }, 8000);
+    }, 7000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isHovering]);
 
   const paginate = useCallback((newDirection: number) => {
     setDirection(newDirection);
@@ -118,33 +147,39 @@ const HeroBanner = () => {
       style={{
         background: `linear-gradient(135deg, ${currentSlideData.gradientFrom} 0%, ${currentSlideData.gradientTo} 100%)`,
       }}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
     >
-      {/* Navigation Arrows */}
+      {/* Enhanced Navigation Arrows */}
       <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
+        variants={arrowVariants}
+        initial="initial"
+        whileHover="hover"
+        whileTap="tap"
         onClick={() => paginate(-1)}
-        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg text-green-600 hover:bg-green-50 transition-colors"
+        className="absolute left-2 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 lg:p-4 rounded-full bg-white/90 backdrop-blur-sm shadow-lg text-green-600 hover:text-green-700 transition-all duration-300"
         aria-label="Previous slide"
       >
-        <ChevronLeft className="w-6 h-6" />
+        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />
       </motion.button>
 
       <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
+        variants={arrowVariants}
+        initial="initial"
+        whileHover="hover"
+        whileTap="tap"
         onClick={() => paginate(1)}
-        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-white/90 backdrop-blur-sm shadow-lg text-green-600 hover:bg-green-50 transition-colors"
+        className="absolute right-2 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 lg:p-4 rounded-full bg-white/90 backdrop-blur-sm shadow-lg text-green-600 hover:text-green-700 transition-all duration-300"
         aria-label="Next slide"
       >
-        <ChevronRight className="w-6 h-6" />
+        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" />
       </motion.button>
 
-      <Container className="mx-auto px-5 py-16 min-h-screen relative z-10">
+      <Container className="mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16 min-h-screen relative z-10">
         {/* Main Hero Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-20 items-center min-h-[calc(100vh-8rem)]">
           
-          {/* Content */}
+          {/* Content Section */}
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={currentSlide}
@@ -154,51 +189,102 @@ const HeroBanner = () => {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 },
+                x: { type: "spring", stiffness: 280, damping: 25 },
+                opacity: { duration: 0.3 },
+                scale: { duration: 0.3 },
               }}
-              className="flex flex-col justify-center space-y-6"
+              className="flex flex-col justify-center space-y-4 sm:space-y-6 lg:space-y-8 text-center lg:text-left"
             >
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-green-700 leading-tight">
+              {/* Main Title */}
+              <motion.h1 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-green-700 leading-tight"
+              >
                 {currentSlideData.title}
-              </h1>
+              </motion.h1>
 
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-green-600 opacity-90">
+              {/* Subtitle */}
+              <motion.h2 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-green-600 opacity-90"
+              >
                 {currentSlideData.subtitle}
-              </h2>
+              </motion.h2>
 
-              <p className="text-gray-700 text-lg leading-relaxed max-w-xl font-medium">
+              {/* Description */}
+              <motion.p 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-gray-700 text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto lg:mx-0 font-medium"
+              >
                 {currentSlideData.description}
-              </p>
+              </motion.p>
 
               {/* Benefits */}
-              <div className="space-y-3">
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="space-y-3 lg:space-y-4"
+              >
                 {currentSlideData.benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                      <Heart className="w-3 h-3 text-white" />
-                    </div>
-                    <span className="text-gray-700 font-medium">{benefit}</span>
-                  </div>
+                  <motion.div 
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 + index * 0.1 }}
+                    className="flex items-center gap-3 lg:gap-4 justify-center lg:justify-start"
+                  >
+                    <motion.div 
+                      whileHover={{ scale: 1.2, rotate: 360 }}
+                      transition={{ duration: 0.3 }}
+                      className="w-5 h-5 lg:w-6 lg:h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0"
+                    >
+                      <Heart className="w-3 h-3 lg:w-4 lg:h-4 text-white" />
+                    </motion.div>
+                    <span className="text-gray-700 font-medium text-sm sm:text-base lg:text-lg">{benefit}</span>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
 
               {/* CTA Button */}
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link href={currentSlideData.link}>
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl px-10 py-6 text-xl font-bold shadow-xl hover:shadow-2xl transition-all duration-300"
-                  >
-                    {currentSlideData.cta}
-                    <ArrowRight className="ml-3 h-6 w-6" />
-                  </Button>
-                </Link>
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                className="pt-4 lg:pt-6"
+              >
+                <motion.div 
+                  whileHover={{ scale: 1.05 }} 
+                  whileTap={{ scale: 0.95 }}
+                  className="inline-block"
+                >
+                  <Link href={currentSlideData.link}>
+                    <Button
+                      size="lg"
+                      className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-xl px-6 sm:px-8 lg:px-12 py-4 sm:py-5 lg:py-6 text-lg sm:text-xl lg:text-2xl font-bold shadow-xl hover:shadow-2xl transition-all duration-300 group"
+                    >
+                      {currentSlideData.cta}
+                      <motion.div
+                        className="ml-3"
+                        whileHover={{ x: 5 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                      >
+                        <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7" />
+                      </motion.div>
+                    </Button>
+                  </Link>
+                </motion.div>
               </motion.div>
             </motion.div>
           </AnimatePresence>
 
-          {/* Image */}
+          {/* Enhanced Image Section */}
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={`image-${currentSlide}`}
@@ -208,42 +294,69 @@ const HeroBanner = () => {
               animate="center"
               exit="exit"
               transition={{
-                x: { type: "spring", stiffness: 300, damping: 30 },
-                opacity: { duration: 0.2 },
+                x: { type: "spring", stiffness: 280, damping: 25 },
+                opacity: { duration: 0.3 },
+                scale: { duration: 0.3 },
               }}
               className="flex justify-center items-center"
             >
-              <div className="relative h-[500px] w-full max-w-lg">
-                <Image
-                  src={currentSlideData.image}
-                  alt={currentSlideData.title}
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-contain drop-shadow-xl"
-                />
-              </div>
+              <motion.div
+                variants={imageFloatVariants}
+                animate="animate"
+                className="relative w-full max-w-xl lg:max-w-2xl xl:max-w-3xl"
+                style={{
+                  height: "clamp(350px, 50vh + 100px, 700px)",
+                }}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.05, rotate: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                  className="relative w-full h-full"
+                >
+                  <Image
+                    src={currentSlideData.image}
+                    alt={currentSlideData.title}
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 60vw, 50vw"
+                    className="object-contain drop-shadow-2xl"
+                    style={{
+                      filter: "drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1))",
+                    }}
+                  />
+                </motion.div>
+              </motion.div>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* Slide Indicators */}
-        <div className="flex justify-center gap-3 ">
+        {/* Enhanced Slide Indicators */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+          className="flex justify-center gap-2 sm:gap-3 lg:gap-4 mt-8 lg:mt-12"
+        >
           {slides.map((_, index) => (
-            <button
+            <motion.button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`h-3 rounded-full transition-all duration-300 ${
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+              className={`h-2 sm:h-3 lg:h-4 rounded-full transition-all duration-500 ${
                 index === currentSlide
-                  ? "w-10 bg-green-600"
-                  : "w-3 bg-green-200 hover:bg-green-300"
+                  ? "w-8 sm:w-10 lg:w-12 bg-green-600 shadow-lg"
+                  : "w-2 sm:w-3 lg:w-4 bg-green-200 hover:bg-green-300"
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
-        </div>
+        </motion.div>
 
-        <HowItWorks />
+        {/* How It Works Section */}
+        <div className="mt-16 lg:mt-24">
+          <HowItWorks />
+        </div>
       </Container>
     </div>
   );

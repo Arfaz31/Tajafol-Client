@@ -9,22 +9,26 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <div className="relative h-[70vh] bg-gradient-to-r from-green-300 via-green-800 to-yellow-500">
+      <div className="relative h-[70vh] overflow-hidden">
         <Image
           src="/images/about-hero.jpg"
           alt="Chapai Nawabganj mango orchards"
           fill
-          className="object-cover opacity-40"
+          className="object-cover"
+          priority
         />
+        {/* Subtle dark overlay for text readability */}
+        <div className="absolute inset-0 bg-black/20"></div>
+        
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center text-white px-4">
+          <div className="text-center text-white px-4 relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               className="flex items-center justify-center mb-6"
             >
-              <Crown className="h-12 w-12 text-yellow-400 mr-4" />
-              <h1 className="text-4xl md:text-6xl font-bold">
+              <Crown className="h-12 w-12 text-yellow-400 mr-4 drop-shadow-lg" />
+              <h1 className="text-4xl md:text-6xl font-bold drop-shadow-lg">
                 TaazaFol সম্পর্কে
               </h1>
             </motion.div>
@@ -32,10 +36,10 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed"
+              className="text-xl md:text-2xl max-w-4xl mx-auto leading-relaxed drop-shadow-md"
             >
               বাংলাদেশের আম রাজধানী চাঁপাইনবাবগঞ্জ থেকে সরাসরি আপনার দোরগোড়ায়<br />
-              <span className="text-yellow-300">সতেজ, খাঁটি ও প্রাকৃতিক ফলের নিশ্চয়তা</span>
+              <span className="text-yellow-300 font-semibold">সতেজ, খাঁটি ও প্রাকৃতিক ফলের নিশ্চয়তা</span>
             </motion.p>
           </div>
         </div>
@@ -73,13 +77,9 @@ export default function AboutPage() {
               fill
               className="object-cover transition-transform hover:scale-105 duration-500"
             />
-          
           </div>
         </motion.div>
 
-       
-
-     
         {/* Call to Action */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
