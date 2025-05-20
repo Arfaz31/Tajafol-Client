@@ -15,8 +15,10 @@ type Props = {
   handleSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   selectedCategory: string;
   setSelectedCategory: (val: string) => void;
-  priceRange: [number, number];
-  setPriceRange: (val: [number, number]) => void;
+  minPrice: number | undefined;
+  maxPrice: number | undefined;
+  setMinPrice: (val: number | undefined) => void;
+  setMaxPrice: (val: number | undefined) => void;
   clearFilters: () => void;
   categories: { _id: string; categoryName: string }[];
 };
@@ -26,8 +28,10 @@ export default function FiltersSidebar({
   handleSearchChange,
   selectedCategory,
   setSelectedCategory,
-  priceRange,
-  setPriceRange,
+  minPrice,
+  maxPrice,
+  setMinPrice,
+  setMaxPrice,
   clearFilters,
   categories,
 }: Props) {
@@ -68,14 +72,17 @@ export default function FiltersSidebar({
         {/* Price Range */}
         <div className="mb-8">
           <label className="block text-base font-semibold mb-3">
-            Price Range: ৳{priceRange[0]} - ৳{priceRange[1]}
+            Price Range: ৳{minPrice ?? 0} - ৳{maxPrice ?? 10000}
           </label>
           <Slider
             min={0}
             max={10000}
             step={100}
-            value={priceRange}
-            onValueChange={(val: number[]) => setPriceRange([val[0], val[1]])}
+            value={[minPrice ?? 0, maxPrice ?? 10000]}
+            onValueChange={(val: number[]) => {
+              setMinPrice(val[0]);
+              setMaxPrice(val[1]);
+            }}
             className="w-full"
           />
         </div>

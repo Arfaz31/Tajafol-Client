@@ -48,7 +48,7 @@ const Navbar = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { data: userData } = useGetmeQuery("");
-  console.log(userData);
+
   const pathname = usePathname();
 
   // Handle scroll effect
@@ -152,9 +152,15 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-base transition-colors hover:text-primary text-foreground"
+                className={cn(
+                  "text-base transition-colors hover:text-primary text-foreground relative",
+                  pathname === link.href ? "text-amber-400 font-medium" : ""
+                )}
               >
                 {link.name}
+                {pathname === link.href && (
+                  <span className="absolute -bottom-2 left-0 right-0 h-0.5 bg-amber-400"></span>
+                )}
               </Link>
             ))}
           </nav>
