@@ -5,6 +5,8 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import { ReduxProvider } from "@/Provider/provider";
+import ClientWhatsAppButton from "@/components/whatsAppFloating";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +32,12 @@ export default function RootLayout({
           <ReduxProvider>
             {children}
             <Toaster richColors position="top-center" />
+            
+            {/* WhatsApp Floating Button - replace with your actual WhatsApp number */}
+            <ClientWhatsAppButton 
+              phoneNumber="+8801738753102" 
+              message="Hello! I'm interested in ordering fresh fruits from TazaFol." 
+            />
           </ReduxProvider>
         </ThemeProvider>
       </body>
