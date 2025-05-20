@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-
 import CartItem from "./Item";
+import { Button } from "@/components/ui/button";
 
 interface CartItemsListProps {
   products: any[];
@@ -18,9 +17,9 @@ export default function CartItemsList({
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
         <div className="p-6">
           <div className="space-y-6">
-            {products.map((product: any) => (
+            {products.map((product: any, index: number) => (
               <CartItem
-                key={product._id}
+                key={`cart-item-${product._id}-${product.cartQuantity || 1}-${index}`}
                 product={product}
                 stockInfo={allProducts.find((p) => p._id === product._id)}
               />

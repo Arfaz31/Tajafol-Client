@@ -23,7 +23,7 @@ import ChangePasswordModal from "../_Component/ChangePassModal";
 
 const ProfilePage = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { data, isLoading, error } = useGetmeQuery({});
+  const { data, isLoading, error } = useGetmeQuery();
   const [updateProfile, { isLoading: isUpdating }] = useUpdateProfileMutation();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -148,6 +148,7 @@ const ProfilePage = () => {
                   src={
                     profileImagePreview || profile?.profileImage || userImage
                   }
+
                   alt={profile?.fullName}
                   fill
                   className="w-full h-full rounded-full border-4 border-yellow-500 object-cover"

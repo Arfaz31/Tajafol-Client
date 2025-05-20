@@ -2,6 +2,8 @@
 import { ReactNode, useState } from "react";
 import DashboardSidebar from "../../_component/module/dashboardSidebar";
 import DashboardTopnav from "../../_component/module/dashboardTopnav";
+import MobileAppBar from "../../_component/module/mobileAppbar";
+
 
 type TProps = {
   children: ReactNode;
@@ -36,8 +38,8 @@ const AdminDashboardLayout = ({ children }: TProps) => {
       <div className={`fixed inset-0 bg-black bg-opacity-50 z-50 lg:hidden ${
         isMobileSidebarOpen ? 'block' : 'hidden'
       }`} onClick={handleMobileSidebarClose}>
-        <div className={`fixed left-0 top-0 h-screen bg-[#097d5a] text-white shadow-xl transition-transform duration-300 z-50 ${
-          isMobileSidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full w-0'
+        <div className={`fixed left-0 top-0 h-screen w-64 bg-gradient-to-b from-orange-600 via-orange-700 to-orange-800 text-white shadow-xl transition-transform duration-300 z-50 ${
+          isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`} onClick={(e) => e.stopPropagation()}>
           <DashboardSidebar 
             isMobile={true} 
@@ -49,9 +51,12 @@ const AdminDashboardLayout = ({ children }: TProps) => {
       {/* Main content area */}
       <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
         <DashboardTopnav onMenuClick={handleMobileMenuClick} />
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto pb-16 lg:pb-0">
           {children}
         </main>
+
+        {/* Mobile App Bar */}
+        <MobileAppBar onMenuClick={handleMobileMenuClick} />
       </div>
     </div>
   );

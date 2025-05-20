@@ -1,4 +1,3 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
 import Link from "next/link";
@@ -40,13 +39,15 @@ export default function CartItem({ product, stockInfo }: CartItemProps) {
     >
       {/* Product Image - Responsive sizing */}
       <div className="relative h-20 w-20 sm:h-24 sm:w-24 flex-shrink-0 rounded-md overflow-hidden">
-        <Image
-          src={product.images[0]}
-          alt={product.productName}
-          fill
-          sizes="(max-width: 640px) 80px, 96px"
-          className="object-cover"
-        />
+        {product.images && product.images.length > 0 && (
+          <Image
+            src={product.images[0]}
+            alt={product.productName || 'Product image'}
+            fill
+            sizes="(max-width: 640px) 80px, 96px"
+            className="object-cover"
+          />
+        )}
       </div>
 
       {/* Product Details */}
