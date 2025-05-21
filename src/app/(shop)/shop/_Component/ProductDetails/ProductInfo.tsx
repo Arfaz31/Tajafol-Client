@@ -127,20 +127,20 @@ export default function ProductInfo({
 
         {/* Action Buttons */}
         {product.quantity > 0 ? (
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row gap-6">
             <Button
               size="lg"
               onClick={handleAddToCart}
-              className="bg-primary hover:bg-primary/90 text-white flex-1 transition-all"
+              className="bg-primary hover:bg-primary/90 text-white  transition-all"
             >
               <ShoppingCart className="h-5 w-5 mr-2" />
               Add to Cart
             </Button>
-            <Link href="/checkout" onClick={handleAddToCart} className="flex-1">
+            <Link href="/checkout" onClick={handleAddToCart} className="">
               <Button
                 size="lg"
                 variant="outline"
-                className="w-full border-primary text-primary hover:bg-primary hover:text-white transition-all"
+                className="w-full h-12 border-primary text-primary hover:bg-primary hover:text-white transition-all"
               >
                 Buy Now
               </Button>

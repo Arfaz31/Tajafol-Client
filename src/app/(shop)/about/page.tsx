@@ -11,7 +11,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background ">
       {/* Hero Section */}
-      <div className="relative h-[70vh] pt-20 overflow-hidden">
+      <div className="relative h-[70vh]  overflow-hidden ">
         <Image
           src={banner}
           alt="Chapai Nawabganj mango orchards"
@@ -29,8 +29,8 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               className="flex items-center justify-center mb-6"
             >
-              <Crown className="h-12 w-12 text-yellow-400 mr-4 drop-shadow-lg" />
-              <h1 className="text-4xl md:text-6xl font-bold drop-shadow-lg">
+              <Crown className="sm:h-12 sm:w-12 h-10 w-10 text-yellow-400 mr-4 drop-shadow-lg" />
+              <h1 className="sm:text-4xl text-2xl lg:text-6xl md:text-5xl font-bold drop-shadow-lg">
                 TaazaFol সম্পর্কে
               </h1>
             </motion.div>

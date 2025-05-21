@@ -381,7 +381,7 @@ const HeroBanner = () => {
       </Container>
 
       {/* How It Works Section */}
-      <div className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pb-16 lg:pb-24">
+      <div className="px-5  pb-16 lg:pb-24 xl:max-w-7xl w-full mx-auto ">
         <HowItWorks />
       </div>
     </div>

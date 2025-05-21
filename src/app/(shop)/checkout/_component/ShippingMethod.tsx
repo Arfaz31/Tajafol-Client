@@ -80,7 +80,7 @@ const ShippingMethod: React.FC<ShippingMethodProps> = ({
           type="button"
           onClick={onPlaceOrder}
           disabled={isLoading}
-          className={`px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md ${
+          className={`px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-md ${
             isLoading ? "opacity-70 cursor-not-allowed" : ""
           }`}
         >

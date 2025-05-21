@@ -47,7 +47,7 @@ const Navbar = () => {
   const { user } = useAppSelector((state: RootState) => state.auth);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { data: userData } = useGetmeQuery("");
+  const { data: userData } = useGetmeQuery();
 
   const pathname = usePathname();
 
@@ -130,11 +130,11 @@ const Navbar = () => {
   };
 
   return (
-    <>
+    <div>
       {/* Desktop Header */}
       <header
         className={cn(
-          "hidden lg:block fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          "hidden lg:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ",
           isScrolled ? "bg-white shadow-md py-3" : "bg-white py-2"
         )}
       >
@@ -261,7 +261,7 @@ const Navbar = () => {
             onClick={() => setIsMobileMenuOpen(true)}
             className=" bg-amber-400 border border-orange-500 rounded-full p-2"
           >
-            <Search className="w-6 h-6 text-white flex items-center justify-center" />
+            <Search className="w-5 h-5 text-white flex items-center justify-center" />
           </button>
 
           {/* Logo */}
@@ -282,7 +282,7 @@ const Navbar = () => {
                     alt="user profile picture"
                     width={24}
                     height={24}
-                    className="w-10 h-10 rounded-full object-cover object-center border "
+                    className="w-9 h-9 rounded-full object-cover object-center border "
                   />
                 </button>
               </DropdownMenuTrigger>
@@ -312,14 +312,13 @@ const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button
-              variant="ghost"
-              size="icon"
+            <button
+              type="button"
               onClick={() => router.push("/login")}
-              className="p-4 h-10 w-10"
+              className=""
             >
-              <UserCircle className="h-8 w-8" />
-            </Button>
+              <UserCircle className="h-9 w-9 " />
+            </button>
           )}
         </div>
       </header>
@@ -481,7 +480,7 @@ const Navbar = () => {
           }
         }
       `}</style>
-    </>
+    </div>
   );
 };
 

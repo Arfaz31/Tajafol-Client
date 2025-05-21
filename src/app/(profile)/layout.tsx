@@ -10,7 +10,7 @@ export default function ShopLayout({
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-grow pt-20">
+      <main className="flex-grow lg:pt-20 pt-5">
         {/* <Suspense
           fallback={<div className="container-custom py-10">Loading...</div>}
         >

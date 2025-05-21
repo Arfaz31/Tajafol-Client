@@ -24,7 +24,7 @@ const Pagination = ({
   const endItem = Math.min(currentPage * pageSize, totalItems);
 
   return (
-    <div className="flex items-center justify-between px-2 mt-4">
+    <div className="flex items-center justify-between px-2 mt-4 md:gap-0 gap-6">
       <div className="text-sm text-muted-foreground">
         {totalItems > 0 ? (
           <>

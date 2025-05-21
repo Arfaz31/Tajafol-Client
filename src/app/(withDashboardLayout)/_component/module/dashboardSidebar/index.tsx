@@ -10,7 +10,7 @@ import tazafol from "@/assets/logo/tajafol-logo1.png";
 import { LineChart, SquarePen, Menu, X, Home } from "lucide-react";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { usePathname } from "next/navigation";
-import { FaShippingFast } from "react-icons/fa";
+import { FaShippingFast, FaUser } from "react-icons/fa";
 import { useGetmeQuery } from "@/redux/api/userApi";
 import { IoNewspaperSharp } from "react-icons/io5";
 
@@ -20,48 +20,52 @@ interface DashboardSidebarProps {
   onMobileClose?: () => void;
 }
 
-const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile = false, onMobileClose }) => {
+const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
+  onToggle,
+  isMobile = false,
+  onMobileClose,
+}) => {
   //@ts-ignore
   const { data: user } = useGetmeQuery("");
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const adminDashboardLinks = [
-    { 
-      name: "Insights", 
-      link: "/dashboard/admin", 
+    {
+      name: "Insights",
+      link: "/dashboard/admin",
       icon: <LineChart className="w-5 h-5" />,
-      color: "text-orange-300"
+      color: "text-orange-300",
     },
     {
       name: "Orders",
       link: "/dashboard/admin/orders",
       icon: <FaShippingFast className="w-5 h-5" />,
-      color: "text-blue-300"
+      color: "text-blue-300",
     },
     {
       name: "Customers",
       link: "/dashboard/admin/manage-customers",
-      icon: <FaShippingFast className="w-5 h-5" />,
-      color: "text-blue-300"
+      icon: <FaUser className="w-5 h-5" />,
+      color: "text-blue-300",
     },
     {
       name: "Products",
       link: "/dashboard/admin/manage-products",
       icon: <SquarePen className="w-5 h-5" />,
-      color: "text-green-300"
+      color: "text-green-300",
     },
     {
       name: "Categories",
       link: "/dashboard/admin/manage-categories",
       icon: <SquarePen className="w-5 h-5" />,
-      color: "text-purple-300"
+      color: "text-purple-300",
     },
     {
       name: "Create Admin",
       link: "/dashboard/admin/create-admin",
       icon: <MdAdminPanelSettings className="w-5 h-5" />,
-      color: "text-red-300"
+      color: "text-red-300",
     },
   ];
 
@@ -102,10 +106,10 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
         {/* Mobile App Bar Header */}
         <div className="p-4 border-b border-orange-500/30 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Image 
-              src={tazafol} 
-              alt="Taaza Fol Logo" 
-              width={80} 
+            <Image
+              src={tazafol}
+              alt="Taaza Fol Logo"
+              width={80}
               height={24}
               className="rounded-lg"
             />
@@ -122,11 +126,12 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
         {/* App Bar Links */}
         <div className="p-4">
           <p className="text-white text-sm font-medium mb-4">
-            {user?.data?.user?.role === "SUPER_ADMIN" || user?.data?.user?.role === "ADMIN"
+            {user?.data?.user?.role === "SUPER_ADMIN" ||
+            user?.data?.user?.role === "ADMIN"
               ? "Admin Panel"
               : "User Panel"}
           </p>
-          
+
           <div className="space-y-2">
             {links.map((link) => (
               <Link
@@ -139,9 +144,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
                 }`}
                 onClick={onMobileClose}
               >
-                <span className={`${link.color}`}>
-                  {link.icon}
-                </span>
+                <span className={`${link.color}`}>{link.icon}</span>
                 <span className="text-white font-medium text-sm">
                   {link.name}
                 </span>
@@ -152,7 +155,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
             ))}
           </div>
         </div>
-        
+
         {/* Mobile App Bar Footer */}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-orange-500/30">
           <Link href="/">
@@ -183,10 +186,10 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
         <div className="flex items-center justify-between">
           {!isCollapsed && (
             <div className="flex items-center space-x-3">
-              <Image 
-                src={tazafol} 
-                alt="Taaza Fol Logo" 
-                width={100} 
+              <Image
+                src={tazafol}
+                alt="Taaza Fol Logo"
+                width={100}
                 height={30}
                 className="rounded-lg ml-12"
               />
@@ -197,15 +200,22 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
             className="text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-200 hover:scale-110 ml-auto"
             aria-label="Toggle Sidebar"
           >
-            {isCollapsed ? <Menu className="w-5 h-5" /> : <X className="w-5 h-5" />}
+            {isCollapsed ? (
+              <Menu className="w-5 h-5" />
+            ) : (
+              <X className="w-5 h-5" />
+            )}
           </button>
         </div>
-        
+
         {!isCollapsed && (
           <div className="mt-4 p-3 bg-white/10 rounded-lg backdrop-blur-sm">
-            <p className="text-white text-sm font-medium">Welcome to Dashboard</p>
+            <p className="text-white text-sm font-medium">
+              Welcome to Dashboard
+            </p>
             <p className="text-orange-200 text-xs mt-1">
-              {user?.data?.user?.role === "SUPER_ADMIN" || user?.data?.user?.role === "ADMIN"
+              {user?.data?.user?.role === "SUPER_ADMIN" ||
+              user?.data?.user?.role === "ADMIN"
                 ? "Admin Panel"
                 : "User Panel"}
             </p>
@@ -230,17 +240,19 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
                 {isActive(link.link) && (
                   <div className="absolute left-0 top-0 bottom-0 w-1 bg-white rounded-r-full"></div>
                 )}
-                
-                <span className={`${link.color} transition-all duration-200 group-hover:scale-110 flex-shrink-0`}>
+
+                <span
+                  className={`${link.color} transition-all duration-200 group-hover:scale-110 flex-shrink-0`}
+                >
                   {link.icon}
                 </span>
-                
+
                 {!isCollapsed && (
                   <span className="text-white font-medium text-sm group-hover:text-orange-100 transition-colors duration-200 truncate">
                     {link.name}
                   </span>
                 )}
-                
+
                 {isActive(link.link) && !isCollapsed && (
                   <div className="ml-auto w-2 h-2 bg-white rounded-full animate-pulse"></div>
                 )}
@@ -261,9 +273,11 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
       {/* Footer Section */}
       <div className="p-4 border-t border-orange-500/30 relative z-10">
         <Link href="/">
-          <button className={`w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 ${
-            !isCollapsed ? 'py-3 px-6' : 'p-3'
-          }`}>
+          <button
+            className={`w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 ${
+              !isCollapsed ? "py-3 px-6" : "p-3"
+            }`}
+          >
             {!isCollapsed ? (
               <span className="flex items-center justify-center gap-2">
                 <Home className="w-4 h-4" />

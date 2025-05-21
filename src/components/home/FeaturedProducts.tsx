@@ -79,7 +79,7 @@ const FeaturedProducts = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-center mt-10"
+            className="text-center mt-24"
           >
             <Link href="/shop">
               <Button

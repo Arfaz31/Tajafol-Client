@@ -34,8 +34,8 @@ export default function CartPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Container className="py-8 px-5">
+    <div className=" bg-background ">
+      <Container className="pb-8  px-5">
         <CartHeader itemCount={selectedItems} onClearCart={handleClearCart} />
 
         {products && products.length > 0 ? (
