@@ -1,4 +1,3 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
@@ -148,8 +147,7 @@ const ProfilePage = () => {
                   src={
                     profileImagePreview || profile?.profileImage || userImage
                   }
-
-                  alt={profile?.fullName}
+                  alt={profile?.fullName ?? ""}
                   fill
                   className="w-full h-full rounded-full border-4 border-yellow-500 object-cover"
                 />

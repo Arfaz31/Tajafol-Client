@@ -43,8 +43,14 @@ const registerSchema = z
     password: z
       .string()
       .min(8, "Password must be at least 8 characters")
-      .regex(/(?=.*[a-z])/, "Password must contain at least one lowercase letter")
-      .regex(/(?=.*[A-Z])/, "Password must contain at least one uppercase letter")
+      .regex(
+        /(?=.*[a-z])/,
+        "Password must contain at least one lowercase letter"
+      )
+      .regex(
+        /(?=.*[A-Z])/,
+        "Password must contain at least one uppercase letter"
+      )
       .regex(/(?=.*\d)/, "Password must contain at least one number"),
     confirmPassword: z.string().min(1, "Please confirm your password"),
     address: z.string().optional(),
@@ -113,7 +119,7 @@ const RegisterPage = () => {
 
       if (res?.data?.accessToken) {
         toast.success("Registration successful! Welcome to Tajafol!");
-        
+
         // Auto-login after registration
         const result = await loginUser({
           contact: data.contact,
@@ -148,7 +154,7 @@ const RegisterPage = () => {
   return (
     <div className="min-h-screen ">
       <Container className="relative z-10">
-        <div className="min-h-screen flex items-center justify-center py-4 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen flex items-center justify-center py-4 px-0 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -164,7 +170,7 @@ const RegisterPage = () => {
               >
                 <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
               </Link>
-              
+
               <Link href="/" className="block">
                 <Image
                   src={tajafol}
@@ -173,7 +179,9 @@ const RegisterPage = () => {
                   height={60}
                   className="mx-auto sm:w-[120px] sm:h-[72px]"
                 />
-                <h1 className="text-lg sm:text-xl font-semibold text-white mt-2">Create Account</h1>
+                <h1 className="text-lg sm:text-xl font-semibold text-white mt-2">
+                  Create Account
+                </h1>
                 <p className="text-xs sm:text-sm text-white/80 mt-1">
                   Join us for fresh finds, delivered daily
                 </p>
@@ -188,7 +196,6 @@ const RegisterPage = () => {
               >
                 {/* Form Fields Grid - Responsive */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                  
                   {/* Full Name */}
                   <div className="col-span-1">
                     <label className="block text-gray-700 mb-2 text-sm font-medium">
@@ -199,11 +206,12 @@ const RegisterPage = () => {
                         {...register("fullName")}
                         type="text"
                         className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500 transition-all text-sm sm:text-base
-                          ${errors.fullName 
-                            ? 'border-red-300 bg-red-50' 
-                            : touchedFields.fullName && !errors.fullName 
-                            ? 'border-green-300 bg-green-50' 
-                            : 'border-green-200'
+                          ${
+                            errors.fullName
+                              ? "border-red-300 bg-red-50"
+                              : touchedFields.fullName && !errors.fullName
+                              ? "border-green-300 bg-green-50"
+                              : "border-green-200"
                           }`}
                         placeholder="Enter your full name"
                       />
@@ -229,11 +237,12 @@ const RegisterPage = () => {
                         {...register("email")}
                         type="email"
                         className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500 transition-all text-sm sm:text-base
-                          ${errors.email 
-                            ? 'border-red-300 bg-red-50' 
-                            : touchedFields.email && !errors.email 
-                            ? 'border-green-300 bg-green-50' 
-                            : 'border-green-200'
+                          ${
+                            errors.email
+                              ? "border-red-300 bg-red-50"
+                              : touchedFields.email && !errors.email
+                              ? "border-green-300 bg-green-50"
+                              : "border-green-200"
                           }`}
                         placeholder="your@email.com"
                       />
@@ -259,11 +268,12 @@ const RegisterPage = () => {
                         {...register("contact")}
                         type="tel"
                         className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500 transition-all text-sm sm:text-base
-                          ${errors.contact 
-                            ? 'border-red-300 bg-red-50' 
-                            : touchedFields.contact && !errors.contact 
-                            ? 'border-green-300 bg-green-50' 
-                            : 'border-green-200'
+                          ${
+                            errors.contact
+                              ? "border-red-300 bg-red-50"
+                              : touchedFields.contact && !errors.contact
+                              ? "border-green-300 bg-green-50"
+                              : "border-green-200"
                           }`}
                         placeholder="01XXXXXXXXX"
                       />
@@ -283,24 +293,29 @@ const RegisterPage = () => {
                   <div className="col-span-1">
                     <label className="block text-gray-700 mb-2 text-sm font-medium">
                       Emergency Contact
-                      <span className="text-gray-400 text-xs ml-1">(Optional)</span>
+                      <span className="text-gray-400 text-xs ml-1">
+                        (Optional)
+                      </span>
                     </label>
                     <div className="relative">
                       <input
                         {...register("emergencyContact")}
                         type="tel"
                         className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500 transition-all text-sm sm:text-base
-                          ${errors.emergencyContact 
-                            ? 'border-red-300 bg-red-50' 
-                            : touchedFields.emergencyContact && !errors.emergencyContact 
-                            ? 'border-green-300 bg-green-50' 
-                            : 'border-green-200'
+                          ${
+                            errors.emergencyContact
+                              ? "border-red-300 bg-red-50"
+                              : touchedFields.emergencyContact &&
+                                !errors.emergencyContact
+                              ? "border-green-300 bg-green-50"
+                              : "border-green-200"
                           }`}
                         placeholder="01XXXXXXXXX"
                       />
-                      {touchedFields.emergencyContact && !errors.emergencyContact && (
-                        <Check className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
-                      )}
+                      {touchedFields.emergencyContact &&
+                        !errors.emergencyContact && (
+                          <Check className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
+                        )}
                     </div>
                     {errors.emergencyContact && (
                       <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600 flex items-center">
@@ -320,9 +335,10 @@ const RegisterPage = () => {
                         {...register("password")}
                         type={isVisible ? "text" : "password"}
                         className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-12 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500 transition-all text-sm sm:text-base
-                          ${errors.password 
-                            ? 'border-red-300 bg-red-50' 
-                            : 'border-green-200'
+                          ${
+                            errors.password
+                              ? "border-red-300 bg-red-50"
+                              : "border-green-200"
                           }`}
                         placeholder="Create a strong password"
                       />
@@ -338,25 +354,41 @@ const RegisterPage = () => {
                         )}
                       </button>
                     </div>
-                    
+
                     {/* Password strength indicator */}
                     {watchPassword && (
                       <div className="mt-2">
                         <div className="flex justify-between text-xs mb-1">
-                          <span className="text-gray-600">Password strength:</span>
-                          <span className={`font-medium ${passwordStrength >= 4 ? 'text-green-600' : passwordStrength >= 3 ? 'text-blue-600' : passwordStrength >= 2 ? 'text-yellow-600' : 'text-red-600'}`}>
+                          <span className="text-gray-600">
+                            Password strength:
+                          </span>
+                          <span
+                            className={`font-medium ${
+                              passwordStrength >= 4
+                                ? "text-green-600"
+                                : passwordStrength >= 3
+                                ? "text-blue-600"
+                                : passwordStrength >= 2
+                                ? "text-yellow-600"
+                                : "text-red-600"
+                            }`}
+                          >
                             {getStrengthText(passwordStrength)}
                           </span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
                           <div
-                            className={`h-2 rounded-full transition-all duration-300 ${getStrengthColor(passwordStrength)}`}
-                            style={{ width: `${(passwordStrength / 5) * 100}%` }}
+                            className={`h-2 rounded-full transition-all duration-300 ${getStrengthColor(
+                              passwordStrength
+                            )}`}
+                            style={{
+                              width: `${(passwordStrength / 5) * 100}%`,
+                            }}
                           ></div>
                         </div>
                       </div>
                     )}
-                    
+
                     {errors.password && (
                       <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-red-600 flex items-center">
                         <span className="mr-1">⚠</span>
@@ -375,18 +407,22 @@ const RegisterPage = () => {
                         type={isConfirmVisible ? "text" : "password"}
                         {...register("confirmPassword")}
                         className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 pr-10 sm:pr-16 bg-gray-50 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-800 placeholder-gray-500 transition-all text-sm sm:text-base
-                          ${errors.confirmPassword 
-                            ? 'border-red-300 bg-red-50' 
-                            : touchedFields.confirmPassword && !errors.confirmPassword 
-                            ? 'border-green-300 bg-green-50' 
-                            : 'border-green-200'
+                          ${
+                            errors.confirmPassword
+                              ? "border-red-300 bg-red-50"
+                              : touchedFields.confirmPassword &&
+                                !errors.confirmPassword
+                              ? "border-green-300 bg-green-50"
+                              : "border-green-200"
                           }`}
                         placeholder="Confirm your password"
                       />
                       <div className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
-                        {touchedFields.confirmPassword && !errors.confirmPassword && watchPassword && (
-                          <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
-                        )}
+                        {touchedFields.confirmPassword &&
+                          !errors.confirmPassword &&
+                          watchPassword && (
+                            <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-500" />
+                          )}
                         <button
                           type="button"
                           onClick={() => setIsConfirmVisible(!isConfirmVisible)}
@@ -413,7 +449,9 @@ const RegisterPage = () => {
                 <div className="col-span-1">
                   <label className="block text-gray-700 mb-2 text-sm font-medium">
                     Address
-                    <span className="text-gray-400 text-xs ml-1">(Optional)</span>
+                    <span className="text-gray-400 text-xs ml-1">
+                      (Optional)
+                    </span>
                   </label>
                   <textarea
                     {...register("address")}
@@ -468,7 +506,9 @@ const RegisterPage = () => {
                     {isPending ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
-                        <span className="text-xs sm:text-sm">Creating your account...</span>
+                        <span className="text-xs sm:text-sm">
+                          Creating your account...
+                        </span>
                       </>
                     ) : (
                       <>

@@ -13,7 +13,7 @@ export default function CartHeader({
 }: CartHeaderProps) {
   return (
     <>
-      <nav className="flex items-center text-sm mb-8">
+      <nav className="flex items-center text-sm  mb-8 pt-20">
         <Link href="/" className="text-muted-foreground hover:text-foreground">
           Home
         </Link>
@@ -21,7 +21,7 @@ export default function CartHeader({
         <span className="text-foreground font-medium">Shopping Cart</span>
       </nav>
 
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex justify-between items-center  mb-8">
         <h1 className="md:text-3xl text-xl font-bold">Your Shopping Cart</h1>
         {itemCount > 0 && (
           <Button

@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { ListFilterPlus } from "lucide-react";
 
 type Props = {
   searchInput: string;
@@ -38,7 +39,12 @@ export default function FiltersSidebar({
   return (
     <div className="w-full md:w-64 space-y-6">
       <div>
-        <h3 className="text-lg font-bold mb-12">Filters</h3>
+        <h3 className="text-lg font-bold mb-12 flex items-center">
+          <span>
+            <ListFilterPlus className="mr-2 text-amber-400 " />
+          </span>
+          Filters
+        </h3>
 
         {/* Search */}
         <div className="mb-8">

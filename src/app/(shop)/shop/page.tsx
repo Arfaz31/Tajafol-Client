@@ -126,8 +126,6 @@ export default function ShopPage() {
     queryParams.maxPrice = debouncedMaxPrice;
   }
 
-  console.log("Query Params:", queryParams);
-
   const { data, isLoading, isFetching } = useGetAllProductsQuery(queryParams);
 
   const products = data?.data || [];

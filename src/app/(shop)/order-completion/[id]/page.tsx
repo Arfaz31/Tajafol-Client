@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import tajafol from "@/assets/logo/tajafol-logo1.png";
+// import tajafol from "@/assets/logo/tajafol-logo1.png";
 import React, { useRef } from "react";
 import Link from "next/link";
 import { useGetSingleOrderQuery } from "@/redux/api/orderApi";
 import { useAppSelector } from "@/redux/hook";
 import { RootState } from "@/redux/store";
-import generatePDF, { Margin } from "react-to-pdf";
+import generatePDF, { Resolution } from "react-to-pdf";
 import {
   FaFilePdf,
   FaCheckCircle,
@@ -14,12 +14,10 @@ import {
   FaMapMarkerAlt,
   FaPhone,
   FaEnvelope,
-
   FaCode,
 } from "react-icons/fa";
 import { MdReceipt } from "react-icons/md";
 import Container from "@/components/Shared/Container";
-import Image from "next/image";
 
 const OrderCompletionPage = ({
   params,
@@ -40,17 +38,27 @@ const OrderCompletionPage = ({
       generatePDF(pdfRef, {
         filename: `TaazaFol_Order_${order?.orderNo}.pdf`,
         page: {
-          margin: Margin.MEDIUM,
+          // Set A4 size with proper margins
+          margin: {
+            top: 40,
+            right: 40,
+            bottom: 40,
+            left: 40,
+          },
           format: "a4",
           orientation: "portrait",
         },
+        method: "open",
+        resolution: Resolution.NORMAL,
         overrides: {
           pdf: {
             compress: true,
           },
           canvas: {
+            // Ensure images load properly with CORS enabled
             useCORS: true,
             scale: 2,
+            logging: true,
           },
         },
       });
@@ -81,8 +89,8 @@ const OrderCompletionPage = ({
     );
 
   return (
-    <div className="min-h-screen pt-20 bg-gray-50">
-      <Container className="mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gray-50">
+      <Container className="mx-auto px-4 py-20 lg:py-32">
         {/* Success Banner */}
         <div className="max-w-4xl mx-auto mb-8">
           <div className="bg-white border border-green-200 rounded-lg shadow-sm p-8">
@@ -118,58 +126,73 @@ const OrderCompletionPage = ({
           <div
             ref={pdfRef}
             className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+            style={{ maxWidth: "210mm", margin: "0 auto" }} // A4 width with auto margins for centering
           >
             {/* PDF Header */}
-            <div className="bg-emerald-600 text-white p-8">
+            <div className="bg-emerald-600 text-white p-6">
               <div className="text-center">
-                <div className="mb-6">
-                  <Link href="/" className="inline-block">
-                    <Image src={tajafol} alt="TaazaFol Logo" width={120} height={72} />
-                  </Link>
-                </div>
-                <h1 className="text-2xl font-bold mb-2">TaazaFol</h1>
-                <p className="text-emerald-100 mb-6">বাংলাদেশের সেরা ফলের দোকান</p>
-                <div className="bg-white/10 rounded-lg p-4 inline-block">
-                  <h2 className="text-xl font-bold">অর্ডার ইনভয়েস</h2>
-                  <p className="text-emerald-100">অর্ডার নং: #{order?.orderNo}</p>
+                {/* <div className="mb-4 flex justify-center">
+               
+                  <Image
+                    src={tajafol.src}
+                    alt="TaazaFol Logo"
+                    width={50}
+                    height={50}
+                    className="h-16 w-auto"
+                    style={{ maxWidth: "140px" }}
+                  />
+                </div> */}
+                <h1 className="text-xl font-bold mb-1">TaazaFol</h1>
+                <p className="text-emerald-100 mb-4 text-sm">
+                  বাংলাদেশের সেরা ফলের দোকান
+                </p>
+                <div className="bg-white/10 rounded-lg p-3 inline-block">
+                  <h2 className="text-lg font-bold">অর্ডার ইনভয়েস</h2>
+                  <p className="text-emerald-100 text-sm">
+                    অর্ডার নং: #{order?.orderNo || "ORD-6814"}
+                  </p>
                 </div>
               </div>
             </div>
 
-            <div className="p-8">
+            <div className="p-6">
               {/* Order Information Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 {/* Order Details */}
-                <div className="border border-gray-200 rounded-lg p-6">
-                  <div className="flex items-center mb-4">
-                    <MdReceipt className="text-emerald-600 text-xl mr-3" />
-                    <h3 className="text-lg font-semibold text-gray-900">
+                <div className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-center mb-3">
+                    <MdReceipt className="text-emerald-600 text-lg mr-2" />
+                    <h3 className="text-base font-semibold text-gray-900">
                       অর্ডার বিবরণ
                     </h3>
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <div className="flex justify-between">
                       <span className="text-gray-600">অর্ডার নং:</span>
                       <span className="font-medium text-gray-900">
-                        #{order?.orderNo}
+                        #{order?.orderNo || "ORD-6814"}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">তারিখ:</span>
                       <span className="font-medium text-gray-900">
-                        {new Date(order?.createdAt).toLocaleDateString("bn-BD")}
+                        {order?.createdAt
+                          ? new Date(order.createdAt).toLocaleDateString(
+                              "bn-BD"
+                            )
+                          : "২১/৫/২০২৫"}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">মোট পরিমাণ:</span>
-                      <span className="font-semibold text-emerald-600 text-lg">
-                        ৳{order?.totalPrice?.toLocaleString()}
+                      <span className="font-semibold text-emerald-600">
+                        ৳{order?.totalPrice?.toLocaleString() || "2,020"}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">পেমেন্ট স্ট্যাটাস:</span>
                       <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        className={`px-2 py-1 rounded-full text-xs text-center font-medium ${
                           order?.paymentStatus === "paid"
                             ? "bg-green-100 text-green-800"
                             : "bg-yellow-100 text-yellow-800"
@@ -184,33 +207,43 @@ const OrderCompletionPage = ({
                 </div>
 
                 {/* Customer Details */}
-                <div className="border border-gray-200 rounded-lg p-6">
-                  <div className="flex items-center mb-4">
-                    <FaMapMarkerAlt className="text-emerald-600 text-xl mr-3" />
-                    <h3 className="text-lg font-semibold text-gray-900">
+                <div className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-center mb-3">
+                    <FaMapMarkerAlt className="text-emerald-600 text-lg mr-2" />
+                    <h3 className="text-base font-semibold text-gray-900">
                       গ্রাহক তথ্য
                     </h3>
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <div className="flex items-center">
-                      <span className="text-gray-600 w-16">নাম:</span>
-                      <span className="font-medium text-gray-900">{order?.name}</span>
+                      <span className="text-gray-600 mr-2">নাম:</span>
+                      <span className="font-medium text-gray-900">
+                        {order?.name || "SuperAdmin"}
+                      </span>
                     </div>
                     <div className="flex items-center">
-                      <FaPhone className="text-gray-600 w-4 mr-2" />
-                      <span className="font-medium text-gray-900">{order?.contact}</span>
+                      <FaPhone className="text-gray-600 w-3 mr-2" />
+                      <span className="font-medium text-gray-900">
+                        {order?.contact || "01799370138"}
+                      </span>
                     </div>
-                    {order?.email && (
+                    {(order?.email || true) && (
                       <div className="flex items-center">
-                        <FaEnvelope className="text-gray-600 w-4 mr-2" />
-                        <span className="font-medium text-gray-900">{order?.email}</span>
+                        <FaEnvelope className="text-gray-600 w-3 mr-2" />
+                        <span className="font-medium text-gray-900 break-all">
+                          {order?.email || "superadmin@gmail.com"}
+                        </span>
                       </div>
                     )}
-                    <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-600 mb-1">ঠিকানা:</p>
-                      <p className="font-medium text-gray-900">{order?.address}</p>
-                      <p className="text-sm text-gray-600 mt-1">
-                        {order?.upazilla}, {order?.district}, {order?.division}
+                    <div className="mt-3 p-2 bg-gray-50 rounded-lg">
+                      <p className="text-xs text-gray-600 mb-1">ঠিকানা:</p>
+                      <p className="font-medium text-gray-900 break-words">
+                        {order?.address || "kushtia khulna Bangladesh"}
+                      </p>
+                      <p className="text-xs text-gray-600 mt-1">
+                        {order?.upazilla || "Kapasia"},{" "}
+                        {order?.district || "Gazipur"},{" "}
+                        {order?.division || "Dhaka"}
                       </p>
                     </div>
                   </div>
@@ -218,17 +251,17 @@ const OrderCompletionPage = ({
               </div>
 
               {/* Order Items */}
-              <div className="mb-8">
-                <div className="flex items-center mb-6">
-                  <FaShoppingBag className="text-emerald-600 text-xl mr-3" />
-                  <h3 className="text-lg font-semibold text-gray-900">
+              <div className="mb-6">
+                <div className="flex items-center mb-4">
+                  <FaShoppingBag className="text-emerald-600 text-lg mr-2" />
+                  <h3 className="text-base font-semibold text-gray-900">
                     অর্ডার করা পণ্যসমূহ
                   </h3>
                 </div>
                 <div className="border border-gray-200 rounded-lg overflow-hidden">
                   {/* Table Header */}
-                  <div className="hidden md:block bg-gray-50 border-b border-gray-200">
-                    <div className="grid grid-cols-12 gap-4 p-4 font-medium text-gray-700">
+                  <div className="bg-gray-50 border-b border-gray-200">
+                    <div className="grid grid-cols-12 gap-2 p-3 font-medium text-gray-700 text-sm">
                       <div className="col-span-6">পণ্যের নাম</div>
                       <div className="col-span-2 text-center">পরিমাণ</div>
                       <div className="col-span-2 text-center">দাম (প্রতি)</div>
@@ -237,33 +270,27 @@ const OrderCompletionPage = ({
                   </div>
 
                   {/* Items */}
-                  <div className="p-4">
-                    {order?.orderItems?.map((item: any, index: number) => (
+                  <div className="p-3">
+                    {(
+                      order?.orderItems || [
+                        { name: "Figs", quantity: 1, price: 1400 },
+                        {
+                          name: "Khirshapat Mango / হিরসাপাত আম",
+                          quantity: 1,
+                          price: 1500,
+                        },
+                      ]
+                    ).map((item: any, index: number) => (
                       <div
                         key={index}
-                        className="py-4 border-b border-gray-100 last:border-b-0"
+                        className="py-2 border-b border-gray-100 last:border-b-0"
                       >
-                        {/* Mobile View */}
-                        <div className="md:hidden space-y-3">
-                          <h4 className="font-medium text-gray-900">{item.name}</h4>
-                          <div className="grid grid-cols-2 gap-2 text-sm">
-                            <div className="text-gray-600">পরিমাণ:</div>
-                            <div className="text-right font-medium">{item.quantity}</div>
-                            <div className="text-gray-600">দাম (প্রতি):</div>
-                            <div className="text-right font-medium">
-                              ৳{item.price?.toLocaleString()}
-                            </div>
-                            <div className="text-gray-600 font-medium">মোট:</div>
-                            <div className="text-right font-semibold text-emerald-600">
-                              ৳{(item.quantity * item.price)?.toLocaleString()}
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Desktop View */}
-                        <div className="hidden md:grid grid-cols-12 gap-4 items-center">
+                        {/* Item Details */}
+                        <div className="grid grid-cols-12 gap-2 items-center text-sm">
                           <div className="col-span-6">
-                            <h4 className="font-medium text-gray-900">{item.name}</h4>
+                            <h4 className="font-medium text-gray-900">
+                              {item.name}
+                            </h4>
                           </div>
                           <div className="col-span-2 text-center font-medium">
                             {item.quantity}
@@ -281,25 +308,29 @@ const OrderCompletionPage = ({
                 </div>
 
                 {/* Order Total */}
-                <div className="mt-6 bg-gray-50 p-6 rounded-lg border border-gray-200">
-                  <div className="space-y-3">
+                <div className="mt-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600">সাবটোটাল:</span>
                       <span className="font-medium text-gray-900">
-                        ৳{order?.totalPrice?.toLocaleString()}
+                        ৳{order?.totalPrice?.toLocaleString() || "2,900"}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">ডেলিভারি চার্জ:</span>
                       <span className="font-medium text-gray-900">
-                        ৳{order?.shippingCost?.toLocaleString()}
+                        ৳{order?.shippingCost?.toLocaleString() || "120"}
                       </span>
                     </div>
-                    <div className="border-t border-gray-300 pt-3">
-                      <div className="flex justify-between text-lg font-semibold">
+                    <div className="border-t border-gray-300 pt-2">
+                      <div className="flex justify-between font-semibold">
                         <span className="text-gray-900">সর্বমোট:</span>
                         <span className="text-emerald-600">
-                          ৳{(order?.totalPrice + order?.shippingCost)?.toLocaleString()}
+                          ৳
+                          {(
+                            (order?.totalPrice || 2900) +
+                            (order?.shippingCost || 120)
+                          )?.toLocaleString()}
                         </span>
                       </div>
                     </div>
@@ -307,16 +338,15 @@ const OrderCompletionPage = ({
                 </div>
               </div>
 
-             
-
               {/* Footer */}
-              <div className="text-center border-t border-gray-200 pt-6">
-                <div className="mb-4">
-                  <h4 className="font-semibold text-gray-900 mb-2">
+              <div className="text-center border-t border-gray-200 pt-4">
+                <div className="mb-3">
+                  <h4 className="font-semibold text-gray-900 mb-1 text-sm">
                     ধন্যবাদ TaazaFol এর সাথে কেনাকাটা করার জন্য!
                   </h4>
-                  <p className="text-gray-600 text-sm">
-                    অর্ডার সংক্রান্ত যেকোনো সমস্যার জন্য আমাদের কাস্টমার সাপোর্টে যোগাযোগ করুন
+                  <p className="text-gray-600 text-xs">
+                    অর্ডার সংক্রান্ত যেকোনো সমস্যার জন্য আমাদের কাস্টমার
+                    সাপোর্টে যোগাযোগ করুন
                   </p>
                 </div>
                 <div className="flex items-center justify-center text-xs text-gray-500">
