@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
@@ -20,6 +21,7 @@ interface DashboardSidebarProps {
 }
 
 const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile = false, onMobileClose }) => {
+  //@ts-ignore
   const { data: user } = useGetmeQuery("");
   const pathname = usePathname();
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -32,19 +34,25 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
       color: "text-orange-300"
     },
     {
-      name: "Manage Orders",
+      name: "Orders",
       link: "/dashboard/admin/orders",
       icon: <FaShippingFast className="w-5 h-5" />,
       color: "text-blue-300"
     },
     {
-      name: "Manage Products",
+      name: "Customers",
+      link: "/dashboard/admin/manage-customers",
+      icon: <FaShippingFast className="w-5 h-5" />,
+      color: "text-blue-300"
+    },
+    {
+      name: "Products",
       link: "/dashboard/admin/manage-products",
       icon: <SquarePen className="w-5 h-5" />,
       color: "text-green-300"
     },
     {
-      name: "Manage Categories",
+      name: "Categories",
       link: "/dashboard/admin/manage-categories",
       icon: <SquarePen className="w-5 h-5" />,
       color: "text-purple-300"
@@ -55,12 +63,6 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
       icon: <MdAdminPanelSettings className="w-5 h-5" />,
       color: "text-red-300"
     },
-    // {
-    //   name: "Create Blog",
-    //   link: "/dashboard/admin/create-blog",
-    //   icon: <IoNewspaperSharp className="w-5 h-5" />,
-    //   color: "text-yellow-300"
-    // },
   ];
 
   const links = adminDashboardLinks;
@@ -93,6 +95,80 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
     }
   }, []);
 
+  // Render mobile app bar
+  if (isMobile) {
+    return (
+      <div className="w-full h-full">
+        {/* Mobile App Bar Header */}
+        <div className="p-4 border-b border-orange-500/30 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <Image 
+              src={tazafol} 
+              alt="Taaza Fol Logo" 
+              width={80} 
+              height={24}
+              className="rounded-lg"
+            />
+          </div>
+          <button
+            onClick={onMobileClose}
+            className="text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-200"
+            aria-label="Close Sidebar"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* App Bar Links */}
+        <div className="p-4">
+          <p className="text-white text-sm font-medium mb-4">
+            {user?.data?.user?.role === "SUPER_ADMIN" || user?.data?.user?.role === "ADMIN"
+              ? "Admin Panel"
+              : "User Panel"}
+          </p>
+          
+          <div className="space-y-2">
+            {links.map((link) => (
+              <Link
+                key={link.name}
+                href={link.link}
+                className={`flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 ${
+                  isActive(link.link)
+                    ? "bg-white/25 shadow-lg backdrop-blur-sm border border-white/30"
+                    : "hover:bg-white/15 hover:shadow-md"
+                }`}
+                onClick={onMobileClose}
+              >
+                <span className={`${link.color}`}>
+                  {link.icon}
+                </span>
+                <span className="text-white font-medium text-sm">
+                  {link.name}
+                </span>
+                {isActive(link.link) && (
+                  <div className="ml-auto w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                )}
+              </Link>
+            ))}
+          </div>
+        </div>
+        
+        {/* Mobile App Bar Footer */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-orange-500/30">
+          <Link href="/">
+            <button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl shadow-lg py-3 px-6 transition-all duration-200">
+              <span className="flex items-center justify-center gap-2">
+                <Home className="w-4 h-4" />
+                Go To Shop
+              </span>
+            </button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Regular desktop sidebar
   return (
     <div className="h-full flex flex-col bg-gradient-to-b from-orange-600 via-orange-700 to-orange-800 relative overflow-hidden">
       {/* Decorative background pattern */}
@@ -105,7 +181,7 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
       {/* Header Section */}
       <div className="relative z-10 p-4 border-b border-orange-500/30">
         <div className="flex items-center justify-between">
-          {(isMobile || !isCollapsed) && (
+          {!isCollapsed && (
             <div className="flex items-center space-x-3">
               <Image 
                 src={tazafol} 
@@ -114,22 +190,18 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
                 height={30}
                 className="rounded-lg ml-12"
               />
-              
             </div>
           )}
-          {/* Only show toggle button on desktop or close button on mobile */}
-          {(isMobile || !isMobile) && (
-            <button
-              onClick={toggleSidebar}
-              className="text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-200 hover:scale-110 ml-auto"
-              aria-label={isMobile ? "Close Sidebar" : "Toggle Sidebar"}
-            >
-              {isMobile ? <X className="w-5 h-5" /> : (isCollapsed ? <Menu className="w-5 h-5" /> : <X className="w-5 h-5" />)}
-            </button>
-          )}
+          <button
+            onClick={toggleSidebar}
+            className="text-white hover:bg-white/20 p-2 rounded-lg transition-all duration-200 hover:scale-110 ml-auto"
+            aria-label="Toggle Sidebar"
+          >
+            {isCollapsed ? <Menu className="w-5 h-5" /> : <X className="w-5 h-5" />}
+          </button>
         </div>
         
-        {(isMobile || !isCollapsed) && (
+        {!isCollapsed && (
           <div className="mt-4 p-3 bg-white/10 rounded-lg backdrop-blur-sm">
             <p className="text-white text-sm font-medium">Welcome to Dashboard</p>
             <p className="text-orange-200 text-xs mt-1">
@@ -163,19 +235,19 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
                   {link.icon}
                 </span>
                 
-                {(isMobile || !isCollapsed) && (
+                {!isCollapsed && (
                   <span className="text-white font-medium text-sm group-hover:text-orange-100 transition-colors duration-200 truncate">
                     {link.name}
                   </span>
                 )}
                 
-                {isActive(link.link) && (isMobile || !isCollapsed) && (
+                {isActive(link.link) && !isCollapsed && (
                   <div className="ml-auto w-2 h-2 bg-white rounded-full animate-pulse"></div>
                 )}
               </Link>
 
-              {/* Tooltip for collapsed state - only show on desktop when collapsed */}
-              {!isMobile && isCollapsed && (
+              {/* Tooltip for collapsed state */}
+              {isCollapsed && (
                 <div className="absolute left-full top-1/2 transform -translate-y-1/2 ml-2 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-50 whitespace-nowrap shadow-xl">
                   {link.name}
                   <div className="absolute right-full top-1/2 transform -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
@@ -190,9 +262,9 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
       <div className="p-4 border-t border-orange-500/30 relative z-10">
         <Link href="/">
           <button className={`w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 ${
-            (isMobile || !isCollapsed) ? 'py-3 px-6' : 'p-3'
+            !isCollapsed ? 'py-3 px-6' : 'p-3'
           }`}>
-            {(isMobile || !isCollapsed) ? (
+            {!isCollapsed ? (
               <span className="flex items-center justify-center gap-2">
                 <Home className="w-4 h-4" />
                 Go To Shop
@@ -204,8 +276,8 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({ onToggle, isMobile 
         </Link>
       </div>
 
-      {/* Mango decoration - only show when not collapsed or on mobile */}
-      {(isMobile || !isCollapsed) && (
+      {/* Mango decoration - only show when not collapsed */}
+      {!isCollapsed && (
         <div className="absolute bottom-5 right-5 text-4xl opacity-20 animate-pulse">
           🥭
         </div>

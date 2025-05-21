@@ -18,8 +18,6 @@ export default function CartPage() {
   const { products, selectedItems, totalPrice, shippingCost, grandTotal } =
     useAppSelector((store: any) => store.cart);
 
-  // console.log("products", products);
-
   // Check if any product is out of stock
   const isCheckoutDisabled = products.some((cartProduct: any) => {
     const matchedProduct = allProducts.find(
@@ -40,7 +38,7 @@ export default function CartPage() {
       <Container className="py-8 px-5">
         <CartHeader itemCount={selectedItems} onClearCart={handleClearCart} />
 
-        {products.length > 0 ? (
+        {products && products.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
               <CartItemsList products={products} allProducts={allProducts} />

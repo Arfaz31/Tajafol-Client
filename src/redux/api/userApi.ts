@@ -1,25 +1,54 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "./baseApi";
 
-const userApi = baseApi.injectEndpoints({
+// Define clear types for user data
+export interface UserProfile {
+  id: string;
+  fullName: string;
+  user:any;
+  email: string;
+  contact: string;
+  emergencyContact?: string;
+  address?: string;
+  division?: string;
+  district?: string;
+  upazila?: string;
+  role: string;
+  profileImage?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface GetMeResponse {
+  success: boolean;
+  statusCode: number;
+  message: string;
+  data: UserProfile;
+}
+
+export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    createAdmin: builder.mutation({
-      query: (userInfo) => {
-        // console.log("Register Mutation - UserInfo:", userInfo);
-        return {
-          url: "/user/create-admin",
-          method: "POST",
-          body: userInfo,
-        };
-      },
-      invalidatesTags: ["User"],
-    }),
-    getme: builder.query({
+    // Optimized getme query with proper caching
+    getme: builder.query<GetMeResponse, void>({
       query: () => ({
         url: "/user/me",
         method: "GET",
       }),
+      // Add cache configuration to avoid multiple fetches
+      keepUnusedDataFor: 300, // 5 minutes (in seconds)
+      // Since this is likely called in multiple components, make it a shared query
       providesTags: ["User"],
     }),
+
+    createAdmin: builder.mutation({
+      query: (userInfo) => ({
+        url: "/user/create-admin",
+        method: "POST",
+        body: userInfo,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
     getAllCustomers: builder.query({
       query: (args) => ({
         url: "/user/customers",
@@ -28,7 +57,7 @@ const userApi = baseApi.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
-
+    
     getAllAdmin: builder.query({
       query: (args) => ({
         url: "/user/admins",
@@ -37,15 +66,18 @@ const userApi = baseApi.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
-
+    
+    // Enhanced updateProfile to handle address fields
     updateProfile: builder.mutation({
       query: ({ formData }) => ({
         url: `/user/update-my-profile`,
         method: "PATCH",
         body: formData,
       }),
+      // Invalidate the User tag to update all related queries
       invalidatesTags: ["User"],
     }),
+
     deleteUser: builder.mutation({
       query: (id) => ({
         url: `/user/${id}`,

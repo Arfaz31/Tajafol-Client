@@ -1,117 +1,181 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useGetAllCustomersQuery } from "@/redux/api/userApi";
-import { User, Users, AlertCircle } from "lucide-react";
+import { useGetAllOrdersQuery } from "@/redux/api/orderApi";
+import { 
+  Download,
 
-import Lottie from "lottie-react";
-import spinner from "@/assets/lottie/loading2.json";
-import CustomersManagement from "./_Component/manageCustomers";
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import { toast } from "sonner";
+
 import Container from "@/components/Shared/Container";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { generateChartData, processCustomerData, processOrderData } from "@/lib/dashboardUtils";
+import LoadingSpinner from "@/components/Shared/LoadingSpinner";
+import ErrorDisplay from "@/components/Shared/ErrorDisplay";
+import DashboardPDF from "./_Component/admin-home/DownloadPDF";
+import StatCards from "./_Component/admin-home/StatCards";
+import SalesRevenueChart from "./_Component/admin-home/SalesRevenueChart";
+import StatusCharts from "./_Component/admin-home/StatusCharts";
+import OrderTrendsChart from "./_Component/admin-home/OrderTrendChart";
+
+// Import components
+
+
+// Utilities
+
 
 const AdminDashboardHome = () => {
-  const { data: customersData, isLoading, isError } = useGetAllCustomersQuery({});
+  // State for time range and pagination
+  const [timeRange, setTimeRange] = useState("monthly");
+  const [page] = useState(1);
+  const [limit] = useState(100); // Fetch more data for statistics
 
+  // Query parameters for orders
+  const orderQueryParams = {
+    page,
+    limit,
+  };
+
+  // Query parameters for customers with status filter options
+  const customerQueryParams = {
+    page,
+    limit,
+  };
+
+  // Fetch data using the API hooks
+  const { 
+    data: customersData, 
+    isLoading: isLoadingCustomers, 
+    isError: isErrorCustomers 
+  } = useGetAllCustomersQuery(customerQueryParams);
+  
+  const { 
+    data: ordersData, 
+    isLoading: isLoadingOrders, 
+    isError: isErrorOrders 
+  } = useGetAllOrdersQuery(orderQueryParams);
+
+  useEffect(() => {
+    // Log the data structure to help with debugging
+    if (ordersData) {
+      console.log("Orders API Response:", ordersData);
+    }
+  }, [ordersData]);
+
+  const isLoading = isLoadingCustomers || isLoadingOrders;
+  const isError = isErrorCustomers || isErrorOrders;
+
+  // Extract data safely based on the API structure
   const customers = customersData?.data?.result || [];
-  const activeCustomers = customers.filter(
-    (customer: any) => !customer.isDeleted
-  ).length;
-  const inactiveCustomers = customers.filter(
-    (customer: any) => customer.isDeleted
-  ).length;
-
-  const cardData = [
-    {
-      label: "Total Customers",
-      value: isLoading ? "..." : customers.length,
-      icon: <Users className="h-6 w-6 text-white" />,
-      color: "#8baaf3",
-      bgColor: "bg-blue-500",
-    },
-    {
-      label: "Active Customers",
-      value: isLoading ? "..." : activeCustomers,
-      icon: <User className="h-6 w-6 text-white" />,
-      color: "#4ade80",
-      bgColor: "bg-green-500",
-    },
-    {
-      label: "Inactive Customers",
-      value: isLoading ? "..." : inactiveCustomers,
-      icon: <AlertCircle className="h-6 w-6 text-white" />,
-      color: "#f87171",
-      bgColor: "bg-red-500",
-    },
-  ];
+  
+  // For the orders, extract from the correct path in the response
+  // Based on your OrdersPage component, this is how you extract orders
+  const orders = ordersData?.data || [];
+  
+  // Process stats data only if data is available
+  const customerStats = processCustomerData(customers);
+  const orderStats = processOrderData(orders);
+  const chartData = generateChartData(orders, timeRange);
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <Lottie animationData={spinner} loop={true} className="h-32 w-32 mx-auto" />
-          <p className="mt-4 text-gray-600">Loading dashboard...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner  />;
   }
 
   if (isError) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <AlertCircle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-          <p className="text-gray-600">Error loading dashboard data</p>
-        </div>
-      </div>
-    );
+    return <ErrorDisplay message="Error loading dashboard data" />;
   }
 
   return (
     <Container className="mx-auto py-6 px-4 sm:py-8 lg:py-12">
-      <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-        <p className="text-sm sm:text-base text-gray-600 mt-2">
-          Overview of customer statistics and management
-        </p>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
-        {cardData.map((card, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            style={{ borderTopColor: card.color, borderTopWidth: '4px' }}
+      <div className="flex flex-wrap items-center justify-between mb-6 sm:mb-8">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-2">
+            Overview of sales, income and customer statistics
+          </p>
+        </div>
+        
+        <div className="flex space-x-2 mt-4 sm:mt-0">
+          <Select 
+            defaultValue="monthly" 
+            value={timeRange}
+            onValueChange={(value) => setTimeRange(value)}
           >
-            <div className="p-4 sm:p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600 mb-1">
-                    {card.label}
-                  </p>
-                  <p className="text-2xl sm:text-3xl font-bold text-gray-900">
-                    {card.value}
-                  </p>
-                </div>
-                <div 
-                  className={`${card.bgColor} rounded-full p-3 shadow-lg`}
-                  style={{ backgroundColor: card.color }}
-                >
-                  {card.icon}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
+            <SelectTrigger className="w-32">
+              <SelectValue placeholder="Time Range" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="weekly">Weekly</SelectItem>
+              <SelectItem value="monthly">Monthly</SelectItem>
+              <SelectItem value="yearly">Yearly</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <PDFDownloadLink 
+            document={
+              <DashboardPDF 
+                customerStats={customerStats || { cardData: [] }}
+                orderStats={orderStats || { cardData: [], statusData: [], paymentData: [], rawData: {} as any }}
+                chartData={chartData || []}
+                timeRange={timeRange}
+              />
+            } 
+            fileName="dashboard-report.pdf"
+            className="inline-flex"
+          >
+            {({ loading }) => (
+              <Button 
+                variant="outline" 
+                disabled={loading}
+                className="space-x-2"
+                onClick={() => {
+                  if (!loading) toast.success("Report download started!");
+                }}
+              >
+                <Download className="h-4 w-4" />
+                <span>{loading ? "Preparing..." : "Export PDF"}</span>
+              </Button>
+            )}
+          </PDFDownloadLink>
+        </div>
       </div>
 
-      {/* Customers Management Section */}
-      <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-4 sm:p-6">
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">
-          Customer Management
-        </h2>
-        <CustomersManagement />
+      <div className="space-y-6">
+        {/* Order Stats Cards */}
+        <StatCards 
+          title="Order Statistics" 
+          stats={orderStats.cardData} 
+        />
+
+        {/* Sales & Revenue Chart */}
+        <SalesRevenueChart data={chartData} />
+
+        {/* Order Status & Payment Status Charts */}
+        <StatusCharts
+          orderStatusData={orderStats.statusData} 
+          paymentStatusData={orderStats.paymentData}
+        />
+
+        {/* Order Trends */}
+        <OrderTrendsChart data={chartData} />
+
+        {/* Customer Stats Cards */}
+        <StatCards 
+          title="Customer Statistics" 
+          stats={customerStats.cardData} 
+        />
       </div>
     </Container>
   );

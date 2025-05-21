@@ -2,7 +2,14 @@
 "use client";
 import React, { useState } from "react";
 import { useGetMyOrdersQuery } from "@/redux/api/orderApi";
-import { Loader2, Package } from "lucide-react";
+import { Loader2, Package, Calendar, ShoppingBag, CreditCard, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -11,13 +18,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 
 import { format } from "date-fns";
 import Container from "@/components/Shared/Container";
@@ -32,6 +32,21 @@ const MyOrdersPage = () => {
   const handleViewDetails = (order: any) => {
     setSelectedOrder(order);
     setIsModalOpen(true);
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "pending":
+        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "confirmed":
+        return "bg-blue-100 text-blue-800 border-blue-200";
+      case "shipped":
+        return "bg-purple-100 text-purple-800 border-purple-200";
+      case "delivered":
+        return "bg-green-100 text-green-800 border-green-200";
+      default:
+        return "bg-red-100 text-red-800 border-red-200";
+    }
   };
 
   if (isLoading) {
@@ -56,64 +71,75 @@ const MyOrdersPage = () => {
 
   return (
     <Container className="mb-32">
-      <div className="bg-white rounded-lg shadow-lg p-8 my-12">
+      <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 my-12">
         <h1 className="text-2xl font-bold pb-5">My Orders</h1>
 
-        {/* Orders Table */}
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Order No</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Items</TableHead>
-                <TableHead>Total</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {orders.map((order: any) => (
-                <TableRow key={order._id}>
-                  <TableCell className="font-medium">
-                    #{order.orderNo}
-                  </TableCell>
-                  <TableCell>
-                    {format(new Date(order.createdAt), "MMM dd, yyyy")}
-                  </TableCell>
-                  <TableCell>
-                    {order.orderItems.length} item
-                    {order.orderItems.length !== 1 ? "s" : ""}
-                  </TableCell>
-                  <TableCell>৳{order.totalPrice.toLocaleString()}</TableCell>
-                  <TableCell>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs capitalize ${
-                        order.status === "pending"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : order.status === "confirmed"
-                          ? "bg-blue-100 text-blue-800"
-                          : order.status === "shipped"
-                          ? "bg-purple-100 text-purple-800"
-                          : "bg-red-100 text-red-800"
-                      }`}
-                    >
-                      {order.status}
+        {/* Orders Grid - Card Layout */}
+        <div className="space-y-4">
+          {orders.map((order: any) => (
+            <div
+              key={order._id}
+              className="border rounded-lg p-4 hover:shadow-md transition-shadow duration-200 bg-white"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                {/* Order Info - Full width on mobile, first column on desktop */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">Order</span>
+                    <span className="font-semibold">#{order.orderNo}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Calendar className="h-4 w-4" />
+                    <span>{format(new Date(order.createdAt), "MMM dd, yyyy")}</span>
+                  </div>
+                </div>
+
+                {/* Items & Total - Second column */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <ShoppingBag className="h-4 w-4 text-gray-600" />
+                    <span className="text-sm">
+                      {order.orderItems.length} item{order.orderItems.length !== 1 ? "s" : ""}
                     </span>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleViewDetails(order)}
-                    >
-                      View Details
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CreditCard className="h-4 w-4 text-gray-600" />
+                    <span className="font-semibold">৳{order.totalPrice.toLocaleString()}</span>
+                  </div>
+                </div>
+
+                {/* Status - Third column */}
+                <div className="flex justify-start md:justify-center">
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium capitalize border ${getStatusColor(order.status)}`}
+                  >
+                    {order.status}
+                  </span>
+                </div>
+
+                {/* Action Button - Fourth column */}
+                <div className="flex justify-start md:justify-end">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleViewDetails(order)}
+                    className="w-full md:w-auto"
+                  >
+                    <span>View Details</span>
+                    <ChevronRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Mobile Summary - Only visible on small screens */}
+              <div className="md:hidden mt-3 pt-3 border-t border-gray-100">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-600">Total Amount</span>
+                  <span className="font-semibold text-lg">৳{order.totalPrice.toLocaleString()}</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Order Details Modal */}

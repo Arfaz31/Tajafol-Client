@@ -12,7 +12,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import AllCustomersDataTable from "../Table/AllCustomersDataTable";
+import AllCustomersDataTable from "../_Component/Table/AllCustomersDataTable";
+
 
 const CustomersManagement = () => {
   const router = useRouter();
