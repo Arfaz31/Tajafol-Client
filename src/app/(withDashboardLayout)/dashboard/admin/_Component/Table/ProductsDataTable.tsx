@@ -116,7 +116,7 @@ const ProductsDataTable = ({
   return (
     <>
       <div className="rounded-md border bg-slate-50 overflow-x-auto ">
-        <Table className="w-[1500px]">
+        <Table className="w-full">
           <TableHeader>
             <TableRow>
               <TableHead>Image</TableHead>

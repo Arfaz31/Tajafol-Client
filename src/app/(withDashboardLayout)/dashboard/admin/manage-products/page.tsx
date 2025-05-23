@@ -26,6 +26,7 @@ import useDebounce from "@/hooks/useDebounce";
 import { Checkbox } from "@/components/ui/checkbox";
 import CreateProductModal from "../_Component/Modal/CreateProductModal";
 import ProductsDataTable from "../_Component/Table/ProductsDataTable";
+import ProductDataForMobile from "../_Component/Table/ProductDataForMobile";
 
 const ManageProductPage = () => {
   // State management
@@ -110,32 +111,35 @@ const ManageProductPage = () => {
   return (
     <Container className="py-8">
       <div className="mb-8 flex justify-between items-center">
-        <h1 className="lg:text-3xl md:text-2xl text-xl font-bold">
+        <h1 className="lg:text-3xl md:text-2xl text-lg font-bold">
           Manage Products
         </h1>
-        <Button onClick={() => setIsCreateModalOpen(true)}>
+        <Button
+          onClick={() => setIsCreateModalOpen(true)}
+          className="w-[150px] text-sm"
+        >
           <Plus className="mr-2 h-4 w-4" /> Create Product
         </Button>
       </div>
 
-      <Card className="mb-6">
+      <Card className="mb-6 w-[100%] md:w-[100%] lg:w-full mx-auto">
         <CardHeader>
           <CardTitle>Filters</CardTitle>
           <CardDescription>Filter and search products</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 w-full">
             <div className="w-full">
               <Input
                 placeholder="Search products..."
                 value={searchInput}
                 onChange={handleSearchChange}
-                className="w-full"
+                className="w-[300px] md:w-[250px] lg:w-full rounded-full"
               />
             </div>
             <div className="w-full">
               <Select value={statusFilter} onValueChange={handleStatusChange}>
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-[300px] md:w-[250px] lg:w-full rounded-full">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -150,7 +154,7 @@ const ManageProductPage = () => {
                 value={categoryFilter}
                 onValueChange={handleCategoryChange}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-[300px] md:w-[250px] lg:w-full rounded-full">
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -168,7 +172,7 @@ const ManageProductPage = () => {
                 value={limit.toString()}
                 onValueChange={handleLimitChange}
               >
-                <SelectTrigger className="w-full">
+                <SelectTrigger className="w-[300px] md:w-[250px] lg:w-full rounded-full">
                   <SelectValue placeholder="Limit" />
                 </SelectTrigger>
                 <SelectContent>
@@ -181,7 +185,7 @@ const ManageProductPage = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-6 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="isNewArrival"
@@ -210,21 +214,38 @@ const ManageProductPage = () => {
         </CardContent>
       </Card>
 
-      {isLoading ? (
-        <div className="flex justify-center py-10">
-          <Loader2 className="h-10 w-10 animate-spin text-primary" />
-        </div>
-      ) : (
-        <ProductsDataTable
-          products={products}
-          isLoading={isLoading || isFetching}
-          page={page}
-          limit={limit}
-          totalPages={totalPages}
-          totalItems={totalItems}
-          onPageChange={handlePageChange}
-        />
-      )}
+      <div>
+        {isLoading ? (
+          <div className="flex justify-center py-10">
+            <Loader2 className="h-10 w-10 animate-spin text-primary" />
+          </div>
+        ) : (
+          <div>
+            <div className="hidden lg:block">
+              <ProductsDataTable
+                products={products}
+                isLoading={isLoading || isFetching}
+                page={page}
+                limit={limit}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                onPageChange={handlePageChange}
+              />
+            </div>
+            <div className="block md:block lg:hidden">
+              <ProductDataForMobile
+                products={products}
+                isLoading={isLoading || isFetching}
+                page={page}
+                limit={limit}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                onPageChange={handlePageChange}
+              />
+            </div>
+          </div>
+        )}
+      </div>
 
       <CreateProductModal
         isOpen={isCreateModalOpen}

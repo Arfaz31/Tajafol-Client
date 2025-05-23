@@ -6,6 +6,7 @@ import { useGetAllOrdersQuery } from "@/redux/api/orderApi";
 
 import { useState } from "react";
 import OrdersDataTable from "../_Component/Table/OrdersDataTable";
+import OrderDataForMobile from "../_Component/Table/OrderDataForMobile";
 
 const OrdersPage = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -48,17 +49,32 @@ const OrdersPage = () => {
           </h1>
         </div>
 
-        <OrdersDataTable
-          orders={orders}
-          isLoading={isLoading}
-          page={page}
-          limit={limit}
-          totalPages={totalPages}
-          totalItems={totalItems}
-          onPageChange={handlePageChange}
-          onSearchChange={handleSearchChange}
-          searchInput={searchInput}
-        />
+        <div className="hidden lg:block">
+          <OrdersDataTable
+            orders={orders}
+            isLoading={isLoading}
+            page={page}
+            limit={limit}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            onPageChange={handlePageChange}
+            onSearchChange={handleSearchChange}
+            searchInput={searchInput}
+          />
+        </div>
+        <div className="block lg:hidden">
+          <OrderDataForMobile
+            orders={orders}
+            isLoading={isLoading}
+            page={page}
+            limit={limit}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            onPageChange={handlePageChange}
+            onSearchChange={handleSearchChange}
+            searchInput={searchInput}
+          />
+        </div>
       </div>
     </Container>
   );

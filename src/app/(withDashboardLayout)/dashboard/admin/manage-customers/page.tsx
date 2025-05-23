@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import AllCustomersDataTable from "../_Component/Table/AllCustomersDataTable";
-
+import CustomerDataForMobile from "../_Component/Table/CustomerDataForMobile";
 
 const CustomersManagement = () => {
   const router = useRouter();
@@ -52,44 +52,56 @@ const CustomersManagement = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg w-full overflow-hidden">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 border-b">
-        <h2 className="lg:text-3xl md:text-2xl text-xl font-bold text-black">
-          Customers List
-        </h2>
+    <div>
+      <div className="bg-white rounded-lg shadow-lg w-full ">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-10 lg:gap-16 p-6 border-b w-full">
+          <div className="lg:flex-shrink-0 md:flex-shrink-0">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-black">
+              Customers List
+            </h2>
+          </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          {/* Search form */}
-          <form onSubmit={handleSearch} className="relative w-full sm:w-auto">
-            <Input
-              type="search"
-              placeholder="Search by name or email..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full sm:w-64 pl-9 rounded-full bg-background border-primary/20"
-            />
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-          </form>
+          <div className="flex flex-col gap-4 md:flex-row lg:flex-row items-center justify-center lg:justify-end w-full">
+            {/* Search form */}
+            <form onSubmit={handleSearch} className="relative w-full">
+              <Input
+                type="search"
+                placeholder="Search by name or email..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-[300px] md:w-[250px] lg:w-full pl-9 rounded-full bg-background border-primary/20"
+              />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+            </form>
 
-          {/* Filter by status */}
-          <Select value={isDeleted} onValueChange={handleStatusChange}>
-            <SelectTrigger className="w-full sm:w-40">
-              <SelectValue placeholder="Filter by status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Customers</SelectItem>
-              <SelectItem value="false">Active</SelectItem>
-              <SelectItem value="true">Inactive</SelectItem>
-            </SelectContent>
-          </Select>
+            {/* Filter by status */}
+            <div className="w-full">
+              <Select value={isDeleted} onValueChange={handleStatusChange}>
+                <SelectTrigger className="w-[300px] md:w-[250px] lg:w-full rounded-full">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Customers</SelectItem>
+                  <SelectItem value="false">Active</SelectItem>
+                  <SelectItem value="true">Inactive</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div className="p-6">
-        <AllCustomersDataTable
-          searchQuery={searchQuery}
-          statusFilter={isDeleted}
-        />
+        <div className="p-6 hidden lg:block">
+          <AllCustomersDataTable
+            searchQuery={searchQuery}
+            statusFilter={isDeleted}
+          />
+        </div>
+        <div className="p-6 block lg:hidden">
+          <CustomerDataForMobile
+            searchQuery={searchQuery}
+            statusFilter={isDeleted}
+          />
+        </div>
       </div>
     </div>
   );
