@@ -23,6 +23,7 @@ import CategoriesTable from "../_Component/Table/CategoriesTable";
 import Container from "@/components/Shared/Container";
 import useDebounce from "@/hooks/useDebounce"; // Import the useDebounce hook
 import CreateCategoryModal from "../_Component/Modal/CreateCategoryModal";
+import CategoryDataForMobile from "../_Component/Table/CategoryDataForMobile";
 
 const ManageCategoriesPage = () => {
   // State management
@@ -94,18 +95,18 @@ const ManageCategoriesPage = () => {
           <CardTitle>Filters</CardTitle>
           <CardDescription>Filter and search categories</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-wrap gap-4">
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 w-full">
           <div className="w-full md:w-64">
             <Input
               placeholder="Search categories..."
               value={searchInput}
               onChange={handleSearchChange}
-              className="w-full"
+              className="w-full rounded-full"
             />
           </div>
           <div className="w-full md:w-48">
             <Select value={statusFilter} onValueChange={handleStatusChange}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full rounded-full">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -117,7 +118,7 @@ const ManageCategoriesPage = () => {
           </div>
           <div className="w-full md:w-32">
             <Select value={limit.toString()} onValueChange={handleLimitChange}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full rounded-full">
                 <SelectValue placeholder="Limit" />
               </SelectTrigger>
               <SelectContent>
@@ -136,15 +137,30 @@ const ManageCategoriesPage = () => {
           <Loader2 className="h-10 w-10 animate-spin text-primary" />
         </div>
       ) : (
-        <CategoriesTable
-          categories={categories}
-          isLoading={isLoading || isFetching}
-          page={page}
-          limit={limit}
-          totalPages={totalPages}
-          totalItems={totalItems}
-          onPageChange={handlePageChange}
-        />
+        <div>
+          <div className="hidden lg:block">
+            <CategoriesTable
+              categories={categories}
+              isLoading={isLoading || isFetching}
+              page={page}
+              limit={limit}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              onPageChange={handlePageChange}
+            />
+          </div>
+          <div className="block lg:hidden">
+            <CategoryDataForMobile
+              categories={categories}
+              isLoading={isLoading || isFetching}
+              page={page}
+              limit={limit}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        </div>
       )}
 
       <CreateCategoryModal
