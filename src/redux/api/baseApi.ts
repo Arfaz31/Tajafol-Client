@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { logout, setUser } from "../slices/authSlice";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://server.taazafol.arviontech.online/api/v1",
+  baseUrl: "https://server-navy-kappa.vercel.app/api/v1",
   //"https://server.taazafol.arviontech.online/api/v1"
   credentials: "include",
 
@@ -43,7 +43,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 
   if (result?.error?.status === 401) {
     const res = await fetch(
-      "https://server.taazafol.arviontech.online/api/v1/auth/generate-access-token-via-refresh-token",
+      "https://server-navy-kappa.vercel.app/api/v1/auth/generate-access-token-via-refresh-token",
       {
         method: "POST",
         credentials: "include",

@@ -342,10 +342,11 @@ const HeroBanner = () => {
                   <Image
                     src={currentSlideData.image}
                     alt={currentSlideData.title}
-                    fill
+                    width={500} // required
+                    height={300} // required
                     priority
                     sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 45vw"
-                    className="object-contain drop-shadow-2xl"
+                    className="object-contain w-full drop-shadow-2xl"
                     style={{
                       filter: "drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15))",
                     }}

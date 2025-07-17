@@ -24,6 +24,7 @@ import { useGetAllAdminQuery } from "@/redux/api/userApi";
 
 import AllAdminDataTable from "../_Component/Table/AllAdminDataTable";
 import CreateAdminModal from "../_Component/Modal/CreateAdminModal";
+import AdminDataForMobile from "../_Component/Table/AdminDataForMobile";
 
 const ManageAdminPage = () => {
   // State management
@@ -71,7 +72,7 @@ const ManageAdminPage = () => {
   };
 
   return (
-    <Container className="py-8">
+    <Container className="py-8 ">
       <div className="mb-8 flex justify-between items-center">
         <h1 className="lg:text-3xl md:text-2xl text-xl font-bold">
           Manage Admins
@@ -92,13 +93,13 @@ const ManageAdminPage = () => {
               placeholder="Search admin..."
               value={searchInput}
               onChange={handleSearchChange}
-              className="w-full"
+              className="w-full rounded-full"
             />
           </div>
 
           <div className="w-full md:w-32">
             <Select value={limit.toString()} onValueChange={handleLimitChange}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full rounded-full">
                 <SelectValue placeholder="Limit" />
               </SelectTrigger>
               <SelectContent>
@@ -117,15 +118,30 @@ const ManageAdminPage = () => {
           <Loader2 className="h-10 w-10 animate-spin text-primary" />
         </div>
       ) : (
-        <AllAdminDataTable
-          admins={admins}
-          isLoading={isLoading || isFetching}
-          page={page}
-          limit={limit}
-          totalPages={totalPages}
-          totalItems={totalItems}
-          onPageChange={handlePageChange}
-        />
+        <div>
+          <div className="hidden lg:block">
+            <AllAdminDataTable
+              admins={admins}
+              isLoading={isLoading || isFetching}
+              page={page}
+              limit={limit}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              onPageChange={handlePageChange}
+            />
+          </div>
+          <div className="block lg:hidden">
+            <AdminDataForMobile
+              admins={admins}
+              isLoading={isLoading || isFetching}
+              page={page}
+              limit={limit}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        </div>
       )}
 
       <CreateAdminModal

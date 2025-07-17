@@ -17,19 +17,19 @@ const DashboardTopnav: React.FC<DashboardTopnavProps> = ({ onMenuClick }) => {
 
   const { data: userData } = useGetmeQuery("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  
+
   // Close dropdown when clicking outside
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (!target.closest('.profile-dropdown-container')) {
+      if (!target.closest(".profile-dropdown-container")) {
         setIsProfileOpen(false);
       }
     };
-    
-    document.addEventListener('mousedown', handleClickOutside);
+
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -39,15 +39,17 @@ const DashboardTopnav: React.FC<DashboardTopnavProps> = ({ onMenuClick }) => {
         <div className="flex items-center space-x-4">
           {/* Logo for mobile view */}
           <div className="lg:hidden">
-            <Image 
-              src={tazafol} 
-              alt="Taaza Fol Logo" 
-              width={80} 
+            <Image
+              src={tazafol}
+              alt="Taaza Fol Logo"
+              width={80}
               height={24}
               className="rounded-lg"
             />
           </div>
-          <h1 className="text-lg font-semibold text-gray-800 hidden sm:block">Dashboard</h1>
+          <h1 className="text-lg font-semibold text-gray-800 hidden sm:block">
+            Dashboard
+          </h1>
         </div>
 
         <div className="flex items-center space-x-4">
@@ -58,7 +60,7 @@ const DashboardTopnav: React.FC<DashboardTopnavProps> = ({ onMenuClick }) => {
 
           {/* Profile Dropdown */}
           <div className="relative profile-dropdown-container">
-            <button 
+            <button
               onClick={() => setIsProfileOpen(!isProfileOpen)}
               className="p-1 rounded-full hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
             >
@@ -70,12 +72,16 @@ const DashboardTopnav: React.FC<DashboardTopnavProps> = ({ onMenuClick }) => {
                 className="rounded-full object-cover object-center w-8 h-8"
               />
             </button>
-            
+
             {isProfileOpen && (
               <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-md shadow-lg py-1 z-50">
                 <div className="px-4 py-2 border-b border-gray-100">
-                  <p className="text-sm font-medium text-gray-900">{userData?.data?.user?.name || "User"}</p>
-                  <p className="text-xs text-gray-500">{userData?.data?.user?.email || "user@email.com"}</p>
+                  <p className="text-sm font-medium text-gray-900">
+                    {userData?.data?.user?.name || "User"}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {userData?.data?.user?.email || "user@email.com"}
+                  </p>
                 </div>
                 <Link
                   href="/profile"
@@ -86,7 +92,7 @@ const DashboardTopnav: React.FC<DashboardTopnavProps> = ({ onMenuClick }) => {
                   <span>Profile</span>
                 </Link>
                 <Link
-                  href="/logout"
+                  href="/"
                   className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition-colors duration-200 cursor-pointer outline-none"
                   onClick={() => setIsProfileOpen(false)}
                 >
